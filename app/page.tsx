@@ -1,76 +1,262 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(
+  'https://qhdupmlofuqdrywlandd.supabase.co',
+  'sb_publishable_2RSH-Db4GEEN9K6W32b4gA_kEdRakFe'
+)
+
+// Fallback-данные на случай, если Supabase не отвечает
+const MOCK_TUTORS = [
+  {
+    profile_id: '1',
+    rating: 4.9,
+    experience_years: 5,
+    bio: 'Готовлю к ЕГЭ и ОГЭ по математике. Индивидуальный подход к каждому ученику.',
+    price_per_hour: 1500,
+    profiles: { full_name: 'Анна Сергеевна', city: 'Москва', avatar_url: null },
+    tutor_subjects: [{ subjects: { name: 'Математика' } }, { subjects: { name: 'ЕГЭ' } }]
+  },
+  {
+    profile_id: '2',
+    rating: 4.8,
+    experience_years: 3,
+    bio: 'Английский для детей и взрослых. Разговорная практика и подготовка к экзаменам.',
+    price_per_hour: 1200,
+    profiles: { full_name: 'Иван Петров', city: 'Online', avatar_url: null },
+    tutor_subjects: [{ subjects: { name: 'Английский' } }, { subjects: { name: 'IELTS' } }]
+  },
+  {
+    profile_id: '3',
+    rating: 5.0,
+    experience_years: 7,
+    bio: 'Физика с нуля до олимпиад. Помогаю понять, а не зазубрить.',
+    price_per_hour: 1800,
+    profiles: { full_name: 'Мария Кузнецова', city: 'Санкт-Петербург', avatar_url: null },
+    tutor_subjects: [{ subjects: { name: 'Физика' } }, { subjects: { name: 'Олимпиады' } }]
+  }
+]
+
 export default function Home() {
+  const [tutors, setTutors] = useState<any[]>([])
+  const [lang, setLang] = useState<'ru'|'en'>('ru')
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  const t = {
+    ru: {
+      logo: 'Tutor Connect',
+      cta: 'Стать репетитором',
+      subtitle: 'Найдите своего идеального учителя',
+      title: 'Репетиторы, которые делают прогресс возможным.',
+      searchPlaceholder: 'Поиск по предмету, цели или репетитору',
+      searchBtn: 'Найти',
+      tutorsCount: 'репетиторов готовы помочь. Комиссия всего 8%.',
+      allSubjects: 'Все предметы',
+      anyPrice: 'Любая цена',
+      anyRating: 'Любой рейтинг',
+      whyUs: 'Почему именно мы',
+      commission: 'Комиссия 8%',
+      directPay: 'Прямая оплата',
+      marketplace: 'Маркетплейс материалов',
+      startHere: 'Начните здесь',
+      meetPeople: 'Люди, у которых стоит учиться.',
+      browseAll: 'Смотреть всех репетиторов',
+      available: 'Доступен',
+      perHour: '₽/час',
+      viewProfile: 'Профиль →',
+      noTutors: 'Пока нет репетиторов',
+      beFirst: 'Будьте первым!',
+      footerBrand: 'Tutor Connect',
+      footerTag: 'Честная платформа • Комиссия 8%',
+      loadError: 'Не удалось загрузить данные. Показаны демо-репетиторы.'
+    },
+    en: {
+      logo: 'Tutor Connect',
+      cta: 'Become a tutor',
+      subtitle: 'Find your perfect teacher',
+      title: 'Tutors who make progress feel possible.',
+      searchPlaceholder: 'Search a subject, goal, or tutor',
+      searchBtn: 'Search',
+      tutorsCount: 'tutors ready to help. Only 8% commission.',
+      allSubjects: 'All subjects',
+      anyPrice: 'Any price',
+      anyRating: 'Any rating',
+      whyUs: 'Why choose us',
+      commission: '8% commission',
+      directPay: 'Direct payment',
+      marketplace: 'Materials marketplace',
+      startHere: 'A good place to begin',
+      meetPeople: 'Meet a few people worth learning from.',
+      browseAll: 'Browse all tutors',
+      available: 'Available',
+      perHour: '₽/hour',
+      viewProfile: 'View profile →',
+      noTutors: 'No tutors yet',
+      beFirst: 'Be the first!',
+      footerBrand: 'Tutor Connect',
+      footerTag: 'Fair platform • 8% commission',
+      loadError: 'Failed to load data. Showing demo tutors.'
+    }
+  }
+
+  const l = t[lang]
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const { data, error: supaError } = await supabase
+          .from('tutors')
+          .select('*, profiles(full_name, city, avatar_url), tutor_subjects(subjects(name))')
+          .eq('is_verified', true)
+          .order('rating', { ascending: false })
+          .limit(10)
+
+        if (supaError) {
+          console.error('Supabase error:', supaError)
+          setError(supaError.message)
+          setTutors(MOCK_TUTORS)
+        } else if (!data || data.length === 0) {
+          // Таблица пуста — показываем mock, чтобы не было белого экрана
+          setTutors(MOCK_TUTORS)
+        } else {
+          setTutors(data)
+        }
+      } catch (err: any) {
+        console.error('Load error:', err)
+        setError(err?.message || 'Unknown error')
+        setTutors(MOCK_TUTORS)
+      } finally {
+        // ВАЖНО: всегда убираем загрузку, иначе белый экран
+        setLoading(false)
+      }
+    }
+    load()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#F5F3EF] flex flex-col items-center justify-center gap-4">
+        <div className="w-10 h-10 border-4 border-[#2D5A45] border-t-transparent rounded-full animate-spin"/>
+        <p className="text-[#2D5A45] text-sm font-medium">Загрузка...</p>
+      </div>
+    )
+  }
+
   return (
-    <main className="min-h-screen bg-white text-slate-900">
-      {/* Hero */}
-      <section className="bg-gradient-to-br from-violet-600 to-indigo-700 text-white py-20 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight">
-            Tutor Connect
-          </h1>
-          <p className="text-lg md:text-2xl mb-10 opacity-90 leading-relaxed">
-            Найди репетитора без переплат. Комиссия всего 8–10% — в 2 раза меньше, чем у «Репетит»
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-violet-700 font-bold px-8 py-4 rounded-2xl shadow-lg hover:scale-105 transition">
-              Найти репетитора
-            </button>
-            <button className="bg-white/10 backdrop-blur border border-white/30 text-white font-bold px-8 py-4 rounded-2xl hover:bg-white/20 transition">
-              Стать репетитором
+    <main className="min-h-screen bg-[#F5F3EF] text-[#1A1A1A]">
+      <header className="bg-[#2D5A45] text-white sticky top-0 z-50">
+        <div className="max-w-5xl mx-auto px-5 py-4 flex justify-between items-center">
+          <span className="text-xl font-bold tracking-tight">{l.logo}</span>
+          <div className="flex items-center gap-3">
+            <div className="flex gap-1 bg-white/20 rounded-full p-1">
+              <button 
+                onClick={() => setLang('ru')} 
+                className={`px-3 py-1 rounded-full text-xs font-bold transition ${lang==='ru'?'bg-white text-[#2D5A45]':'text-white/80'}`}
+              >
+                RU
+              </button>
+              <button 
+                onClick={() => setLang('en')} 
+                className={`px-3 py-1 rounded-full text-xs font-bold transition ${lang==='en'?'bg-white text-[#2D5A45]':'text-white/80'}`}
+              >
+                EN
+              </button>
+            </div>
+            <button className="px-5 py-2 bg-white text-[#2D5A45] rounded-full font-semibold text-sm">
+              {l.cta}
             </button>
           </div>
         </div>
-      </section>
+      </header>
 
-      {/* Features */}
-      <section className="py-20 px-4 max-w-6xl mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-14">Что умеет платформа</h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-xl transition">
-            <div className="w-12 h-12 bg-violet-100 rounded-xl flex items-center justify-center mb-4 text-2xl">💰</div>
-            <h3 className="text-xl font-bold mb-2">Низкая комиссия</h3>
-            <p className="text-slate-600 leading-relaxed">8–10% с занятия против 19% у конкурентов. Репетиторы зарабатывают больше.</p>
+      <section className="pt-16 pb-12 px-5 max-w-5xl mx-auto">
+        <p className="text-[#C4705A] font-semibold text-sm tracking-widest uppercase mb-4">{l.subtitle}</p>
+        <h1 className="text-4xl sm:text-5xl font-bold leading-tight mb-6 max-w-2xl">{l.title}</h1>
+        <p className="text-gray-600 text-lg mb-8">{tutors.length} {l.tutorsCount}</p>
+
+        <div className="bg-white rounded-2xl p-2 shadow-sm border border-gray-200 max-w-2xl">
+          <div className="flex flex-col sm:flex-row gap-2">
+            <input 
+              placeholder={l.searchPlaceholder} 
+              className="flex-1 px-4 py-3 rounded-xl bg-gray-50 outline-none text-[#1A1A1A]"
+            />
+            <button className="px-8 py-3 bg-[#C4705A] text-white rounded-xl font-semibold">{l.searchBtn}</button>
           </div>
-          <div className="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-xl transition">
-            <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-4 text-2xl">📚</div>
-            <h3 className="text-xl font-bold mb-2">Маркетплейс наработок</h3>
-            <p className="text-slate-600 leading-relaxed">Продавай методички, чек-листы, программы и получай пассивный доход.</p>
-          </div>
-          <div className="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-xl transition">
-            <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4 text-2xl">🎓</div>
-            <h3 className="text-xl font-bold mb-2">Курсы для репетиторов</h3>
-            <p className="text-slate-600 leading-relaxed">Научись находить учеников, вести занятия онлайн и масштабировать доход.</p>
-          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-3 mt-6">
+          <span className="px-4 py-2 bg-white rounded-full border text-sm cursor-pointer hover:shadow-sm transition">{l.allSubjects} ▼</span>
+          <span className="px-4 py-2 bg-white rounded-full border text-sm cursor-pointer hover:shadow-sm transition">{l.anyPrice} ▼</span>
+          <span className="px-4 py-2 bg-white rounded-full border text-sm cursor-pointer hover:shadow-sm transition">{l.anyRating} ▼</span>
         </div>
       </section>
 
-      {/* How it works */}
-      <section className="py-20 px-4 bg-slate-50">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-14">Как это работает</h2>
-          <div className="space-y-6">
-            {[
-              { step: '1', title: 'Создай профиль', desc: 'Укажи предметы, опыт, цену и формат занятий' },
-              { step: '2', title: 'Получай заявки', desc: 'Ученики находят тебя через поиск и отправляют запрос' },
-              { step: '3', title: 'Проводи занятия', desc: 'Онлайн или офлайн — как договоритесь' },
-              { step: '4', title: 'Получай деньги', desc: 'Мы удерживаем всего 8–10% и мгновенно переводим остальное' },
-            ].map((item) => (
-              <div key={item.step} className="flex items-start gap-5 bg-white p-6 rounded-2xl shadow-sm">
-                <div className="w-10 h-10 rounded-full bg-violet-600 text-white flex items-center justify-center font-bold shrink-0">
-                  {item.step}
+      <section className="px-5 max-w-5xl mx-auto mb-12">
+        <p className="text-gray-500 text-sm font-semibold tracking-widest uppercase mb-4">{l.whyUs}</p>
+        <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-700">
+          <span>✓ {l.commission}</span>
+          <span>✓ {l.directPay}</span>
+          <span>✓ {l.marketplace}</span>
+        </div>
+      </section>
+
+      <section className="px-5 max-w-5xl mx-auto pb-20">
+        <p className="text-[#C4705A] text-sm font-semibold tracking-widest uppercase mb-4">{l.startHere}</p>
+        <h2 className="text-3xl font-bold mb-8">{l.meetPeople}</h2>
+
+        {error && (
+          <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl text-amber-800 text-sm">
+            ⚠️ {l.loadError}
+          </div>
+        )}
+
+        {tutors.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {tutors.map((tutor) => (
+              <div key={tutor.profile_id} className="bg-white rounded-3xl overflow-hidden shadow-sm border hover:shadow-md transition">
+                <div className="relative h-56 bg-gradient-to-br from-[#E8E4DE] to-[#D4CFC7] flex items-center justify-center">
+                  <span className="text-6xl">👤</span>
+                  <span className="absolute top-4 left-4 px-3 py-1 bg-[#2D5A45] text-white text-xs font-semibold rounded-full">{l.available}</span>
                 </div>
-                <div>
-                  <h4 className="font-bold text-lg">{item.title}</h4>
-                  <p className="text-slate-600">{item.desc}</p>
+                <div className="p-6">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="text-xl font-bold">{tutor.profiles?.full_name || 'Tutor'}</h3>
+                    <span className="text-[#C4705A] font-bold">⭐ {tutor.rating}</span>
+                  </div>
+                  <p className="text-gray-500 text-sm mb-3">
+                    {tutor.profiles?.city || 'Online'} • {tutor.experience_years} {lang==='ru'?'лет опыта':'years exp'}
+                  </p>
+                  <p className="text-gray-600 mb-4 text-sm">{tutor.bio || ''}</p>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {tutor.tutor_subjects?.map((ts: any, i: number) => (
+                      <span key={i} className="px-3 py-1 bg-[#F0EDE8] text-[#2D5A45] rounded-full text-sm">
+                        {ts.subjects?.name}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="flex justify-between items-center pt-4 border-t">
+                    <span className="text-2xl font-bold">{tutor.price_per_hour} <span className="text-gray-400 text-sm font-normal">{l.perHour}</span></span>
+                    <button className="text-[#2D5A45] font-semibold">{l.viewProfile}</button>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
-        </div>
+        ) : (
+          <div className="text-center py-16 bg-white rounded-3xl border">
+            <div className="text-5xl mb-4">👋</div>
+            <h3 className="text-xl font-bold mb-2">{l.noTutors}</h3>
+            <button className="px-8 py-3 bg-[#2D5A45] text-white rounded-full font-semibold">{l.beFirst}</button>
+          </div>
+        )}
       </section>
 
-      {/* Footer */}
-      <footer className="py-10 text-center text-slate-500 text-sm">
-        © 2026 Tutor Connect. Создано репетиторами для репетиторов.
+      <footer className="bg-[#1A1A1A] text-gray-400 py-12 text-center">
+        <p className="text-white font-semibold mb-1">{l.footerBrand}</p>
+        <p className="text-sm">{l.footerTag}</p>
       </footer>
     </main>
   )
