@@ -1,14 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { createClient } from '@supabase/supabase-js'
 
-const supabase = createClient(
-  'https://qhdupmlofuqdrywlandd.supabase.co',
-  'sb_publishable_2RSH-Db4GEEN9K6W32b4gA_kEdRakFe'
-)
-
-// Fallback-данные на случай, если Supabase не отвечает
 const MOCK_TUTORS = [
   {
     profile_id: '1',
@@ -43,7 +36,6 @@ export default function Home() {
   const [tutors, setTutors] = useState<any[]>([])
   const [lang, setLang] = useState<'ru'|'en'>('ru')
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
 
   const t = {
     ru: {
@@ -70,8 +62,7 @@ export default function Home() {
       noTutors: 'Пока нет репетиторов',
       beFirst: 'Будьте первым!',
       footerBrand: 'Tutor Connect',
-      footerTag: 'Честная платформа • Комиссия 8%',
-      loadError: 'Не удалось загрузить данные. Показаны демо-репетиторы.'
+      footerTag: 'Честная платформа • Комиссия 8%'
     },
     en: {
       logo: 'Tutor Connect',
@@ -97,169 +88,110 @@ export default function Home() {
       noTutors: 'No tutors yet',
       beFirst: 'Be the first!',
       footerBrand: 'Tutor Connect',
-      footerTag: 'Fair platform • 8% commission',
-      loadError: 'Failed to load data. Showing demo tutors.'
+      footerTag: 'Fair platform • 8% commission'
     }
   }
 
   const l = t[lang]
 
   useEffect(() => {
-    async function load() {
-      try {
-        const { data, error: supaError } = await supabase
-          .from('tutors')
-          .select('*, profiles(full_name, city, avatar_url), tutor_subjects(subjects(name))')
-          .eq('is_verified', true)
-          .order('rating', { ascending: false })
-          .limit(10)
-
-        if (supaError) {
-          console.error('Supabase error:', supaError)
-          setError(supaError.message)
-          setTutors(MOCK_TUTORS)
-        } else if (!data || data.length === 0) {
-          // Таблица пуста — показываем mock, чтобы не было белого экрана
-          setTutors(MOCK_TUTORS)
-        } else {
-          setTutors(data)
-        }
-      } catch (err: any) {
-        console.error('Load error:', err)
-        setError(err?.message || 'Unknown error')
-        setTutors(MOCK_TUTORS)
-      } finally {
-        // ВАЖНО: всегда убираем загрузку, иначе белый экран
-        setLoading(false)
-      }
-    }
-    load()
+    const timer = setTimeout(() => {
+      setTutors(MOCK_TUTORS)
+      setLoading(false)
+    }, 500)
+    return () => clearTimeout(timer)
   }, [])
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F5F3EF] flex flex-col items-center justify-center gap-4">
-        <div className="w-10 h-10 border-4 border-[#2D5A45] border-t-transparent rounded-full animate-spin"/>
-        <p className="text-[#2D5A45] text-sm font-medium">Загрузка...</p>
+      <div style={{ minHeight: '100vh', background: '#F5F3EF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '16px' }}>
+        <div style={{ width: 40, height: 40, border: '4px solid #2D5A45', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+        <p style={{ color: '#2D5A45', fontSize: 14, fontWeight: 500 }}>Загрузка...</p>
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
     )
   }
 
   return (
-    <main className="min-h-screen bg-[#F5F3EF] text-[#1A1A1A]">
-      <header className="bg-[#2D5A45] text-white sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto px-5 py-4 flex justify-between items-center">
-          <span className="text-xl font-bold tracking-tight">{l.logo}</span>
-          <div className="flex items-center gap-3">
-            <div className="flex gap-1 bg-white/20 rounded-full p-1">
-              <button 
-                onClick={() => setLang('ru')} 
-                className={`px-3 py-1 rounded-full text-xs font-bold transition ${lang==='ru'?'bg-white text-[#2D5A45]':'text-white/80'}`}
-              >
-                RU
-              </button>
-              <button 
-                onClick={() => setLang('en')} 
-                className={`px-3 py-1 rounded-full text-xs font-bold transition ${lang==='en'?'bg-white text-[#2D5A45]':'text-white/80'}`}
-              >
-                EN
-              </button>
+    <main style={{ minHeight: '100vh', background: '#F5F3EF', color: '#1A1A1A' }}>
+      <header style={{ background: '#2D5A45', color: 'white', position: 'sticky', top: 0, zIndex: 50 }}>
+        <div style={{ maxWidth: 1024, margin: '0 auto', padding: '16px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span style={{ fontSize: 20, fontWeight: 'bold', letterSpacing: '-0.5px' }}>{l.logo}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{ display: 'flex', gap: 4, background: 'rgba(255,255,255,0.2)', borderRadius: 999, padding: 4 }}>
+              <button onClick={() => setLang('ru')} style={{ padding: '4px 12px', borderRadius: 999, border: 'none', fontSize: 12, fontWeight: 'bold', cursor: 'pointer', background: lang==='ru'?'white':'transparent', color: lang==='ru'?'#2D5A45':'rgba(255,255,255,0.8)' }}>RU</button>
+              <button onClick={() => setLang('en')} style={{ padding: '4px 12px', borderRadius: 999, border: 'none', fontSize: 12, fontWeight: 'bold', cursor: 'pointer', background: lang==='en'?'white':'transparent', color: lang==='en'?'#2D5A45':'rgba(255,255,255,0.8)' }}>EN</button>
             </div>
-            <button className="px-5 py-2 bg-white text-[#2D5A45] rounded-full font-semibold text-sm">
-              {l.cta}
-            </button>
+            <button style={{ padding: '8px 20px', background: 'white', color: '#2D5A45', borderRadius: 999, border: 'none', fontWeight: 600, fontSize: 14, cursor: 'pointer' }}>{l.cta}</button>
           </div>
         </div>
       </header>
 
-      <section className="pt-16 pb-12 px-5 max-w-5xl mx-auto">
-        <p className="text-[#C4705A] font-semibold text-sm tracking-widest uppercase mb-4">{l.subtitle}</p>
-        <h1 className="text-4xl sm:text-5xl font-bold leading-tight mb-6 max-w-2xl">{l.title}</h1>
-        <p className="text-gray-600 text-lg mb-8">{tutors.length} {l.tutorsCount}</p>
+      <section style={{ padding: '64px 20px 48px', maxWidth: 1024, margin: '0 auto' }}>
+        <p style={{ color: '#C4705A', fontWeight: 600, fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 16 }}>{l.subtitle}</p>
+        <h1 style={{ fontSize: 'clamp(32px, 5vw, 56px)', fontWeight: 'bold', lineHeight: 1.15, marginBottom: 24, maxWidth: 640 }}>{l.title}</h1>
+        <p style={{ color: '#666', fontSize: 18, marginBottom: 32 }}>{tutors.length} {l.tutorsCount}</p>
 
-        <div className="bg-white rounded-2xl p-2 shadow-sm border border-gray-200 max-w-2xl">
-          <div className="flex flex-col sm:flex-row gap-2">
-            <input 
-              placeholder={l.searchPlaceholder} 
-              className="flex-1 px-4 py-3 rounded-xl bg-gray-50 outline-none text-[#1A1A1A]"
-            />
-            <button className="px-8 py-3 bg-[#C4705A] text-white rounded-xl font-semibold">{l.searchBtn}</button>
+        <div style={{ background: 'white', borderRadius: 16, padding: 8, boxShadow: '0 1px 3px rgba(0,0,0,0.05)', border: '1px solid #e5e5e5', maxWidth: 640 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <input placeholder={l.searchPlaceholder} style={{ flex: 1, padding: '12px 16px', borderRadius: 12, border: 'none', background: '#f9f9f9', outline: 'none', fontSize: 16 }} />
+            <button style={{ padding: '12px 32px', background: '#C4705A', color: 'white', borderRadius: 12, border: 'none', fontWeight: 600, fontSize: 16, cursor: 'pointer' }}>{l.searchBtn}</button>
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-3 mt-6">
-          <span className="px-4 py-2 bg-white rounded-full border text-sm cursor-pointer hover:shadow-sm transition">{l.allSubjects} ▼</span>
-          <span className="px-4 py-2 bg-white rounded-full border text-sm cursor-pointer hover:shadow-sm transition">{l.anyPrice} ▼</span>
-          <span className="px-4 py-2 bg-white rounded-full border text-sm cursor-pointer hover:shadow-sm transition">{l.anyRating} ▼</span>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 24 }}>
+          <span style={{ padding: '8px 16px', background: 'white', borderRadius: 999, border: '1px solid #e5e5e5', fontSize: 14 }}>{l.allSubjects} ▼</span>
+          <span style={{ padding: '8px 16px', background: 'white', borderRadius: 999, border: '1px solid #e5e5e5', fontSize: 14 }}>{l.anyPrice} ▼</span>
+          <span style={{ padding: '8px 16px', background: 'white', borderRadius: 999, border: '1px solid #e5e5e5', fontSize: 14 }}>{l.anyRating} ▼</span>
         </div>
       </section>
 
-      <section className="px-5 max-w-5xl mx-auto mb-12">
-        <p className="text-gray-500 text-sm font-semibold tracking-widest uppercase mb-4">{l.whyUs}</p>
-        <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-700">
+      <section style={{ padding: '0 20px', maxWidth: 1024, margin: '0 auto', marginBottom: 48 }}>
+        <p style={{ color: '#888', fontSize: 12, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 16 }}>{l.whyUs}</p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '24px 32px', fontSize: 14, color: '#555' }}>
           <span>✓ {l.commission}</span>
           <span>✓ {l.directPay}</span>
           <span>✓ {l.marketplace}</span>
         </div>
       </section>
 
-      <section className="px-5 max-w-5xl mx-auto pb-20">
-        <p className="text-[#C4705A] text-sm font-semibold tracking-widest uppercase mb-4">{l.startHere}</p>
-        <h2 className="text-3xl font-bold mb-8">{l.meetPeople}</h2>
+      <section style={{ padding: '0 20px 80px', maxWidth: 1024, margin: '0 auto' }}>
+        <p style={{ color: '#C4705A', fontSize: 12, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 16 }}>{l.startHere}</p>
+        <h2 style={{ fontSize: 30, fontWeight: 'bold', marginBottom: 32 }}>{l.meetPeople}</h2>
 
-        {error && (
-          <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl text-amber-800 text-sm">
-            ⚠️ {l.loadError}
-          </div>
-        )}
-
-        {tutors.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {tutors.map((tutor) => (
-              <div key={tutor.profile_id} className="bg-white rounded-3xl overflow-hidden shadow-sm border hover:shadow-md transition">
-                <div className="relative h-56 bg-gradient-to-br from-[#E8E4DE] to-[#D4CFC7] flex items-center justify-center">
-                  <span className="text-6xl">👤</span>
-                  <span className="absolute top-4 left-4 px-3 py-1 bg-[#2D5A45] text-white text-xs font-semibold rounded-full">{l.available}</span>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 24 }}>
+          {tutors.map((tutor) => (
+            <div key={tutor.profile_id} style={{ background: 'white', borderRadius: 24, overflow: 'hidden', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', border: '1px solid #eee' }}>
+              <div style={{ position: 'relative', height: 224, background: 'linear-gradient(135deg, #E8E4DE, #D4CFC7)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontSize: 64 }}>👤</span>
+                <span style={{ position: 'absolute', top: 16, left: 16, padding: '4px 12px', background: '#2D5A45', color: 'white', fontSize: 12, fontWeight: 600, borderRadius: 999 }}>{l.available}</span>
+              </div>
+              <div style={{ padding: 24 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
+                  <h3 style={{ fontSize: 20, fontWeight: 'bold' }}>{tutor.profiles?.full_name || 'Tutor'}</h3>
+                  <span style={{ color: '#C4705A', fontWeight: 'bold' }}>⭐ {tutor.rating}</span>
                 </div>
-                <div className="p-6">
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-xl font-bold">{tutor.profiles?.full_name || 'Tutor'}</h3>
-                    <span className="text-[#C4705A] font-bold">⭐ {tutor.rating}</span>
-                  </div>
-                  <p className="text-gray-500 text-sm mb-3">
-                    {tutor.profiles?.city || 'Online'} • {tutor.experience_years} {lang==='ru'?'лет опыта':'years exp'}
-                  </p>
-                  <p className="text-gray-600 mb-4 text-sm">{tutor.bio || ''}</p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {tutor.tutor_subjects?.map((ts: any, i: number) => (
-                      <span key={i} className="px-3 py-1 bg-[#F0EDE8] text-[#2D5A45] rounded-full text-sm">
-                        {ts.subjects?.name}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="flex justify-between items-center pt-4 border-t">
-                    <span className="text-2xl font-bold">{tutor.price_per_hour} <span className="text-gray-400 text-sm font-normal">{l.perHour}</span></span>
-                    <button className="text-[#2D5A45] font-semibold">{l.viewProfile}</button>
-                  </div>
+                <p style={{ color: '#888', fontSize: 14, marginBottom: 12 }}>{tutor.profiles?.city || 'Online'} • {tutor.experience_years} {lang==='ru'?'лет опыта':'years exp'}</p>
+                <p style={{ color: '#666', marginBottom: 16, fontSize: 14, lineHeight: 1.5 }}>{tutor.bio || ''}</p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
+                  {tutor.tutor_subjects?.map((ts: any, i: number) => (
+                    <span key={i} style={{ padding: '4px 12px', background: '#F0EDE8', color: '#2D5A45', borderRadius: 999, fontSize: 14 }}>{ts.subjects?.name}</span>
+                  ))}
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 16, borderTop: '1px solid #eee' }}>
+                  <span style={{ fontSize: 24, fontWeight: 'bold' }}>{tutor.price_per_hour} <span style={{ color: '#bbb', fontSize: 14, fontWeight: 'normal' }}>{l.perHour}</span></span>
+                  <button style={{ color: '#2D5A45', fontWeight: 600, background: 'none', border: 'none', cursor: 'pointer', fontSize: 14 }}>{l.viewProfile}</button>
                 </div>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-16 bg-white rounded-3xl border">
-            <div className="text-5xl mb-4">👋</div>
-            <h3 className="text-xl font-bold mb-2">{l.noTutors}</h3>
-            <button className="px-8 py-3 bg-[#2D5A45] text-white rounded-full font-semibold">{l.beFirst}</button>
-          </div>
-        )}
+            </div>
+          ))}
+        </div>
       </section>
 
-      <footer className="bg-[#1A1A1A] text-gray-400 py-12 text-center">
-        <p className="text-white font-semibold mb-1">{l.footerBrand}</p>
-        <p className="text-sm">{l.footerTag}</p>
+      <footer style={{ background: '#1A1A1A', color: '#999', padding: '48px 20px', textAlign: 'center' }}>
+        <p style={{ color: 'white', fontWeight: 600, marginBottom: 4 }}>{l.footerBrand}</p>
+        <p style={{ fontSize: 14 }}>{l.footerTag}</p>
       </footer>
     </main>
   )
 }
-
-      
