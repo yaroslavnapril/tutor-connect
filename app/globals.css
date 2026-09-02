@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* Скрываем скроллбар в меню, но оставляем прокрутку */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 0;
+}
+.overflow-y-auto {
+  scrollbar-width: none;
+}
+
+/* Плавный скролл */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Фикс для iOS Safari (нижний таб-бар) */
+@supports (-webkit-touch-callout: none) {
+  .fixed.bottom-0 {
+    padding-bottom: env(safe-area-inset-bottom, 20px);
+  }
+}
+
