@@ -8,6 +8,7 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      // Если хотите — добавьте сюда, но это НЕ обязательно для работы меню
       colors: {
         tc: {
           green: '#2d5f3f',
