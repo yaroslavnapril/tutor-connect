@@ -58,6 +58,12 @@ const REVIEWS = [
 
 export default function Home() {
   const [lang, setLang] = useState<'ru'|'en'>('ru')
+
+useEffect(() => {
+  const saved = localStorage.getItem('tc_lang')
+  if (saved === 'ru' || saved === 'en') setLang(saved as 'ru'|'en')
+}, [])
+
   const [howTab, setHowTab] = useState<'student'|'tutor'>('student')
 
   const t = {
