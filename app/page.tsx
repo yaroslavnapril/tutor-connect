@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const TUTORS = [
   {
@@ -58,13 +58,13 @@ const REVIEWS = [
 
 export default function Home() {
   const [lang, setLang] = useState<'ru'|'en'>('ru')
-
-useEffect(() => {
-  const saved = localStorage.getItem('tc_lang')
-  if (saved === 'ru' || saved === 'en') setLang(saved as 'ru'|'en')
-}, [])
-
   const [howTab, setHowTab] = useState<'student'|'tutor'>('student')
+
+  // Синхронизация языка с меню
+  useEffect(() => {
+    const saved = localStorage.getItem('tc_lang')
+    if (saved === 'ru' || saved === 'en') setLang(saved as 'ru'|'en')
+  }, [])
 
   const t = {
     ru: {
@@ -146,16 +146,6 @@ useEffect(() => {
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background:#F5F3EF; color:#1A1A1A; line-height:1.5; }
         .tc-container { max-width:1100px; margin:0 auto; padding:0 20px; }
-        .tc-header { background:#2D5A45; color:white; position:sticky; top:0; z-index:50; box-shadow:0 1px 3px rgba(0,0,0,0.1); }
-        .tc-header-inner { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; max-width:1100px; margin:0 auto; }
-        .tc-logo { font-size:20px; font-weight:800; letter-spacing:-0.5px; }
-        .tc-nav { display:none; gap:24px; font-size:14px; color:rgba(255,255,255,0.8); }
-        .tc-nav a { color:inherit; text-decoration:none; transition:0.2s; }
-        .tc-nav a:hover { color:white; }
-        .tc-lang { display:flex; gap:4px; background:rgba(255,255,255,0.2); border-radius:999px; padding:4px; }
-        .tc-lang button { padding:4px 12px; border-radius:999px; border:none; font-size:12px; font-weight:700; cursor:pointer; transition:0.2s; background:transparent; color:rgba(255,255,255,0.8); }
-        .tc-lang button.active { background:white; color:#2D5A45; }
-        .tc-btn-header { display:none; padding:8px 20px; background:white; color:#2D5A45; border-radius:999px; border:none; font-weight:600; font-size:14px; cursor:pointer; }
         .tc-hero { padding:64px 20px 48px; max-width:1100px; margin:0 auto; }
         .tc-hero h1 { font-size:clamp(36px,6vw,64px); font-weight:800; line-height:1.1; margin-bottom:24px; }
         .tc-hero p { font-size:clamp(16px,2.5vw,20px); color:#555; margin-bottom:32px; max-width:600px; line-height:1.6; }
@@ -258,8 +248,6 @@ useEffect(() => {
           .tc-review-grid { grid-template-columns:repeat(3,1fr); }
           .tc-cta-grid { grid-template-columns:repeat(2,1fr); }
           .tc-footer-inner { grid-template-columns:repeat(2,1fr); }
-          .tc-nav { display:flex; }
-          .tc-btn-header { display:block; }
         }
         @media(min-width:1024px){
           .tc-tutor-grid { grid-template-columns:repeat(3,1fr); }
