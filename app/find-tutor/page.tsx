@@ -13,7 +13,7 @@ const ALL_TUTORS = [
     city: 'Москва',
     price: 1500,
     subjects: ['Математика', 'ЕГЭ', 'ОГЭ'],
-    format: 'online',
+    formats: ['online'],
     emoji: '🔢',
     badge: 'Топ-репетитор',
     description: 'Готовлю к ЕГЭ и ОГЭ. Разбираю каждую ошибку до полного понимания.'
@@ -24,10 +24,10 @@ const ALL_TUTORS = [
     rating: 4.8,
     reviews: 89,
     experience: 3,
-    city: 'Online',
+    city: 'Онлайн',
     price: 1200,
     subjects: ['Английский', 'IELTS'],
-    format: 'online',
+    formats: ['online'],
     emoji: '🇬🇧',
     badge: 'Проверен',
     description: 'Разговорный английский и IELTS. Жил в Лондоне, знаю все нюансы экзамена.'
@@ -41,7 +41,7 @@ const ALL_TUTORS = [
     city: 'Санкт-Петербург',
     price: 1800,
     subjects: ['Физика', 'Олимпиады'],
-    format: 'offline',
+    formats: ['tutor'],
     emoji: '⚛️',
     badge: 'Эксперт',
     description: 'Физика с нуля до олимпиад. Помогаю понять логику, а не зубрить формулы.'
@@ -55,7 +55,7 @@ const ALL_TUTORS = [
     city: 'Москва',
     price: 1300,
     subjects: ['История', 'Обществознание', 'ЕГЭ'],
-    format: 'both',
+    formats: ['student', 'tutor', 'online'],
     emoji: '🏛️',
     badge: 'Проверен',
     description: 'ЕГЭ по истории и обществознанию. Работаю по собственным методичкам.'
@@ -66,10 +66,10 @@ const ALL_TUTORS = [
     rating: 4.9,
     reviews: 203,
     experience: 10,
-    city: 'Online',
+    city: 'Онлайн',
     price: 2000,
     subjects: ['Русский язык', 'Литература', 'ЕГЭ'],
-    format: 'online',
+    formats: ['online'],
     emoji: '📖',
     badge: 'Топ-репетитор',
     description: 'Сочинения, анализ текстов, подготовка к ЕГЭ. 95% учеников на 80+ баллов.'
@@ -83,20 +83,31 @@ const ALL_TUTORS = [
     city: 'Казань',
     price: 900,
     subjects: ['Информатика', 'Программирование'],
-    format: 'online',
+    formats: ['online'],
     emoji: '💻',
     badge: 'Новый',
     description: 'Python, подготовка к олимпиадам по информатике. Доступно и с нуля.'
   }
 ]
 
-const SUBJECTS = ['Все', 'Математика', 'Английский', 'Физика', 'Русский язык', 'История', 'Информатика', 'Литература']
-const CITIES = ['Все', 'Москва', 'Санкт-Петербург', 'Казань', 'Online']
+const SUBJECTS = [
+  'Все', 'Алгебра', 'Английский', 'Астрономия', 'Биология', 'Геометрия',
+  'Информатика', 'Испанский язык', 'История', 'Литература', 'Математика',
+  'Немецкий язык', 'Обществознание', 'Русский язык', 'Физика',
+  'Французский язык', 'Химия', 'Экономика'
+]
+
+const CITIES = [
+  'Все', 'Волгоград', 'Воронеж', 'Екатеринбург', 'Казань', 'Красноярск',
+  'Москва', 'Нижний Новгород', 'Новосибирск', 'Омск', 'Онлайн', 'Пермь',
+  'Ростов-на-Дону', 'Самара', 'Санкт-Петербург', 'Уфа', 'Челябинск'
+]
+
 const FORMATS = [
   { key: 'all', label: 'Все' },
-  { key: 'online', label: 'Онлайн' },
-  { key: 'offline', label: 'Офлайн' },
-  { key: 'both', label: 'Оба' }
+  { key: 'student', label: 'У ученика' },
+  { key: 'tutor', label: 'У учителя' },
+  { key: 'online', label: 'Онлайн' }
 ]
 
 export default function FindTutorPage() {
@@ -114,7 +125,7 @@ export default function FindTutorPage() {
         t.subjects.some(s => s.toLowerCase().includes(search.toLowerCase()))
       const matchesSubject = subject === 'Все' || t.subjects.includes(subject)
       const matchesCity = city === 'Все' || t.city === city
-      const matchesFormat = format === 'all' || t.format === format || t.format === 'both'
+      const matchesFormat = format === 'all' || t.formats.includes(format)
       const matchesPrice = t.price <= maxPrice
       return matchesSearch && matchesSubject && matchesCity && matchesFormat && matchesPrice
     })
@@ -138,15 +149,13 @@ export default function FindTutorPage() {
         .ft-search { width:100%; padding:14px 18px; border-radius:14px; border:1px solid #ddd; background:white; font-size:15px; outline:none; margin-bottom:16px; }
         .ft-search:focus { border-color:#2D5A45; }
         .ft-filters { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px; align-items:center; }
-        .ft-chip { padding:8px 16px; border-radius:999px; border:1px solid #ddd; background:white; font-size:13px; font-weight:600; cursor:pointer; transition:0.15s; color:#555; }
-        .ft-chip:hover { border-color:#2D5A45; color:#2D5A45; }
-        .ft-chip.active { background:#2D5A45; color:white; border-color:#2D5A45; }
-        .ft-select { padding:8px 14px; border-radius:999px; border:1px solid #ddd; background:white; font-size:13px; font-weight:600; color:#555; outline:none; cursor:pointer; }
+        .ft-select { padding:10px 16px; border-radius:999px; border:1px solid #ddd; background:white; font-size:13px; font-weight:600; color:#555; outline:none; cursor:pointer; }
+        .ft-select:focus { border-color:#2D5A45; }
         .ft-range-wrap { display:flex; align-items:center; gap:8px; font-size:13px; color:#666; }
         .ft-range { width:120px; accent-color:#2D5A45; }
         .ft-sort { margin-left:auto; display:flex; align-items:center; gap:6px; font-size:13px; color:#666; }
         .ft-grid { display:grid; grid-template-columns:1fr; gap:20px; }
-        .ft-card { background:white; border-radius:20px; overflow:hidden; border:1px solid #eee; transition:0.2s; }
+        .ft-card { background:white; border-radius:20px; overflow:hidden; border:1px solid #eee; transition:0.2s; min-width:0; }
         .ft-card:hover { box-shadow:0 8px 24px rgba(0,0,0,0.08); }
         .ft-img { position:relative; height:160px; background:linear-gradient(135deg,#E8E4DE,#D4CFC7); display:flex; align-items:center; justify-content:center; }
         .ft-img .emoji { font-size:56px; transition:0.3s; }
@@ -168,11 +177,11 @@ export default function FindTutorPage() {
         .ft-empty h3 { font-size:20px; font-weight:700; color:#1A1A1A; margin-bottom:8px; }
         .ft-mobile-toggle { display:none; width:100%; padding:12px; background:white; border:1px solid #ddd; border-radius:12px; font-weight:700; color:#2D5A45; margin-bottom:12px; cursor:pointer; }
         @media(min-width:640px){
-          .ft-grid { grid-template-columns:repeat(2,1fr); }
+          .ft-grid { grid-template-columns:repeat(2, minmax(0,1fr)); }
           .ft-mobile-toggle { display:none !important; }
         }
         @media(min-width:1024px){
-          .ft-grid { grid-template-columns:repeat(3,1fr); }
+          .ft-grid { grid-template-columns:repeat(3, minmax(0,1fr)); }
         }
         @media(max-width:639px){
           .ft-filters { display:${showFilters ? 'flex' : 'none'}; }
@@ -184,7 +193,6 @@ export default function FindTutorPage() {
         <div className="ft-container">
           <h1 className="ft-title">Найти репетитора</h1>
 
-          {/* Поиск */}
           <input
             className="ft-search"
             placeholder="Поиск по имени или предмету..."
@@ -192,20 +200,14 @@ export default function FindTutorPage() {
             onChange={e => setSearch(e.target.value)}
           />
 
-          {/* Мобильная кнопка фильтров */}
           <button className="ft-mobile-toggle" onClick={() => setShowFilters(!showFilters)}>
             {showFilters ? 'Скрыть фильтры' : 'Показать фильтры'}
           </button>
 
-          {/* Фильтры */}
           <div className="ft-filters">
-            {SUBJECTS.map(s => (
-              <button
-                key={s}
-                className={`ft-chip ${subject === s ? 'active' : ''}`}
-                onClick={() => setSubject(s)}
-              >{s}</button>
-            ))}
+            <select className="ft-select" value={subject} onChange={e => setSubject(e.target.value)}>
+              {SUBJECTS.map(s => <option key={s} value={s}>{s}</option>)}
+            </select>
 
             <select className="ft-select" value={city} onChange={e => setCity(e.target.value)}>
               {CITIES.map(c => <option key={c} value={c}>{c}</option>)}
@@ -238,7 +240,6 @@ export default function FindTutorPage() {
             </div>
           </div>
 
-          {/* Результаты */}
           {filtered.length === 0 ? (
             <div className="ft-empty">
               <h3>Ничего не найдено</h3>
