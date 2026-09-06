@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 
 const TUTORS = [
   {
@@ -150,9 +151,9 @@ export default function Home() {
         .tc-hero h1 { font-size:clamp(36px,6vw,64px); font-weight:800; line-height:1.1; margin-bottom:24px; }
         .tc-hero p { font-size:clamp(16px,2.5vw,20px); color:#555; margin-bottom:32px; max-width:600px; line-height:1.6; }
         .tc-hero-btns { display:flex; flex-direction:column; gap:12px; margin-bottom:24px; }
-        .tc-btn-primary { padding:16px 32px; background:#C4705A; color:white; border-radius:16px; border:none; font-weight:700; font-size:16px; cursor:pointer; transition:0.2s; }
+        .tc-btn-primary { padding:16px 32px; background:#C4705A; color:white; border-radius:16px; border:none; font-weight:700; font-size:16px; cursor:pointer; transition:0.2s; text-decoration:none; display:inline-block; text-align:center; }
         .tc-btn-primary:hover { background:#b35d48; }
-        .tc-btn-secondary { padding:16px 32px; background:white; color:#2D5A45; border-radius:16px; border:2px solid #2D5A45; font-weight:700; font-size:16px; cursor:pointer; transition:0.2s; }
+        .tc-btn-secondary { padding:16px 32px; background:white; color:#2D5A45; border-radius:16px; border:2px solid #2D5A45; font-weight:700; font-size:16px; cursor:pointer; transition:0.2s; text-decoration:none; display:inline-block; text-align:center; }
         .tc-btn-secondary:hover { background:#2D5A45; color:white; }
         .tc-avatars { display:flex; align-items:center; gap:12px; }
         .tc-avatar-stack { display:flex; }
@@ -259,7 +260,7 @@ export default function Home() {
         <h1>{l.heroTitle}</h1>
         <p>{l.heroSubtitle}</p>
         <div className="tc-hero-btns">
-          <button className="tc-btn-primary">{l.ctaFind}</button>
+          <Link href="/find-tutor" className="tc-btn-primary">{l.ctaFind}</Link>
           <button className="tc-btn-secondary">{l.ctaBecome}</button>
         </div>
         <div className="tc-avatars">
