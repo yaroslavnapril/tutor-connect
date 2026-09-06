@@ -327,7 +327,7 @@ export default function Home() {
         .tc-cta-box.dark { background:#1A1A1A; }
         .tc-cta-box h3 { font-size:24px; font-weight:700; margin-bottom:12px; }
         .tc-cta-box p { opacity:0.8; margin-bottom:24px; line-height:1.6; font-size:15px; }
-        .tc-cta-box button { padding:14px 28px; border-radius:14px; border:none; font-weight:700; font-size:15px; cursor:pointer; transition:0.2s; }
+        .tc-cta-box button, .tc-cta-box a.tc-cta-link { padding:14px 28px; border-radius:14px; border:none; font-weight:700; font-size:15px; cursor:pointer; transition:0.2s; text-decoration:none; display:inline-block; }
         .tc-footer { background:#1A1A1A; color:#999; padding:48px 20px 24px; }
         .tc-footer-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr; gap:32px; }
         .tc-footer-brand { color:white; font-weight:700; font-size:18px; margin-bottom:6px; }
@@ -533,7 +533,7 @@ export default function Home() {
           <div className="tc-cta-box green">
             <h3>{l.ctaStTitle}</h3>
             <p>{l.ctaStText}</p>
-            <button style={{background:'white',color:'#2D5A45'}}>{l.ctaStBtn}</button>
+            <Link href="/find-tutor" className="tc-cta-link" style={{background:'white',color:'#2D5A45'}}>{l.ctaStBtn}</Link>
           </div>
           <div className="tc-cta-box dark">
             <h3>{l.ctaTuTitle}</h3>
