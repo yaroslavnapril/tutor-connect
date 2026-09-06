@@ -105,6 +105,58 @@ const IconGradCap = () => (
   </svg>
 )
 
+
+const IconClipboard = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="5" y="4" width="14" height="17" rx="2" />
+    <path d="M9 4a2 2 0 0 1 6 0" />
+    <path d="M8.5 10h7" />
+    <path d="M8.5 14h7" />
+    <path d="M8.5 18h4" />
+  </svg>
+)
+
+const IconChat = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-3-.4-4.2-1.1L3 20l1.1-5.3A8.5 8.5 0 1 1 21 11.5z" />
+    <path d="M8.5 10.5h7" />
+    <path d="M8.5 13.5h4.5" />
+  </svg>
+)
+
+const IconContacts = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="9" cy="8" r="3.5" />
+    <path d="M3.5 19.5c.6-3.2 2.9-5 5.5-5s4.9 1.8 5.5 5" />
+    <path d="M16.5 8.5v6" />
+    <path d="M13.5 11.5h6" />
+  </svg>
+)
+
+const IconCard = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="5" width="18" height="14" rx="2" />
+    <path d="M3 9.5h18" />
+    <path d="M7 14.5h4" />
+  </svg>
+)
+
+const IconProfile = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="10" cy="8" r="4" />
+    <path d="M3 20c.7-3.8 3.6-6 7-6 1.5 0 2.9.4 4 1.2" />
+    <path d="M17.5 14.5l4 4" />
+    <path d="M21.5 14.5l-4 4" />
+  </svg>
+)
+
+const IconBell = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 9a6 6 0 1 0-12 0c0 6-2.5 7-2.5 7h17S18 15 18 9z" />
+    <path d="M10 20a2.2 2.2 0 0 0 4 0" />
+  </svg>
+)
+
 export default function Home() {
   const [lang, setLang] = useState<'ru'|'en'>('ru')
   const [howTab, setHowTab] = useState<'student'|'tutor'>('student')
@@ -131,12 +183,14 @@ export default function Home() {
       tuF2: 'Пассивный доход', tuF2d: 'Выкладывай свои методички, чек-листы и программы. Получай деньги, пока спишь.',
       tuF3: 'Курсы по репетиторству', tuF3d: 'Учим зарабатывать на своих знаниях: методики преподавания, продвижение, работа с учениками.',
       howTitle: 'Как это работает', howStudent: 'Я ученик', howTutor: 'Я репетитор',
-      stS1: 'Выбери репетитора', stS1d: 'Фильтруй по предмету, цене, городу или формату. Читай отзывы реальных учеников.',
-      stS2: 'Запишись на занятие', stS2d: 'Напиши репетитору напрямую или запишись через платформу. Первое занятие со скидкой.',
-      stS3: 'Плати справедливо', stS3d: 'Оплата через платформу с защитой сделки. Комиссия всего 10%.',
-      tuS1: 'Создай профиль', tuS1d: 'Расскажи о себе, своём опыте и предметах. Укажи цену и формат занятий.',
-      tuS2: 'Получай заявки', tuS2d: 'Ученики находят тебя через поиск и отправляют запросы. Отвечай в удобное время.',
-      tuS3: 'Зарабатывай больше', tuS3d: 'Проводи занятия и продавай свои материалы. Деньги приходят сразу после занятия.',
+      stS1: 'Оставь заявку или выбери сам', stS1d: 'Укажи предмет, цель и бюджет — отклики проверенных репетиторов придут в течение часа. Или найди репетитора сам через поиск с фильтрами.',
+      stS2: 'Пообщайся в чате', stS2d: 'Обсуди цели, программу и стоимость напрямую. Сравни нескольких репетиторов по откликам и выбери лучшего.',
+      stS3: 'Обменяйся контактами', stS3d: 'Кнопка в чате. Номера открываются только после подтверждения с обеих сторон. Хочешь — продолжай общаться прямо на платформе.',
+      stS4: 'Занимайся и плати безопасно', stS4d: 'Оплата через платформу с защитой сделки: деньги перечисляются репетитору после занятия. Не вышло — вернём средства.',
+      tuS1: 'Создай профиль', tuS1d: 'Расскажи о себе, опыте и предметах. Укажи цену и формат занятий.',
+      tuS2: 'Получай заявки и откликайся', tuS2d: 'Ученики присылают заявки — отвечай на подходящие. А ещё тебя находят через поиск.',
+      tuS3: 'Общайся и обменивайся контактами', tuS3d: 'Обсуди цели ученика в чате. Контакты открываются после взаимного подтверждения.',
+      tuS4: 'Проводи занятия и получай оплату', tuS4d: 'Деньги приходят после занятия. Продавай свои материалы. Комиссия всего 10%.',
       tutorsTitle: 'Популярные репетиторы', tutorsSub: 'Проверенные преподаватели с реальными отзывами',
       viewAll: 'Смотреть всех →', perHour: '₽/час', reviews: 'отзывов', exp: 'лет опыта',
       marketTitle: 'Маркетплейс наработок', marketSub: 'Готовые материалы для подготовки от лучших репетиторов', marketCta: 'Все материалы →',
@@ -164,12 +218,14 @@ export default function Home() {
       tuF2: 'Passive income', tuF2d: 'Upload your guides and checklists. Earn money while you sleep.',
       tuF3: 'Tutoring courses', tuF3d: 'Learn to monetize your knowledge: teaching methods, promotion, working with students.',
       howTitle: 'How it works', howStudent: 'I\'m a student', howTutor: 'I\'m a tutor',
-      stS1: 'Choose a tutor', stS1d: 'Filter by subject, price, city or format. Read real student reviews.',
-      stS2: 'Book a lesson', stS2d: 'Message directly or book through the platform. First lesson with a discount.',
-      stS3: 'Pay fairly', stS3d: 'Secure payment through the platform. Only 10% commission.',
+      stS1: 'Request or choose yourself', stS1d: 'Set your subject, goal and budget — verified tutors respond within an hour. Or find one yourself using filters.',
+      stS2: 'Chat with tutors', stS2d: 'Discuss goals, program and price directly. Compare several tutors by their responses and pick the best one.',
+      stS3: 'Exchange contacts', stS3d: 'A button in the chat. Phone numbers unlock only after both sides confirm. Or keep messaging on the platform.',
+      stS4: 'Learn and pay safely', stS4d: 'Pay through the platform with deal protection: money is transferred to the tutor after the lesson. No lesson — get a refund.',
       tuS1: 'Create a profile', tuS1d: 'Tell about yourself, your experience and subjects. Set your price and format.',
-      tuS2: 'Get requests', tuS2d: 'Students find you through search and send requests. Reply when convenient.',
-      tuS3: 'Earn more', tuS3d: 'Teach lessons and sell your materials. Money arrives right after the lesson.',
+      tuS2: 'Get requests and respond', tuS2d: 'Students send requests — reply to the ones that fit. They also find you through search.',
+      tuS3: 'Chat and exchange contacts', tuS3d: 'Discuss the student\'s goals in chat. Contacts unlock after mutual confirmation.',
+      tuS4: 'Teach and get paid', tuS4d: 'Money arrives after each lesson. Sell your materials. Only 10% commission.',
       tutorsTitle: 'Popular tutors', tutorsSub: 'Verified teachers with real reviews',
       viewAll: 'View all →', perHour: '₽/hour', reviews: 'reviews', exp: 'years exp',
       marketTitle: 'Study materials', marketSub: 'Ready-made materials from top tutors', marketCta: 'All materials →',
@@ -186,8 +242,8 @@ export default function Home() {
 
   const l = t[lang]
   const steps = howTab === 'student'
-    ? [{i:'🔍',t:l.stS1,d:l.stS1d},{i:'📅',t:l.stS2,d:l.stS2d},{i:'💳',t:l.stS3,d:l.stS3d}]
-    : [{i:'📝',t:l.tuS1,d:l.tuS1d},{i:'🔔',t:l.tuS2,d:l.tuS2d},{i:'💰',t:l.tuS3,d:l.tuS3d}]
+    ? [{i:<IconClipboard />,t:l.stS1,d:l.stS1d},{i:<IconChat />,t:l.stS2,d:l.stS2d},{i:<IconContacts />,t:l.stS3,d:l.stS3d},{i:<IconCard />,t:l.stS4,d:l.stS4d}]
+    : [{i:<IconProfile />,t:l.tuS1,d:l.tuS1d},{i:<IconBell />,t:l.tuS2,d:l.tuS2d},{i:<IconChat />,t:l.tuS3,d:l.tuS3d},{i:<IconCard />,t:l.tuS4,d:l.tuS4d}]
 
   return (
     <>
@@ -229,7 +285,8 @@ export default function Home() {
         .tc-tab.active { background:#2D5A45; color:white; }
         .tc-steps { display:grid; grid-template-columns:1fr; gap:16px; }
         .tc-step { background:white; border-radius:16px; padding:32px 24px; text-align:center; border:1px solid #eee; }
-        .tc-step-icon { width:56px; height:56px; background:#F0EDE8; border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:24px; margin:0 auto 16px; }
+        .tc-step-icon { width:56px; height:56px; background:#F0EDE8; border-radius:16px; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; }
+        .tc-step-icon svg { width:28px; height:28px; }
         .tc-step-badge { font-size:12px; font-weight:700; color:#C4705A; margin-bottom:8px; }
         .tc-step h4 { font-size:18px; font-weight:700; margin-bottom:8px; }
         .tc-step p { font-size:14px; color:#666; line-height:1.6; }
@@ -292,7 +349,7 @@ export default function Home() {
         @media(min-width:640px){
           .tc-hero-btns { flex-direction:row; }
           .tc-cards { grid-template-columns:repeat(3,1fr); }
-          .tc-steps { grid-template-columns:repeat(3,1fr); }
+          .tc-steps { grid-template-columns:repeat(2,1fr); }
           .tc-tutor-grid { grid-template-columns:repeat(2,1fr); }
           .tc-product-grid { grid-template-columns:repeat(3,1fr); }
           .tc-review-grid { grid-template-columns:repeat(3,1fr); }
@@ -300,6 +357,7 @@ export default function Home() {
           .tc-footer-inner { grid-template-columns:repeat(2,1fr); }
         }
         @media(min-width:1024px){
+          .tc-steps { grid-template-columns:repeat(4,1fr); }
           .tc-tutor-grid { grid-template-columns:repeat(3,1fr); }
           .tc-footer-inner { grid-template-columns:repeat(4,1fr); }
         }
