@@ -57,7 +57,6 @@ const REVIEWS = [
   { name: 'Елена', text: 'Купила методичку по английскому за 299 ₽ — лучше, чем платить за отдельное занятие по грамматике.', role: 'Ученик' }
 ]
 
-// SVG-иконки для карточек преимуществ (единый стиль, цвет бренда)
 const IconWallet = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M3 7l2.2-3.2h13.6L21 7" />
@@ -104,7 +103,6 @@ const IconGradCap = () => (
     <path d="M22 9v6" />
   </svg>
 )
-
 
 const IconClipboard = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -161,7 +159,6 @@ export default function Home() {
   const [lang, setLang] = useState<'ru'|'en'>('ru')
   const [howTab, setHowTab] = useState<'student'|'tutor'>('student')
 
-  // Синхронизация языка с меню
   useEffect(() => {
     const saved = localStorage.getItem('tc_lang')
     if (saved === 'ru' || saved === 'en') setLang(saved as 'ru'|'en')
@@ -249,6 +246,7 @@ export default function Home() {
     <>
       <style dangerouslySetInnerHTML={{__html: `
         * { margin:0; padding:0; box-sizing:border-box; }
+        html, body { overflow-x:hidden; width:100%; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background:#F5F3EF; color:#1A1A1A; line-height:1.5; }
         .tc-container { max-width:1100px; margin:0 auto; padding:0 20px; }
         .tc-hero { padding:64px 20px 48px; max-width:1100px; margin:0 auto; }
@@ -264,16 +262,16 @@ export default function Home() {
         .tc-avatar-stack span { width:32px; height:32px; border-radius:50%; background:#E8E4DE; display:flex; align-items:center; justify-content:center; font-size:14px; border:2px solid white; margin-left:-8px; }
         .tc-avatar-stack span:first-child { margin-left:0; }
         .tc-avatars p { font-size:14px; color:#666; font-weight:500; }
-        .tc-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; max-width:1100px; margin:0 auto 64px; padding:0 20px; }
-        .tc-stat { background:white; border-radius:16px; padding:24px; text-align:center; box-shadow:0 1px 3px rgba(0,0,0,0.05); border:1px solid #eee; }
-        .tc-stat-num { font-size:clamp(24px,4vw,36px); font-weight:800; }
+        .tc-stats { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:16px; max-width:1100px; margin:0 auto 64px; padding:0 20px; }
+        .tc-stat { background:white; border-radius:16px; padding:24px; text-align:center; box-shadow:0 1px 3px rgba(0,0,0,0.05); border:1px solid #eee; min-width:0; }
+        .tc-stat-num { font-size:clamp(20px,4vw,36px); font-weight:800; white-space:nowrap; }
         .tc-stat-num.green { color:#2D5A45; }
         .tc-stat-num.orange { color:#C4705A; }
         .tc-stat-label { font-size:13px; color:#888; margin-top:4px; }
         .tc-section-title { font-size:22px; font-weight:700; margin-bottom:20px; color:#2D5A45; }
         .tc-section { max-width:1100px; margin:0 auto 48px; padding:0 20px; }
         .tc-cards { display:grid; grid-template-columns:1fr; gap:16px; }
-        .tc-card { background:white; border-radius:16px; padding:24px; border:1px solid #eee; transition:0.2s; }
+        .tc-card { background:white; border-radius:16px; padding:24px; border:1px solid #eee; transition:0.2s; min-width:0; }
         .tc-card:hover { box-shadow:0 4px 12px rgba(0,0,0,0.08); }
         .tc-card-icon { width:48px; height:48px; background:#F0EDE8; border-radius:12px; display:flex; align-items:center; justify-content:center; margin-bottom:16px; }
         .tc-card-icon svg { width:26px; height:26px; }
@@ -284,13 +282,13 @@ export default function Home() {
         .tc-tab { padding:10px 24px; border-radius:999px; border:none; font-size:14px; font-weight:700; cursor:pointer; transition:0.2s; background:transparent; color:#666; }
         .tc-tab.active { background:#2D5A45; color:white; }
         .tc-steps { display:grid; grid-template-columns:1fr; gap:16px; }
-        .tc-step { background:white; border-radius:16px; padding:32px 24px; text-align:center; border:1px solid #eee; }
+        .tc-step { background:white; border-radius:16px; padding:32px 24px; text-align:center; border:1px solid #eee; min-width:0; }
         .tc-step-icon { width:56px; height:56px; background:#F0EDE8; border-radius:16px; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; }
         .tc-step-icon svg { width:28px; height:28px; }
         .tc-step-badge { font-size:12px; font-weight:700; color:#C4705A; margin-bottom:8px; }
         .tc-step h4 { font-size:18px; font-weight:700; margin-bottom:8px; }
         .tc-step p { font-size:14px; color:#666; line-height:1.6; }
-        .tc-tutor-card { background:white; border-radius:24px; overflow:hidden; border:1px solid #eee; transition:0.2s; }
+        .tc-tutor-card { background:white; border-radius:24px; overflow:hidden; border:1px solid #eee; transition:0.2s; min-width:0; }
         .tc-tutor-card:hover { box-shadow:0 8px 24px rgba(0,0,0,0.1); }
         .tc-tutor-img { position:relative; height:200px; background:linear-gradient(135deg,#E8E4DE,#D4CFC7); display:flex; align-items:center; justify-content:center; }
         .tc-tutor-img span.emoji { font-size:64px; transition:0.3s; }
@@ -309,7 +307,7 @@ export default function Home() {
         .tc-price span { font-size:14px; color:#999; font-weight:400; }
         .tc-link { color:#2D5A45; font-weight:600; font-size:14px; text-decoration:none; }
         .tc-link:hover { color:#C4705A; }
-        .tc-product { background:white; border-radius:16px; padding:20px; border:1px solid #eee; cursor:pointer; transition:0.2s; }
+        .tc-product { background:white; border-radius:16px; padding:20px; border:1px solid #eee; cursor:pointer; transition:0.2s; min-width:0; }
         .tc-product:hover { box-shadow:0 4px 12px rgba(0,0,0,0.08); }
         .tc-product-icon { width:40px; height:40px; background:#F0EDE8; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; margin-bottom:12px; }
         .tc-product h4 { font-size:15px; font-weight:700; margin-bottom:4px; line-height:1.4; }
@@ -317,14 +315,14 @@ export default function Home() {
         .tc-product-footer { display:flex; justify-content:space-between; align-items:center; }
         .tc-product-price { font-size:18px; font-weight:800; color:#C4705A; }
         .tc-product-sales { font-size:12px; color:#999; }
-        .tc-review { background:white; border-radius:16px; padding:24px; border:1px solid #eee; }
+        .tc-review { background:white; border-radius:16px; padding:24px; border:1px solid #eee; min-width:0; }
         .tc-review-header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
         .tc-review-avatar { width:40px; height:40px; border-radius:50%; background:#E8E4DE; display:flex; align-items:center; justify-content:center; font-size:16px; }
         .tc-review-name { font-weight:700; font-size:14px; }
         .tc-review-role { font-size:12px; color:#999; }
         .tc-review-text { font-size:14px; color:#555; line-height:1.6; }
         .tc-cta-grid { display:grid; grid-template-columns:1fr; gap:16px; }
-        .tc-cta-box { border-radius:24px; padding:40px 32px; text-align:center; color:white; }
+        .tc-cta-box { border-radius:24px; padding:40px 32px; text-align:center; color:white; min-width:0; }
         .tc-cta-box.green { background:#2D5A45; }
         .tc-cta-box.dark { background:#1A1A1A; }
         .tc-cta-box h3 { font-size:24px; font-weight:700; margin-bottom:12px; }
@@ -348,18 +346,18 @@ export default function Home() {
         .tc-market-header p { color:#888; font-size:15px; margin-top:4px; }
         @media(min-width:640px){
           .tc-hero-btns { flex-direction:row; }
-          .tc-cards { grid-template-columns:repeat(3,1fr); }
-          .tc-steps { grid-template-columns:repeat(2,1fr); }
-          .tc-tutor-grid { grid-template-columns:repeat(2,1fr); }
-          .tc-product-grid { grid-template-columns:repeat(3,1fr); }
-          .tc-review-grid { grid-template-columns:repeat(3,1fr); }
-          .tc-cta-grid { grid-template-columns:repeat(2,1fr); }
-          .tc-footer-inner { grid-template-columns:repeat(2,1fr); }
+          .tc-cards { grid-template-columns:repeat(3, minmax(0,1fr)); }
+          .tc-steps { grid-template-columns:repeat(2, minmax(0,1fr)); }
+          .tc-tutor-grid { grid-template-columns:repeat(2, minmax(0,1fr)); }
+          .tc-product-grid { grid-template-columns:repeat(3, minmax(0,1fr)); }
+          .tc-review-grid { grid-template-columns:repeat(3, minmax(0,1fr)); }
+          .tc-cta-grid { grid-template-columns:repeat(2, minmax(0,1fr)); }
+          .tc-footer-inner { grid-template-columns:repeat(2, minmax(0,1fr)); }
         }
         @media(min-width:1024px){
-          .tc-steps { grid-template-columns:repeat(4,1fr); }
-          .tc-tutor-grid { grid-template-columns:repeat(3,1fr); }
-          .tc-footer-inner { grid-template-columns:repeat(4,1fr); }
+          .tc-steps { grid-template-columns:repeat(4, minmax(0,1fr)); }
+          .tc-tutor-grid { grid-template-columns:repeat(3, minmax(0,1fr)); }
+          .tc-footer-inner { grid-template-columns:repeat(4, minmax(0,1fr)); }
         }
       `}} />
 
