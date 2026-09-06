@@ -57,6 +57,54 @@ const REVIEWS = [
   { name: 'Елена', text: 'Купила методичку по английскому за 299 ₽ — лучше, чем платить за отдельное занятие по грамматике.', role: 'Ученик' }
 ]
 
+// SVG-иконки для карточек преимуществ (единый стиль, цвет бренда)
+const IconWallet = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M3 7l2.2-3.2h13.6L21 7" />
+    <rect x="3" y="7" width="18" height="12" rx="2" />
+    <path d="M16 12h5v4h-5a2 2 0 0 1 0-4z" />
+  </svg>
+)
+
+const IconShield = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 3l7 2.8v5.2c0 4.6-3 8.4-7 10-4-1.6-7-5.4-7-10V5.8z" />
+    <path d="M9 11.5l2.2 2.2 4.3-4.3" />
+  </svg>
+)
+
+const IconBook = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 6.5C10 5 7.5 4.5 4 4.5V18c3.5 0 6 .5 8 2 2-1.5 4.5-2 8-2V4.5c-3.5 0-6 .5-8 2z" />
+    <path d="M12 6.5V20" />
+  </svg>
+)
+
+const IconPercent = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="5" y1="19" x2="19" y2="5" />
+    <circle cx="7.5" cy="7.5" r="2.5" />
+    <circle cx="16.5" cy="16.5" r="2.5" />
+  </svg>
+)
+
+const IconDocDownload = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M6 2h8l5 5v15H6z" />
+    <path d="M14 2v5h5" />
+    <path d="M12 11v6" />
+    <path d="M9.5 14.5L12 17l2.5-2.5" />
+  </svg>
+)
+
+const IconGradCap = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M2 9l10-4 10 4-10 4z" />
+    <path d="M6 11v4.5c0 1.7 2.7 3 6 3s6-1.3 6-3V11" />
+    <path d="M22 9v6" />
+  </svg>
+)
+
 export default function Home() {
   const [lang, setLang] = useState<'ru'|'en'>('ru')
   const [howTab, setHowTab] = useState<'student'|'tutor'>('student')
@@ -76,12 +124,12 @@ export default function Home() {
       heroSocial: 'Присоединились 500+ репетиторов и 2000+ учеников',
       stat1: 'репетиторов', stat2: 'комиссия', stat3: 'учеников',
       forStudents: 'Для учеников', forTutors: 'Для репетиторов',
-      stF1: 'Доступные цены', stF1d: 'Комиссия всего 10% — репетиторы не завышают цены, чтобы компенсировать процент платформе.',
+      stF1: 'Доступные цены', stF1d: 'Репетиторы не завышают цены, чтобы компенсировать процент платформе.',
       stF2: 'Проверенные преподаватели', stF2d: 'Каждый репетитор проходит проверку. Читай отзывы, смотри рейтинг и выбирай с уверенностью.',
       stF3: 'Всё для учёбы в одном месте', stF3d: 'Занятия + готовые методички, чек-листы и программы. Готовься эффективнее.',
-      tuF1: 'Комиссия 10%', tuF1d: 'В 2 раза меньше, чем на крупных платформах. Зарабатывай больше на каждом занятии.',
+      tuF1: 'Комиссия всего 10%', tuF1d: 'В 2 раза меньше, чем на крупных платформах. Зарабатывай больше на каждом занятии.',
       tuF2: 'Пассивный доход', tuF2d: 'Выкладывай свои методички, чек-листы и программы. Получай деньги, пока спишь.',
-      tuF3: 'Полная свобода', tuF3d: 'Сам назначаешь цену, сам выбираешь график. Никаких обязательных часов.',
+      tuF3: 'Курсы по репетиторству', tuF3d: 'Учим зарабатывать на своих знаниях: методики преподавания, продвижение, работа с учениками.',
       howTitle: 'Как это работает', howStudent: 'Я ученик', howTutor: 'Я репетитор',
       stS1: 'Выбери репетитора', stS1d: 'Фильтруй по предмету, цене, городу или формату. Читай отзывы реальных учеников.',
       stS2: 'Запишись на занятие', stS2d: 'Напиши репетитору напрямую или запишись через платформу. Первое занятие со скидкой.',
@@ -109,12 +157,12 @@ export default function Home() {
       heroSocial: '500+ tutors and 2000+ students already joined',
       stat1: 'tutors', stat2: 'commission', stat3: 'students',
       forStudents: 'For students', forTutors: 'For tutors',
-      stF1: 'Fair prices', stF1d: 'Only 10% commission — tutors don\'t inflate prices to cover platform fees.',
+      stF1: 'Fair prices', stF1d: 'Tutors don\'t inflate prices to cover platform fees.',
       stF2: 'Verified teachers', stF2d: 'Every tutor is vetted. Read reviews, check ratings, and choose with confidence.',
       stF3: 'Everything in one place', stF3d: 'Lessons + study guides, checklists, and programs. Prepare more efficiently.',
-      tuF1: '10% commission', tuF1d: '2x lower than major platforms. Earn more on every lesson.',
+      tuF1: 'Only 10% commission', tuF1d: '2x lower than major platforms. Earn more on every lesson.',
       tuF2: 'Passive income', tuF2d: 'Upload your guides and checklists. Earn money while you sleep.',
-      tuF3: 'Total freedom', tuF3d: 'Set your own price and schedule. No mandatory hours or quotas.',
+      tuF3: 'Tutoring courses', tuF3d: 'Learn to monetize your knowledge: teaching methods, promotion, working with students.',
       howTitle: 'How it works', howStudent: 'I\'m a student', howTutor: 'I\'m a tutor',
       stS1: 'Choose a tutor', stS1d: 'Filter by subject, price, city or format. Read real student reviews.',
       stS2: 'Book a lesson', stS2d: 'Message directly or book through the platform. First lesson with a discount.',
@@ -137,7 +185,7 @@ export default function Home() {
   }
 
   const l = t[lang]
-  const steps = howTab === 'student' 
+  const steps = howTab === 'student'
     ? [{i:'🔍',t:l.stS1,d:l.stS1d},{i:'📅',t:l.stS2,d:l.stS2d},{i:'💳',t:l.stS3,d:l.stS3d}]
     : [{i:'📝',t:l.tuS1,d:l.tuS1d},{i:'🔔',t:l.tuS2,d:l.tuS2d},{i:'💰',t:l.tuS3,d:l.tuS3d}]
 
@@ -171,7 +219,8 @@ export default function Home() {
         .tc-cards { display:grid; grid-template-columns:1fr; gap:16px; }
         .tc-card { background:white; border-radius:16px; padding:24px; border:1px solid #eee; transition:0.2s; }
         .tc-card:hover { box-shadow:0 4px 12px rgba(0,0,0,0.08); }
-        .tc-card-icon { width:48px; height:48px; background:#F0EDE8; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:24px; margin-bottom:16px; }
+        .tc-card-icon { width:48px; height:48px; background:#F0EDE8; border-radius:12px; display:flex; align-items:center; justify-content:center; margin-bottom:16px; }
+        .tc-card-icon svg { width:26px; height:26px; }
         .tc-card h3 { font-size:18px; font-weight:700; margin-bottom:8px; }
         .tc-card p { font-size:14px; color:#666; line-height:1.6; }
         .tc-tabs { display:flex; justify-content:center; margin-bottom:32px; }
@@ -292,17 +341,17 @@ export default function Home() {
         <h2 className="tc-section-title">{l.forStudents}</h2>
         <div className="tc-cards">
           <div className="tc-card">
-            <div className="tc-card-icon">💰</div>
+            <div className="tc-card-icon"><IconWallet /></div>
             <h3>{l.stF1}</h3>
             <p>{l.stF1d}</p>
           </div>
           <div className="tc-card">
-            <div className="tc-card-icon">✅</div>
+            <div className="tc-card-icon"><IconShield /></div>
             <h3>{l.stF2}</h3>
             <p>{l.stF2d}</p>
           </div>
           <div className="tc-card">
-            <div className="tc-card-icon">📚</div>
+            <div className="tc-card-icon"><IconBook /></div>
             <h3>{l.stF3}</h3>
             <p>{l.stF3d}</p>
           </div>
@@ -313,17 +362,17 @@ export default function Home() {
         <h2 className="tc-section-title">{l.forTutors}</h2>
         <div className="tc-cards">
           <div className="tc-card">
-            <div className="tc-card-icon">📉</div>
+            <div className="tc-card-icon"><IconPercent /></div>
             <h3>{l.tuF1}</h3>
             <p>{l.tuF1d}</p>
           </div>
           <div className="tc-card">
-            <div className="tc-card-icon">📄</div>
+            <div className="tc-card-icon"><IconDocDownload /></div>
             <h3>{l.tuF2}</h3>
             <p>{l.tuF2d}</p>
           </div>
           <div className="tc-card">
-            <div className="tc-card-icon">🗓️</div>
+            <div className="tc-card-icon"><IconGradCap /></div>
             <h3>{l.tuF3}</h3>
             <p>{l.tuF3d}</p>
           </div>
