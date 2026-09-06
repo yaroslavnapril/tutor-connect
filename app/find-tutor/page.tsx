@@ -90,17 +90,46 @@ const ALL_TUTORS = [
   }
 ]
 
-const SUBJECTS = [
-  'Все', 'Алгебра', 'Английский', 'Астрономия', 'Биология', 'Геометрия',
-  'Информатика', 'Испанский язык', 'История', 'Литература', 'Математика',
-  'Немецкий язык', 'Обществознание', 'Русский язык', 'Физика',
-  'Французский язык', 'Химия', 'Экономика'
+// Быстрые чипы — самые частые предметы
+const QUICK_SUBJECTS = ['Все', 'Математика', 'Английский', 'Физика', 'Русский язык', 'История', 'Информатика', 'Литература']
+
+// Полный список предметов для раскрывающегося списка на кнопке «Все»
+const FULL_SUBJECTS = [
+  'Английский', 'Астрономия', 'Биология', 'Дошкольники', 'Информатика',
+  'Испанский', 'История', 'Итальянский', 'Китайский', 'Литература',
+  'Логопед', 'Математика', 'Музыка', 'Начальная школа', 'Немецкий',
+  'Обществознание', 'Русский как иностранный', 'Русский язык', 'Физика',
+  'Французский', 'Химия', 'Экономика'
 ]
 
+// Список городов по алфавиту (крупные и популярные города РФ + Онлайн)
 const CITIES = [
-  'Все', 'Волгоград', 'Воронеж', 'Екатеринбург', 'Казань', 'Красноярск',
-  'Москва', 'Нижний Новгород', 'Новосибирск', 'Омск', 'Онлайн', 'Пермь',
-  'Ростов-на-Дону', 'Самара', 'Санкт-Петербург', 'Уфа', 'Челябинск'
+  'Все',
+  'Абакан', 'Альметьевск', 'Ангарск', 'Архангельск', 'Астрахань',
+  'Балаково', 'Балашиха', 'Барнаул', 'Белгород', 'Березники', 'Бийск', 'Благовещенск', 'Братск', 'Брянск',
+  'Великий Новгород', 'Владивосток', 'Владикавказ', 'Владимир', 'Волгоград', 'Волгодонск', 'Волжский', 'Вологда', 'Воронеж',
+  'Грозный',
+  'Дзержинск',
+  'Екатеринбург',
+  'Железногорск',
+  'Златоуст',
+  'Иваново', 'Ижевск', 'Иркутск',
+  'Йошкар-Ола',
+  'Казань', 'Калининград', 'Калуга', 'Кемерово', 'Киров', 'Ковров', 'Кострома', 'Краснодар', 'Красноярск', 'Курган', 'Курск',
+  'Липецк',
+  'Магнитогорск', 'Майкоп', 'Махачкала', 'Миасс', 'Москва', 'Мурманск',
+  'Набережные Челны', 'Нальчик', 'Нижневартовск', 'Нижний Новгород', 'Нижний Тагил', 'Новокузнецк', 'Новороссийск', 'Новосибирск', 'Новочеркасск', 'Норильск',
+  'Обнинск', 'Омск', 'Онлайн', 'Орёл', 'Оренбург', 'Орск',
+  'Пенза', 'Пермь', 'Петрозаводск', 'Петропавловск-Камчатский', 'Подольск', 'Псков', 'Пятигорск',
+  'Ростов-на-Дону', 'Рязань',
+  'Самара', 'Санкт-Петербург', 'Саранск', 'Саратов', 'Севастополь', 'Северодвинск', 'Симферополь', 'Смоленск', 'Сочи', 'Ставрополь', 'Старый Оскол', 'Стерлитамак', 'Сургут', 'Сыктывкар',
+  'Таганрог', 'Тамбов', 'Тверь', 'Тольятти', 'Томск', 'Тула', 'Тюмень',
+  'Улан-Удэ', 'Ульяновск', 'Уфа',
+  'Хабаровск', 'Химки',
+  'Чебоксары', 'Челябинск', 'Череповец', 'Черкесск', 'Чита',
+  'Элиста',
+  'Южно-Сахалинск',
+  'Якутск', 'Ярославль'
 ]
 
 const FORMATS = [
@@ -113,9 +142,10 @@ const FORMATS = [
 export default function FindTutorPage() {
   const [search, setSearch] = useState('')
   const [subject, setSubject] = useState('Все')
+  const [subjectMenuOpen, setSubjectMenuOpen] = useState(false)
   const [city, setCity] = useState('Все')
   const [format, setFormat] = useState('all')
-  const [maxPrice, setMaxPrice] = useState(5000)
+  const [maxPrice, setMaxPrice] = useState(10000)
   const [sort, setSort] = useState<'rating' | 'price' | 'experience'>('rating')
   const [showFilters, setShowFilters] = useState(false)
 
@@ -148,9 +178,14 @@ export default function FindTutorPage() {
         .ft-title { font-size:28px; font-weight:800; margin-bottom:20px; color:#1A1A1A; }
         .ft-search { width:100%; padding:14px 18px; border-radius:14px; border:1px solid #ddd; background:white; font-size:15px; outline:none; margin-bottom:16px; }
         .ft-search:focus { border-color:#2D5A45; }
-        .ft-filters { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px; align-items:center; }
+        .ft-filters { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:12px; align-items:center; }
+        .ft-chip { padding:8px 16px; border-radius:999px; border:1px solid #ddd; background:white; font-size:13px; font-weight:600; cursor:pointer; transition:0.15s; color:#555; }
+        .ft-chip:hover { border-color:#2D5A45; color:#2D5A45; }
+        .ft-chip.active { background:#2D5A45; color:white; border-color:#2D5A45; }
         .ft-select { padding:10px 16px; border-radius:999px; border:1px solid #ddd; background:white; font-size:13px; font-weight:600; color:#555; outline:none; cursor:pointer; }
         .ft-select:focus { border-color:#2D5A45; }
+        .ft-subject-menu-wrap { position:relative; display:inline-block; }
+        .ft-subject-menu { margin-top:8px; margin-bottom:12px; width:100%; max-width:320px; }
         .ft-range-wrap { display:flex; align-items:center; gap:8px; font-size:13px; color:#666; }
         .ft-range { width:120px; accent-color:#2D5A45; }
         .ft-sort { margin-left:auto; display:flex; align-items:center; gap:6px; font-size:13px; color:#666; }
@@ -184,7 +219,7 @@ export default function FindTutorPage() {
           .ft-grid { grid-template-columns:repeat(3, minmax(0,1fr)); }
         }
         @media(max-width:639px){
-          .ft-filters { display:${showFilters ? 'flex' : 'none'}; }
+          .ft-filters-wrap { display:${showFilters ? 'block' : 'none'}; }
           .ft-mobile-toggle { display:block; }
         }
       `}} />
@@ -204,40 +239,69 @@ export default function FindTutorPage() {
             {showFilters ? 'Скрыть фильтры' : 'Показать фильтры'}
           </button>
 
-          <div className="ft-filters">
-            <select className="ft-select" value={subject} onChange={e => setSubject(e.target.value)}>
-              {SUBJECTS.map(s => <option key={s} value={s}>{s}</option>)}
-            </select>
+          <div className="ft-filters-wrap">
+            <div className="ft-filters">
+              {QUICK_SUBJECTS.map(s => (
+                <div key={s} className="ft-subject-menu-wrap">
+                  <button
+                    className={`ft-chip ${subject === s ? 'active' : ''}`}
+                    onClick={() => {
+                      if (s === 'Все') {
+                        setSubjectMenuOpen(!subjectMenuOpen)
+                        setSubject('Все')
+                      } else {
+                        setSubject(s)
+                        setSubjectMenuOpen(false)
+                      }
+                    }}
+                  >{s}{s === 'Все' ? (subjectMenuOpen ? ' ▲' : ' ▾') : ''}</button>
+                </div>
+              ))}
 
-            <select className="ft-select" value={city} onChange={e => setCity(e.target.value)}>
-              {CITIES.map(c => <option key={c} value={c}>{c}</option>)}
-            </select>
-
-            <select className="ft-select" value={format} onChange={e => setFormat(e.target.value)}>
-              {FORMATS.map(f => <option key={f.key} value={f.key}>{f.label}</option>)}
-            </select>
-
-            <div className="ft-range-wrap">
-              <span>До {maxPrice} ₽</span>
-              <input
-                type="range"
-                min={500}
-                max={5000}
-                step={100}
-                value={maxPrice}
-                onChange={e => setMaxPrice(Number(e.target.value))}
-                className="ft-range"
-              />
-            </div>
-
-            <div className="ft-sort">
-              <span>Сортировать:</span>
-              <select className="ft-select" value={sort} onChange={e => setSort(e.target.value as any)}>
-                <option value="rating">По рейтингу</option>
-                <option value="price">По цене</option>
-                <option value="experience">По опыту</option>
+              <select className="ft-select" value={city} onChange={e => setCity(e.target.value)}>
+                {CITIES.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
+
+              <select className="ft-select" value={format} onChange={e => setFormat(e.target.value)}>
+                {FORMATS.map(f => <option key={f.key} value={f.key}>{f.label}</option>)}
+              </select>
+
+              <div className="ft-range-wrap">
+                <span>До {maxPrice} ₽</span>
+                <input
+                  type="range"
+                  min={500}
+                  max={10000}
+                  step={250}
+                  value={maxPrice}
+                  onChange={e => setMaxPrice(Number(e.target.value))}
+                  className="ft-range"
+                />
+              </div>
+
+              <div className="ft-sort">
+                <span>Сортировать:</span>
+                <select className="ft-select" value={sort} onChange={e => setSort(e.target.value as any)}>
+                  <option value="rating">По рейтингу</option>
+                  <option value="price">По цене</option>
+                  <option value="experience">По опыту</option>
+                </select>
+              </div>
             </div>
+
+            {subjectMenuOpen && (
+              <select
+                className="ft-select ft-subject-menu"
+                value={subject}
+                onChange={e => {
+                  setSubject(e.target.value)
+                  setSubjectMenuOpen(false)
+                }}
+              >
+                <option value="Все">Все предметы</option>
+                {FULL_SUBJECTS.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+            )}
           </div>
 
           {filtered.length === 0 ? (
