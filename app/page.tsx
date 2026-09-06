@@ -260,26 +260,6 @@ export default function Home() {
           .tc-footer-inner { grid-template-columns:repeat(4,1fr); }
         }
       `}} />
-      
-      <header className="tc-header">
-        <div className="tc-header-inner">
-          <div style={{display:'flex',alignItems:'center',gap:32}}>
-            <span className="tc-logo">Tutor Connect</span>
-            <nav className="tc-nav">
-              <a href="#">{l.navFind}</a>
-              <a href="#">{l.navMarket}</a>
-              <a href="#">{l.navHow}</a>
-            </nav>
-          </div>
-          <div style={{display:'flex',alignItems:'center',gap:12}}>
-            <div className="tc-lang">
-              <button className={lang==='ru'?'active':''} onClick={()=>setLang('ru')}>RU</button>
-              <button className={lang==='en'?'active':''} onClick={()=>setLang('en')}>EN</button>
-            </div>
-            <button className="tc-btn-header">{l.navBecome}</button>
-          </div>
-        </div>
-      </header>
 
       <section className="tc-hero">
         <h1>{l.heroTitle}</h1>
