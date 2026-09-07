@@ -3,47 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
-const TUTORS = [
-  {
-    id: '1',
-    name: 'Анна Сергеевна',
-    rating: 4.9,
-    reviews: 127,
-    experience: 5,
-    city: 'Москва',
-    price: 1500,
-    bio: 'Готовлю к ЕГЭ и ОГЭ. Разбираю каждую ошибку до полного понимания.',
-    tags: ['ЕГЭ', 'ОГЭ', 'Алгебра'],
-    emoji: '🔢',
-    badge: 'Топ-репетитор'
-  },
-  {
-    id: '2',
-    name: 'Иван Петров',
-    rating: 4.8,
-    reviews: 89,
-    experience: 3,
-    city: 'Online',
-    price: 1200,
-    bio: 'Разговорный английский и IELTS. Жил в Лондоне, знаю все нюансы экзамена.',
-    tags: ['IELTS', 'Разговорный', 'Дети'],
-    emoji: '🇬🇧',
-    badge: 'Проверен'
-  },
-  {
-    id: '3',
-    name: 'Мария Кузнецова',
-    rating: 5.0,
-    reviews: 56,
-    experience: 7,
-    city: 'Санкт-Петербург',
-    price: 1800,
-    bio: 'Физика с нуля до олимпиад. Помогаю понять логику, а не зубрить формулы.',
-    tags: ['Олимпиады', 'ЕГЭ', 'Механика'],
-    emoji: '⚛️',
-    badge: 'Эксперт'
-  }
-]
+import { TUTORS } from './data/tutors'
 
 const PRODUCTS = [
   { title: '50 типовых задач ЕГЭ по математике', price: 499, sales: 234, author: 'Анна С.' },
@@ -290,9 +250,10 @@ export default function Home() {
         .tc-step p { font-size:14px; color:#666; line-height:1.6; }
         .tc-tutor-card { background:white; border-radius:24px; overflow:hidden; border:1px solid #eee; transition:0.2s; min-width:0; }
         .tc-tutor-card:hover { box-shadow:0 8px 24px rgba(0,0,0,0.1); }
-        .tc-tutor-img { position:relative; height:200px; background:linear-gradient(135deg,#E8E4DE,#D4CFC7); display:flex; align-items:center; justify-content:center; }
-        .tc-tutor-img span.emoji { font-size:64px; transition:0.3s; }
-        .tc-tutor-card:hover .tc-tutor-img span.emoji { transform:scale(1.1); }
+        .tc-tutor-img { position:relative; height:200px; overflow:hidden; background:linear-gradient(135deg,#E8E4DE,#D4CFC7); }
+.tc-tutor-img img { width:100%; height:100%; object-fit:cover; display:block; transition:0.3s; }
+.tc-tutor-card:hover .tc-tutor-img img { transform:scale(1.05); }
+
         .tc-badge { position:absolute; top:16px; left:16px; padding:6px 14px; background:#2D5A45; color:white; font-size:12px; font-weight:700; border-radius:999px; }
         .tc-rating { position:absolute; top:16px; right:16px; padding:6px 14px; background:rgba(255,255,255,0.9); color:#1A1A1A; font-size:12px; font-weight:700; border-radius:999px; }
         .tc-tutor-body { padding:24px; }
@@ -464,29 +425,30 @@ export default function Home() {
           <a href="#" className="tc-link" style={{display:'none'}}>{l.viewAll}</a>
         </div>
         <div className="tc-tutor-grid" style={{display:'grid',gap:20}}>
-          {TUTORS.map(t=>(
-            <div key={t.id} className="tc-tutor-card">
-              <div className="tc-tutor-img">
-                <span className="emoji">{t.emoji}</span>
-                <span className="tc-badge">{t.badge}</span>
-                <span className="tc-rating">⭐ {t.rating}</span>
-              </div>
-              <div className="tc-tutor-body">
-                <div className="tc-tutor-header">
-                  <h3>{t.name}</h3>
-                </div>
-                <div className="tc-tutor-meta">{t.city} • {t.experience} {l.exp} • {t.reviews} {l.reviews}</div>
-                <div className="tc-tutor-bio">{t.bio}</div>
-                <div className="tc-tags">
-                  {t.tags.map(tag=><span key={tag} className="tc-tag">{tag}</span>)}
-                </div>
-                <div className="tc-tutor-footer">
-                  <span className="tc-price">{t.price} <span>{l.perHour}</span></span>
-                  <a href="#" className="tc-link">{l.viewAll}</a>
-                </div>
-              </div>
-            </div>
-          ))}
+         {TUTORS.slice(0,3).map(t=>(
+  <Link key={t.id} href={`/tutors/${t.id}`} className="tc-tutor-card" style={{textDecoration:'none',color:'inherit',display:'block'}}>
+    <div className="tc-tutor-img">
+      <img src={t.photo} alt={t.name} />
+      <span className="tc-badge">{t.badge}</span>
+      <span className="tc-rating">⭐ {t.rating}</span>
+    </div>
+    <div className="tc-tutor-body">
+      <div className="tc-tutor-header">
+        <h3>{t.name}</h3>
+      </div>
+      <div className="tc-tutor-meta">{t.city} • {t.experience} {l.exp} • {t.reviews} {l.reviews}</div>
+      <div className="tc-tutor-bio">{t.bio}</div>
+      <div className="tc-tags">
+        {t.subjects.map(tag=><span key={tag} className="tc-tag">{tag}</span>)}
+      </div>
+      <div className="tc-tutor-footer">
+        <span className="tc-price">{t.price} <span>{l.perHour}</span></span>
+        <span className="tc-link">{l.viewAll}</span>
+      </div>
+    </div>
+  </Link>
+))}
+
         </div>
       </section>
 
