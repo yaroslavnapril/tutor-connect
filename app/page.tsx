@@ -251,8 +251,8 @@ export default function Home() {
         .tc-tutor-card { background:white; border-radius:24px; overflow:hidden; border:1px solid #eee; transition:0.2s; min-width:0; }
         .tc-tutor-card:hover { box-shadow:0 8px 24px rgba(0,0,0,0.1); }
         .tc-tutor-img { position:relative; height:200px; overflow:hidden; background:linear-gradient(135deg,#E8E4DE,#D4CFC7); }
-.tc-tutor-img img { width:100%; height:100%; object-fit:cover; display:block; transition:0.3s; }
-.tc-tutor-card:hover .tc-tutor-img img { transform:scale(1.05); }
+.tc-tutor-img { position:relative; height:200px; overflow:hidden; background:linear-gradient(135deg,#E8E4DE,#D4CFC7); }
+.tc-tutor-img img { width:100%; height:100%; object-fit:cover; object-position:center 25%; display:block; transition:0.3s; }
 
         .tc-badge { position:absolute; top:16px; left:16px; padding:6px 14px; background:#2D5A45; color:white; font-size:12px; font-weight:700; border-radius:999px; }
         .tc-rating { position:absolute; top:16px; right:16px; padding:6px 14px; background:rgba(255,255,255,0.9); color:#1A1A1A; font-size:12px; font-weight:700; border-radius:999px; }
