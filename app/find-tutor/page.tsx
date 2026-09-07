@@ -3,92 +3,8 @@
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
 
-const ALL_TUTORS = [
-  {
-    id: '1',
-    name: 'Анна Сергеевна',
-    rating: 4.9,
-    reviews: 127,
-    experience: 5,
-    city: 'Москва',
-    price: 1500,
-    subjects: ['Математика', 'ЕГЭ', 'ОГЭ'],
-    formats: ['online'],
-    emoji: '🔢',
-    badge: 'Топ-репетитор',
-    description: 'Готовлю к ЕГЭ и ОГЭ. Разбираю каждую ошибку до полного понимания.'
-  },
-  {
-    id: '2',
-    name: 'Иван Петров',
-    rating: 4.8,
-    reviews: 89,
-    experience: 3,
-    city: 'Онлайн',
-    price: 1200,
-    subjects: ['Английский', 'IELTS'],
-    formats: ['online'],
-    emoji: '🇬🇧',
-    badge: 'Проверен',
-    description: 'Разговорный английский и IELTS. Жил в Лондоне, знаю все нюансы экзамена.'
-  },
-  {
-    id: '3',
-    name: 'Мария Кузнецова',
-    rating: 5.0,
-    reviews: 56,
-    experience: 7,
-    city: 'Санкт-Петербург',
-    price: 1800,
-    subjects: ['Физика', 'Олимпиады'],
-    formats: ['tutor'],
-    emoji: '⚛️',
-    badge: 'Эксперт',
-    description: 'Физика с нуля до олимпиад. Помогаю понять логику, а не зубрить формулы.'
-  },
-  {
-    id: '4',
-    name: 'Дмитрий Соколов',
-    rating: 4.7,
-    reviews: 42,
-    experience: 4,
-    city: 'Москва',
-    price: 1300,
-    subjects: ['История', 'Обществознание', 'ЕГЭ'],
-    formats: ['student', 'tutor', 'online'],
-    emoji: '🏛️',
-    badge: 'Проверен',
-    description: 'ЕГЭ по истории и обществознанию. Работаю по собственным методичкам.'
-  },
-  {
-    id: '5',
-    name: 'Елена Васильева',
-    rating: 4.9,
-    reviews: 203,
-    experience: 10,
-    city: 'Онлайн',
-    price: 2000,
-    subjects: ['Русский язык', 'Литература', 'ЕГЭ'],
-    formats: ['online'],
-    emoji: '📖',
-    badge: 'Топ-репетитор',
-    description: 'Сочинения, анализ текстов, подготовка к ЕГЭ. 95% учеников на 80+ баллов.'
-  },
-  {
-    id: '6',
-    name: 'Алексей Морозов',
-    rating: 4.6,
-    reviews: 31,
-    experience: 2,
-    city: 'Казань',
-    price: 900,
-    subjects: ['Информатика', 'Программирование'],
-    formats: ['online'],
-    emoji: '💻',
-    badge: 'Новый',
-    description: 'Python, подготовка к олимпиадам по информатике. Доступно и с нуля.'
-  }
-]
+import { TUTORS as ALL_TUTORS } from '../data/tutors'
+
 
 // Быстрые чипы — самые частые предметы
 const QUICK_SUBJECTS = ['Все', 'Математика', 'Английский', 'Физика', 'Русский язык', 'История', 'Информатика', 'Литература']
@@ -192,9 +108,10 @@ export default function FindTutorPage() {
         .ft-grid { display:grid; grid-template-columns:1fr; gap:20px; }
         .ft-card { background:white; border-radius:20px; overflow:hidden; border:1px solid #eee; transition:0.2s; min-width:0; }
         .ft-card:hover { box-shadow:0 8px 24px rgba(0,0,0,0.08); }
-        .ft-img { position:relative; height:160px; background:linear-gradient(135deg,#E8E4DE,#D4CFC7); display:flex; align-items:center; justify-content:center; }
-        .ft-img .emoji { font-size:56px; transition:0.3s; }
-        .ft-card:hover .ft-img .emoji { transform:scale(1.1); }
+        .ft-img { position:relative; height:160px; overflow:hidden; background:linear-gradient(135deg,#E8E4DE,#D4CFC7); }
+.ft-img img { width:100%; height:100%; object-fit:cover; display:block; transition:0.3s; }
+.ft-card:hover .ft-img img { transform:scale(1.05); }
+
         .ft-badge { position:absolute; top:12px; left:12px; padding:5px 12px; background:#2D5A45; color:white; font-size:11px; font-weight:700; border-radius:999px; }
         .ft-rating { position:absolute; top:12px; right:12px; padding:5px 12px; background:rgba(255,255,255,0.95); color:#1A1A1A; font-size:12px; font-weight:700; border-radius:999px; display:flex; align-items:center; gap:4px; }
         .ft-body { padding:20px; }
@@ -312,28 +229,29 @@ export default function FindTutorPage() {
           ) : (
             <div className="ft-grid">
               {filtered.map(tutor => (
-                <div key={tutor.id} className="ft-card">
-                  <div className="ft-img">
-                    <span className="emoji">{tutor.emoji}</span>
-                    <span className="ft-badge">{tutor.badge}</span>
-                    <span className="ft-rating">⭐ {tutor.rating}</span>
-                  </div>
-                  <div className="ft-body">
-                    <div className="ft-name">{tutor.name}</div>
-                    <div className="ft-meta">{tutor.city} • {tutor.experience} лет опыта • {tutor.reviews} отзывов</div>
-                    <div className="ft-desc">{tutor.description}</div>
-                    <div className="ft-tags">
-                      {tutor.subjects.map(sub => (
-                        <span key={sub} className="ft-tag">{sub}</span>
-                      ))}
-                    </div>
-                    <div className="ft-footer">
-                      <span className="ft-price">{tutor.price} <span>₽/час</span></span>
-                      <button className="ft-btn">Записаться</button>
-                    </div>
-                  </div>
-                </div>
-              ))}
+  <Link key={tutor.id} href={`/tutors/${tutor.id}`} className="ft-card" style={{textDecoration:'none',color:'inherit',display:'block'}}>
+    <div className="ft-img">
+      <img src={tutor.photo} alt={tutor.name} />
+      <span className="ft-badge">{tutor.badge}</span>
+      <span className="ft-rating">⭐ {tutor.rating}</span>
+    </div>
+    <div className="ft-body">
+      <div className="ft-name">{tutor.name}</div>
+      <div className="ft-meta">{tutor.city} • {tutor.experience} лет опыта • {tutor.reviews} отзывов</div>
+      <div className="ft-desc">{tutor.bio}</div>
+      <div className="ft-tags">
+        {tutor.subjects.map(sub => (
+          <span key={sub} className="ft-tag">{sub}</span>
+        ))}
+      </div>
+      <div className="ft-footer">
+        <span className="ft-price">{tutor.price} <span>₽/час</span></span>
+        <button className="ft-btn">Записаться</button>
+      </div>
+    </div>
+  </Link>
+))}
+
             </div>
           )}
         </div>
