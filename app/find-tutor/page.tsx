@@ -108,8 +108,9 @@ export default function FindTutorPage() {
         .ft-grid { display:grid; grid-template-columns:1fr; gap:20px; }
         .ft-card { background:white; border-radius:20px; overflow:hidden; border:1px solid #eee; transition:0.2s; min-width:0; }
         .ft-card:hover { box-shadow:0 8px 24px rgba(0,0,0,0.08); }
-        .ft-img { position:relative; height:160px; overflow:hidden; background:linear-gradient(135deg,#E8E4DE,#D4CFC7); }
-.ft-img img { width:100%; height:100%; object-fit:cover; display:block; transition:0.3s; }
+        .ft-img { position:relative; height:180px; overflow:hidden; background:linear-gradient(135deg,#E8E4DE,#D4CFC7); }
+.ft-img img { width:100%; height:100%; object-fit:cover; object-position:center 25%; display:block; transition:0.3s; }
+
 .ft-card:hover .ft-img img { transform:scale(1.05); }
 
         .ft-badge { position:absolute; top:12px; left:12px; padding:5px 12px; background:#2D5A45; color:white; font-size:11px; font-weight:700; border-radius:999px; }
