@@ -254,7 +254,7 @@ export default function Home() {
 .tc-badge { position:absolute; top:16px; left:16px; padding:6px 14px; background:#2D5A45; color:white; font-size:12px; font-weight:700; border-radius:999px; }
 .tc-rating { position:absolute; top:16px; right:16px; padding:6px 14px; background:rgba(255,255,255,0.9); color:#1A1A1A; font-size:12px; font-weight:700; border-radius:999px; }
 .tc-avatar-wrap { display:flex; justify-content:center; margin-top:-52px; }
-.tc-avatar { width:104px; height:104px; border-radius:50%; overflow:hidden; border:4px solid white; box-shadow:0 2px 10px rgba(0,0,0,0.12); background:#eee; transition:0.3s; }
+.tc-avatar { width:104px; height:104px; border-radius:50%; overflow:hidden; border:4px solid white; box-shadow:0 2px 10px rgba(0,0,0,0.12); background:#eee; transition:0.3s; -webkit-transform:translateZ(0); transform:translateZ(0); }
 .tc-tutor-card:hover .tc-avatar { transform:scale(1.05); }
 .tc-avatar img { width:100%; height:100%; object-fit:cover; object-position:center 22%; display:block; }
 .tc-tutor-body { padding:12px 24px 24px; text-align:center; }
