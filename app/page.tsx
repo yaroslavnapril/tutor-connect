@@ -428,26 +428,30 @@ export default function Home() {
         <div className="tc-tutor-grid" style={{display:'grid',gap:20}}>
          {TUTORS.slice(0,3).map(t=>(
   <Link key={t.id} href={`/tutors/${t.id}`} className="tc-tutor-card" style={{textDecoration:'none',color:'inherit',display:'block'}}>
-    <div className="tc-tutor-img">
+  <div className="tc-tutor-banner">
+    <span className="tc-badge">{t.badge}</span>
+    <span className="tc-rating">⭐ {t.rating}</span>
+  </div>
+  <div className="tc-avatar-wrap">
+    <div className="tc-avatar">
       <img src={t.photo} alt={t.name} />
-      <span className="tc-badge">{t.badge}</span>
-      <span className="tc-rating">⭐ {t.rating}</span>
     </div>
-    <div className="tc-tutor-body">
-      <div className="tc-tutor-header">
-        <h3>{t.name}</h3>
-      </div>
-      <div className="tc-tutor-meta">{t.city} • {t.experience} {l.exp} • {t.reviews} {l.reviews}</div>
-      <div className="tc-tutor-bio">{t.bio}</div>
-      <div className="tc-tags">
-        {t.subjects.map(tag=><span key={tag} className="tc-tag">{tag}</span>)}
-      </div>
-      <div className="tc-tutor-footer">
-        <span className="tc-price">{t.price} <span>{l.perHour}</span></span>
-        <span className="tc-link">{l.viewAll}</span>
-      </div>
+  </div>
+  <div className="tc-tutor-body">
+    <div className="tc-tutor-header">
+      <h3>{t.name}</h3>
     </div>
-  </Link>
+    <div className="tc-tutor-meta">{t.city} • {t.experience} {l.exp} • {t.reviews} {l.reviews}</div>
+    <div className="tc-tutor-bio">{t.bio}</div>
+    <div className="tc-tags">
+      {t.subjects.map(tag=><span key={tag} className="tc-tag">{tag}</span>)}
+    </div>
+    <div className="tc-tutor-footer">
+      <span className="tc-price">{t.price} <span>{l.perHour}</span></span>
+      <span className="tc-link">{l.viewAll}</span>
+    </div>
+  </div>
+</Link>
 ))}
 
         </div>
