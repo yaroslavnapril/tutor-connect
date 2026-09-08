@@ -232,26 +232,30 @@ export default function FindTutorPage() {
             <div className="ft-grid">
               {filtered.map(tutor => (
   <Link key={tutor.id} href={`/tutors/${tutor.id}`} className="ft-card" style={{textDecoration:'none',color:'inherit',display:'block'}}>
-    <div className="ft-img">
+  <div className="ft-banner">
+    <span className="ft-badge">{tutor.badge}</span>
+    <span className="ft-rating">⭐ {tutor.rating}</span>
+  </div>
+  <div className="ft-avatar-wrap">
+    <div className="ft-avatar">
       <img src={tutor.photo} alt={tutor.name} />
-      <span className="ft-badge">{tutor.badge}</span>
-      <span className="ft-rating">⭐ {tutor.rating}</span>
     </div>
-    <div className="ft-body">
-      <div className="ft-name">{tutor.name}</div>
-      <div className="ft-meta">{tutor.city} • {tutor.experience} лет опыта • {tutor.reviews} отзывов</div>
-      <div className="ft-desc">{tutor.bio}</div>
-      <div className="ft-tags">
-        {tutor.subjects.map(sub => (
-          <span key={sub} className="ft-tag">{sub}</span>
-        ))}
-      </div>
-      <div className="ft-footer">
-        <span className="ft-price">{tutor.price} <span>₽/час</span></span>
-        <button className="ft-btn">Записаться</button>
-      </div>
+  </div>
+  <div className="ft-body">
+    <div className="ft-name">{tutor.name}</div>
+    <div className="ft-meta">{tutor.city} • {tutor.experience} лет опыта • {tutor.reviews} отзывов</div>
+    <div className="ft-desc">{tutor.bio}</div>
+    <div className="ft-tags">
+      {tutor.subjects.map(sub => (
+        <span key={sub} className="ft-tag">{sub}</span>
+      ))}
     </div>
-  </Link>
+    <div className="ft-footer">
+      <span className="ft-price">{tutor.price} <span>₽/час</span></span>
+      <button className="ft-btn">Записаться</button>
+    </div>
+  </div>
+</Link>
 ))}
 
             </div>
