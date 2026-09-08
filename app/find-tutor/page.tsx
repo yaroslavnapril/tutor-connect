@@ -107,18 +107,18 @@ export default function FindTutorPage() {
         .ft-sort { margin-left:auto; display:flex; align-items:center; gap:6px; font-size:13px; color:#666; }
         .ft-grid { display:grid; grid-template-columns:1fr; gap:20px; }
         .ft-card { background:white; border-radius:20px; overflow:hidden; border:1px solid #eee; transition:0.2s; min-width:0; }
-        .ft-card:hover { box-shadow:0 8px 24px rgba(0,0,0,0.08); }
-        .ft-img { position:relative; height:180px; overflow:hidden; background:linear-gradient(135deg,#E8E4DE,#D4CFC7); }
-.ft-img img { width:100%; height:100%; object-fit:cover; object-position:center 25%; display:block; transition:0.3s; }
-
-.ft-card:hover .ft-img img { transform:scale(1.05); }
-
-        .ft-badge { position:absolute; top:12px; left:12px; padding:5px 12px; background:#2D5A45; color:white; font-size:11px; font-weight:700; border-radius:999px; }
-        .ft-rating { position:absolute; top:12px; right:12px; padding:5px 12px; background:rgba(255,255,255,0.95); color:#1A1A1A; font-size:12px; font-weight:700; border-radius:999px; display:flex; align-items:center; gap:4px; }
-        .ft-body { padding:20px; }
-        .ft-name { font-size:17px; font-weight:700; margin-bottom:4px; }
-        .ft-meta { font-size:12px; color:#999; margin-bottom:10px; }
-        .ft-desc { font-size:13px; color:#555; line-height:1.5; margin-bottom:12px; }
+.ft-card:hover { box-shadow:0 8px 24px rgba(0,0,0,0.08); }
+.ft-banner { position:relative; height:76px; background:linear-gradient(135deg,#E8E4DE,#D4CFC7); }
+.ft-badge { position:absolute; top:12px; left:12px; padding:5px 12px; background:#2D5A45; color:white; font-size:11px; font-weight:700; border-radius:999px; }
+.ft-rating { position:absolute; top:12px; right:12px; padding:5px 12px; background:rgba(255,255,255,0.95); color:#1A1A1A; font-size:12px; font-weight:700; border-radius:999px; display:flex; align-items:center; gap:4px; }
+.ft-avatar-wrap { display:flex; justify-content:center; margin-top:-44px; }
+.ft-avatar { width:88px; height:88px; border-radius:50%; overflow:hidden; border:4px solid white; box-shadow:0 2px 10px rgba(0,0,0,0.1); background:#eee; transition:0.3s; }
+.ft-card:hover .ft-avatar { transform:scale(1.05); }
+.ft-avatar img { width:100%; height:100%; object-fit:cover; object-position:center 22%; display:block; }
+.ft-body { padding:12px 20px 20px; text-align:center; }
+.ft-name { font-size:17px; font-weight:700; margin-bottom:4px; }
+.ft-meta { font-size:12px; color:#999; margin-bottom:10px; }
+.ft-desc { font-size:13px; color:#555; line-height:1.5; margin-bottom:12px; text-align:left; }
         .ft-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:16px; }
         .ft-tag { padding:3px 10px; background:#F0EDE8; color:#2D5A45; border-radius:999px; font-size:12px; font-weight:500; }
         .ft-footer { display:flex; align-items:center; justify-content:space-between; padding-top:14px; border-top:1px solid #f0f0f0; }
