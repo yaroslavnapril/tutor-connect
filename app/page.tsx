@@ -249,18 +249,19 @@ export default function Home() {
         .tc-step h4 { font-size:18px; font-weight:700; margin-bottom:8px; }
         .tc-step p { font-size:14px; color:#666; line-height:1.6; }
         .tc-tutor-card { background:white; border-radius:24px; overflow:hidden; border:1px solid #eee; transition:0.2s; min-width:0; }
-        .tc-tutor-card:hover { box-shadow:0 8px 24px rgba(0,0,0,0.1); }
-        .tc-tutor-img { position:relative; height:200px; overflow:hidden; background:linear-gradient(135deg,#E8E4DE,#D4CFC7); }
-.tc-tutor-img { position:relative; height:200px; overflow:hidden; background:linear-gradient(135deg,#E8E4DE,#D4CFC7); }
-.tc-tutor-img img { width:100%; height:100%; object-fit:cover; object-position:center 25%; display:block; transition:0.3s; }
-
-        .tc-badge { position:absolute; top:16px; left:16px; padding:6px 14px; background:#2D5A45; color:white; font-size:12px; font-weight:700; border-radius:999px; }
-        .tc-rating { position:absolute; top:16px; right:16px; padding:6px 14px; background:rgba(255,255,255,0.9); color:#1A1A1A; font-size:12px; font-weight:700; border-radius:999px; }
-        .tc-tutor-body { padding:24px; }
-        .tc-tutor-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px; }
-        .tc-tutor-header h3 { font-size:18px; font-weight:700; }
-        .tc-tutor-meta { font-size:13px; color:#999; margin-bottom:12px; }
-        .tc-tutor-bio { font-size:14px; color:#555; margin-bottom:16px; line-height:1.5; }
+.tc-tutor-card:hover { box-shadow:0 8px 24px rgba(0,0,0,0.1); }
+.tc-tutor-banner { position:relative; height:92px; background:linear-gradient(135deg,#E8E4DE,#D4CFC7); }
+.tc-badge { position:absolute; top:16px; left:16px; padding:6px 14px; background:#2D5A45; color:white; font-size:12px; font-weight:700; border-radius:999px; }
+.tc-rating { position:absolute; top:16px; right:16px; padding:6px 14px; background:rgba(255,255,255,0.9); color:#1A1A1A; font-size:12px; font-weight:700; border-radius:999px; }
+.tc-avatar-wrap { display:flex; justify-content:center; margin-top:-52px; }
+.tc-avatar { width:104px; height:104px; border-radius:50%; overflow:hidden; border:4px solid white; box-shadow:0 2px 10px rgba(0,0,0,0.12); background:#eee; transition:0.3s; }
+.tc-tutor-card:hover .tc-avatar { transform:scale(1.05); }
+.tc-avatar img { width:100%; height:100%; object-fit:cover; object-position:center 22%; display:block; }
+.tc-tutor-body { padding:12px 24px 24px; text-align:center; }
+.tc-tutor-header { justify-content:center; margin-bottom:4px; }
+.tc-tutor-header h3 { font-size:18px; font-weight:700; }
+.tc-tutor-meta { font-size:13px; color:#999; margin-bottom:12px; }
+.tc-tutor-bio { font-size:14px; color:#555; margin-bottom:16px; line-height:1.5; text-align:left; }
         .tc-tags { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
         .tc-tag { padding:4px 12px; background:#F0EDE8; color:#2D5A45; border-radius:999px; font-size:13px; font-weight:500; }
         .tc-tutor-footer { display:flex; justify-content:space-between; align-items:center; padding-top:16px; border-top:1px solid #eee; }
