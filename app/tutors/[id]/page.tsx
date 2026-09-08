@@ -18,14 +18,15 @@ export default async function TutorProfile({ params }: { params: Promise<{ id: s
         .tp-back-wrap { max-width:900px; margin:0 auto; padding:20px 20px 0; }
         .tp-back { display:inline-flex; align-items:center; gap:6px; color:#2D5A45; text-decoration:none; font-weight:600; font-size:14px; }
 
-        .tp-hero { position:relative; width:100%; height:360px; overflow:hidden; margin-top:16px; }
-        .tp-hero img { width:100%; height:100%; object-fit:cover; display:block; }
-        .tp-hero-overlay { position:absolute; bottom:0; left:0; right:0; height:140px; background:linear-gradient(to top, rgba(0,0,0,0.55), transparent); }
-        .tp-badge { position:absolute; top:20px; left:20px; padding:7px 16px; background:#2D5A45; color:white; font-size:13px; font-weight:700; border-radius:999px; }
-        .tp-rating { position:absolute; top:20px; right:20px; padding:7px 16px; background:rgba(255,255,255,0.95); color:#1A1A1A; font-size:14px; font-weight:700; border-radius:999px; }
-        .tp-hero-name { position:absolute; bottom:20px; left:20px; right:20px; color:white; }
-        .tp-hero-name h1 { font-size:28px; font-weight:800; margin-bottom:4px; text-shadow:0 2px 8px rgba(0,0,0,0.3); }
-        .tp-hero-meta { font-size:14px; opacity:0.95; text-shadow:0 1px 4px rgba(0,0,0,0.3); }
+        .tp-hero { position:relative; width:100%; height:160px; overflow:hidden; margin-top:16px; background:linear-gradient(135deg,#2D5A45,#3d7a5c); }
+.tp-badge { position:absolute; top:20px; left:20px; padding:7px 16px; background:rgba(255,255,255,0.2); backdrop-filter:blur(4px); color:white; font-size:13px; font-weight:700; border-radius:999px; }
+.tp-rating { position:absolute; top:20px; right:20px; padding:7px 16px; background:rgba(255,255,255,0.95); color:#1A1A1A; font-size:14px; font-weight:700; border-radius:999px; }
+.tp-avatar-wrap { max-width:900px; margin:0 auto; padding:0 20px; display:flex; justify-content:center; margin-top:-70px; position:relative; }
+.tp-avatar { width:140px; height:140px; border-radius:50%; overflow:hidden; border:5px solid white; box-shadow:0 4px 16px rgba(0,0,0,0.15); background:#eee; }
+.tp-avatar img { width:100%; height:100%; object-fit:cover; object-position:center 22%; display:block; }
+.tp-hero-name { text-align:center; padding:12px 20px 0; }
+.tp-hero-name h1 { font-size:26px; font-weight:800; margin-bottom:6px; color:#1A1A1A; }
+.tp-hero-meta { font-size:14px; color:#888; }
 
         .tp-content { max-width:900px; margin:0 auto; padding:32px 20px; display:grid; grid-template-columns:1fr; gap:24px; }
 
