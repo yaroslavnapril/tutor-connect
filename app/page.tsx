@@ -262,7 +262,7 @@ export default function Home() {
 .tc-tutor-header h3 { font-size:18px; font-weight:700; }
 .tc-tutor-meta { font-size:13px; color:#999; margin-bottom:12px; }
 .tc-tutor-bio { font-size:14px; color:#555; margin-bottom:16px; line-height:1.5; text-align:left; }
-        .tc-tags { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+        .tc-tags { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; justify-content:center;}
         .tc-tag { padding:4px 12px; background:#F0EDE8; color:#2D5A45; border-radius:999px; font-size:13px; font-weight:500; }
         .tc-tutor-footer { display:flex; justify-content:space-between; align-items:center; padding-top:16px; border-top:1px solid #eee; }
         .tc-price { font-size:22px; font-weight:800; }
