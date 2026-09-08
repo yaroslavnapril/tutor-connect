@@ -73,15 +73,18 @@ export default async function TutorProfile({ params }: { params: Promise<{ id: s
         </div>
 
         <div className="tp-hero">
-          <img src={tutor.photo} alt={tutor.name} />
-          <div className="tp-hero-overlay" />
-          <span className="tp-badge">{tutor.badge}</span>
-          <span className="tp-rating">⭐ {tutor.rating}</span>
-          <div className="tp-hero-name">
-            <h1>{tutor.name}</h1>
-            <div className="tp-hero-meta">{tutor.city} • {tutor.experience} лет опыта • {tutor.reviews} отзывов</div>
-          </div>
-        </div>
+  <span className="tp-badge">{tutor.badge}</span>
+  <span className="tp-rating">⭐ {tutor.rating}</span>
+</div>
+<div className="tp-avatar-wrap">
+  <div className="tp-avatar">
+    <img src={tutor.photo} alt={tutor.name} />
+  </div>
+</div>
+<div className="tp-hero-name">
+  <h1>{tutor.name}</h1>
+  <div className="tp-hero-meta">{tutor.city} • {tutor.experience} лет опыта • {tutor.reviews} отзывов</div>
+</div>
 
         <div className="tp-content">
           <div className="tp-main">
