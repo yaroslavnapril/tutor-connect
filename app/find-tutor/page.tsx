@@ -120,6 +120,7 @@ export default function FindTutorPage() {
 .ft-meta { font-size:12px; color:#999; margin-bottom:10px; }
 .ft-desc { font-size:13px; color:#555; line-height:1.5; margin-bottom:12px; text-align:left; }
         .ft-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:16px; }
+.ft-tags { justify-content:center; }
         .ft-tag { padding:3px 10px; background:#F0EDE8; color:#2D5A45; border-radius:999px; font-size:12px; font-weight:500; }
         .ft-footer { display:flex; align-items:center; justify-content:space-between; padding-top:14px; border-top:1px solid #f0f0f0; }
         .ft-price { font-size:20px; font-weight:800; color:#1A1A1A; }
