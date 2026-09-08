@@ -112,7 +112,7 @@ export default function FindTutorPage() {
 .ft-badge { position:absolute; top:12px; left:12px; padding:5px 12px; background:#2D5A45; color:white; font-size:11px; font-weight:700; border-radius:999px; }
 .ft-rating { position:absolute; top:12px; right:12px; padding:5px 12px; background:rgba(255,255,255,0.95); color:#1A1A1A; font-size:12px; font-weight:700; border-radius:999px; display:flex; align-items:center; gap:4px; }
 .ft-avatar-wrap { display:flex; justify-content:center; margin-top:-44px; }
-.ft-avatar { width:88px; height:88px; border-radius:50%; overflow:hidden; border:4px solid white; box-shadow:0 2px 10px rgba(0,0,0,0.1); background:#eee; transition:0.3s; }
+.ft-avatar { width:88px; height:88px; border-radius:50%; overflow:hidden; border:4px solid white; box-shadow:0 2px 10px rgba(0,0,0,0.1); background:#eee; transition:0.3s; -webkit-transform:translateZ(0); transform:translateZ(0); }
 .ft-card:hover .ft-avatar { transform:scale(1.05); }
 .ft-avatar img { width:100%; height:100%; object-fit:cover; object-position:center 22%; display:block; }
 .ft-body { padding:12px 20px 20px; text-align:center; }
