@@ -18,6 +18,13 @@ export default function MarketplacePage() {
     if (saved) {
       try { setCustomProducts(JSON.parse(saved)) } catch {}
     }
+
+    const handleRoleChange = () => {
+      const current = localStorage.getItem('tc_role')
+      if (current === 'student' || current === 'tutor') setRole(current)
+    }
+    window.addEventListener('tc-role-change', handleRoleChange)
+    return () => window.removeEventListener('tc-role-change', handleRoleChange)
   }, [])
 
   if (!mounted) return null
