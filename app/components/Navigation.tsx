@@ -19,6 +19,12 @@ export default function Navigation() {
 
   const toggleMenu = () => setMenuOpen((prev) => !prev);
 
+  const changeRole = (newRole: 'student' | 'tutor') => {
+    setRole(newRole);
+    localStorage.setItem('tc_role', newRole);
+    window.dispatchEvent(new Event('tc-role-change'));
+  };
+
   if (!mounted) {
     return (
       <header className="bg-[#2d5f3f] px-4 py-3 flex items-center justify-between sticky top-0 z-50">
@@ -71,11 +77,11 @@ export default function Navigation() {
           <div className="text-white text-xl font-bold mb-4">Меню</div>
           <div className="flex bg-white/10 rounded-xl p-1 gap-1">
             <button
-              onClick={() => { setRole('student'); localStorage.setItem('tc_role', 'student'); }}
+              onClick={() => changeRole('student')}
               className={`flex-1 py-2.5 rounded-[10px] text-sm font-semibold transition-all ${role === 'student' ? 'bg-[#2d5f3f] text-white' : 'text-white/50'}`}
             >Я ученик</button>
             <button
-              onClick={() => { setRole('tutor'); localStorage.setItem('tc_role', 'tutor'); }}
+              onClick={() => changeRole('tutor')}
               className={`flex-1 py-2.5 rounded-[10px] text-sm font-semibold transition-all ${role === 'tutor' ? 'bg-[#2d5f3f] text-white' : 'text-white/50'}`}
             >Я репетитор</button>
           </div>
