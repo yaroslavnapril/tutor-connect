@@ -11,6 +11,8 @@ export interface Product {
   description: string
   fileName: string
   fileType: string
+  photos?: string[]
+  attachments?: string[]
 }
 
 export const PRODUCTS: Product[] = [
