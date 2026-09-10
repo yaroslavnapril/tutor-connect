@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import Link from 'next/link':import StarIcon from '../components/StarIcon'
+import Link from 'next/link'
+import StarIcon from '../components/StarIcon'
 
 import { TUTORS as ALL_TUTORS } from '../data/tutors'
 
