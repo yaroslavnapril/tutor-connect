@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
+import Link from 'next/link':import StarIcon from './components/StarIcon'
 
 import { TUTORS } from './data/tutors'
 
@@ -252,7 +252,7 @@ export default function Home() {
 .tc-tutor-card:hover { box-shadow:0 8px 24px rgba(0,0,0,0.1); }
 .tc-tutor-banner { position:relative; height:92px; background:linear-gradient(135deg,#E8E4DE,#D4CFC7); }
 .tc-badge { position:absolute; top:16px; left:16px; padding:6px 14px; background:#2D5A45; color:white; font-size:12px; font-weight:700; border-radius:999px; }
-.tc-rating { position:absolute; top:16px; right:16px; padding:6px 14px; background:rgba(255,255,255,0.9); color:#1A1A1A; font-size:12px; font-weight:700; border-radius:999px; }
+.tc-rating { position:absolute; top:16px; right:16px; padding:6px 14px; background:rgba(255,255,255,0.9); color:#1A1A1A; font-size:12px; font-weight:700; border-radius:999px; display:inline-flex; align-items:center; gap:4px; }
 .tc-avatar-wrap { display:flex; justify-content:center; margin-top:-52px; }
 .tc-avatar { width:104px; height:104px; border-radius:50%; overflow:hidden; border:4px solid white; box-shadow:0 2px 10px rgba(0,0,0,0.12); background:#eee; transition:0.3s; -webkit-transform:translateZ(0); transform:translateZ(0); }
 .tc-tutor-card:hover .tc-avatar { transform:scale(1.05); }
@@ -430,7 +430,7 @@ export default function Home() {
   <Link key={t.id} href={`/tutors/${t.id}`} className="tc-tutor-card" style={{textDecoration:'none',color:'inherit',display:'block'}}>
   <div className="tc-tutor-banner">
     <span className="tc-badge">{t.badge}</span>
-    <span className="tc-rating">⭐ {t.rating}</span>
+    <span className="tc-rating"><StarIcon size={13} /> {t.rating}</span>
   </div>
   <div className="tc-avatar-wrap">
     <div className="tc-avatar">
