@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link':import StarIcon from './components/StarIcon'
+import Link from 'next/link'
+import StarIcon from './components/StarIcon'
 
 import { TUTORS } from './data/tutors'
 
