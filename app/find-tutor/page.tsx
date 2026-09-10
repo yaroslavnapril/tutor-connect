@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import Link from 'next/link'
+import Link from 'next/link':import StarIcon from '../components/StarIcon'
 
 import { TUTORS as ALL_TUTORS } from '../data/tutors'
 
@@ -234,7 +234,7 @@ export default function FindTutorPage() {
   <Link key={tutor.id} href={`/tutors/${tutor.id}`} className="ft-card" style={{textDecoration:'none',color:'inherit',display:'block'}}>
   <div className="ft-banner">
     <span className="ft-badge">{tutor.badge}</span>
-    <span className="ft-rating">⭐ {tutor.rating}</span>
+    <span className="ft-rating"><StarIcon size={12} /> {tutor.rating}</span>
   </div>
   <div className="ft-avatar-wrap">
     <div className="ft-avatar">
