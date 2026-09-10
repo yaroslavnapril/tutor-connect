@@ -37,8 +37,11 @@ export default function TutorProfileClient({ tutor }: { tutor: Tutor }) {
         .tp-section { background:white; border-radius:20px; padding:24px; border:1px solid #eee; }
         .tp-section h2 { font-size:18px; font-weight:700; margin-bottom:14px; color:#1A1A1A; }
         .tp-section p { font-size:15px; color:#444; line-height:1.7; }
-        .tp-more-btn { margin-top:12px; padding:8px 18px; background:#F0EDE8; color:#2D5A45; border:none; border-radius:999px; font-size:13px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px; }
-        .tp-more-btn:hover { background:#e5e0d8; }
+        .tp-more-btn-wrap { display:flex; justify-content:center; margin-top:12px; }
+.tp-more-btn { padding:10px 22px; background:#F0EDE8; color:#2D5A45; border:none; border-radius:999px; font-size:13px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px; }
+.tp-more-btn:hover { background:#e5e0d8; }
+.tp-more-btn svg { width:12px; height:12px; transition:0.2s; }
+.tp-more-btn.expanded svg { transform:rotate(180deg); }
 
         .tp-tags { display:flex; flex-wrap:wrap; gap:8px; }
         .tp-tag { padding:6px 14px; background:#F0EDE8; color:#2D5A45; border-radius:999px; font-size:13px; font-weight:500; }
@@ -101,10 +104,15 @@ export default function TutorProfileClient({ tutor }: { tutor: Tutor }) {
               <h2>О преподавателе</h2>
               <p>{bioText}</p>
               {bioIsLong && (
-                <button className="tp-more-btn" onClick={() => setBioExpanded(!bioExpanded)}>
-                  {bioExpanded ? '˄ Свернуть' : '˅ Показать все'}
-                </button>
-              )}
+  <div className="tp-more-btn-wrap">
+    <button className={`tp-more-btn ${bioExpanded ? 'expanded' : ''}`} onClick={() => setBioExpanded(!bioExpanded)}>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="6 9 12 15 18 9" />
+      </svg>
+      {bioExpanded ? 'Свернуть' : 'Показать все'}
+    </button>
+  </div>
+)}
             </div>
 
             <div className="tp-section">
