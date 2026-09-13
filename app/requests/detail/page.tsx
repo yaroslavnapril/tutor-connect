@@ -128,10 +128,9 @@ export default function RequestDetailPage() {
           <span className="rd-time-ago">{timeAgo(request.createdAt)}</span>
 
           <div className="rd-name">{request.studentName}</div>
-          <div className="rd-subject-row">
-            <span className="rd-subject">{request.subject}</span>
-            <span className="rd-goal-tag">{request.goal}</span>
-          </div>
+<div className="rd-subject-row">
+  <span className="rd-subject">{request.subject}</span>
+</div>
 
           <div className="rd-section">
             <h2>Бюджет</h2>
