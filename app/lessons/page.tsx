@@ -8,10 +8,9 @@ import { TUTORS } from '../data/tutors'
 import { loadAllBookings } from '../data/bookingHelpers'
 
 const STATUS_LABELS: Record<Booking['status'], string> = {
-  pending: 'Ожидает подтверждения',
   confirmed: 'Подтверждено',
   completed: 'Завершено',
-  cancelled: 'Отклонено'
+  cancelled: 'Отменено'
 }
 
 export default function LessonsPage() {
