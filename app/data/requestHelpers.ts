@@ -26,6 +26,9 @@ export function setRequestStatus(id: string, status: TutorRequest['status']) {
   const overrides = getOverrides()
   overrides[id] = { status, changedAt: new Date().toISOString() }
   localStorage.setItem('tc_request_overrides', JSON.stringify(overrides))
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event('tc-requests-change'))
+  }
 }
 
 export function daysSince(iso: string): number {
@@ -42,7 +45,7 @@ export function timeAgo(iso: string): string {
 }
 
 export const FORMAT_LABELS: Record<TutorRequest['format'], string> = {
-  online: '💻 Онлайн',
-  at_student: '🏠 У ученика',
-  at_tutor: '🎓 У репетитора'
+  online: 'Онлайн',
+  at_student: 'У ученика',
+  at_tutor: 'У репетитора'
 }
