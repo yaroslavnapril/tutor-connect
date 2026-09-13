@@ -7,12 +7,6 @@ import { CURRENT_STUDENT_NAME } from '../data/currentUser'
 import { TUTORS } from '../data/tutors'
 import { loadAllBookings } from '../data/bookingHelpers'
 
-const STATUS_LABELS: Record<Booking['status'], string> = {
-  confirmed: 'Подтверждено',
-  completed: 'Завершено',
-  cancelled: 'Отменено'
-}
-
 export default function LessonsPage() {
   const [bookings, setBookings] = useState<Booking[]>([])
   const [tab, setTab] = useState<'upcoming' | 'past'>('upcoming')
@@ -56,11 +50,7 @@ export default function LessonsPage() {
         .lp-name { font-weight:700; font-size:15px; margin-bottom:2px; }
         .lp-subject { font-size:13px; color:#888; margin-bottom:6px; }
         .lp-datetime { font-size:13px; color:#444; font-weight:600; }
-        .lp-status { font-size:11px; font-weight:700; padding:4px 10px; border-radius:999px; white-space:nowrap; }
-        .lp-status.pending { background:#FDF3E3; color:#B8860B; }
-        .lp-status.confirmed { background:#E6F0EA; color:#2D5A45; }
-        .lp-status.completed { background:#EFEFEF; color:#888; }
-        .lp-status.cancelled { background:#F5E6E2; color:#C4705A; }
+        .lp-arrow { color:#ccc; font-size:18px; flex-shrink:0; }
         .lp-empty { text-align:center; padding:48px 20px; color:#999; background:white; border-radius:18px; border:1px dashed #ddd; }
         .lp-empty a { color:#2D5A45; font-weight:600; }
       `}} />
@@ -83,7 +73,7 @@ export default function LessonsPage() {
               {shown.map(b => {
                 const tutor = tutorFor(b.tutorId)
                 return (
-                  <Link key={b.id} href={`/tutors/${b.tutorId}`} className="lp-card">
+                  <Link key={b.id} href={`/lessons/detail?id=${b.id}`} className="lp-card">
                     <div className="lp-avatar">
                       {tutor && <img src={tutor.photo} alt={tutor.name} />}
                     </div>
@@ -92,7 +82,7 @@ export default function LessonsPage() {
                       <div className="lp-subject">{b.subject} • {b.duration} мин • {b.format === 'online' ? 'Онлайн' : 'Очно'}</div>
                       <div className="lp-datetime">{formatDate(b.date)}, {b.time}</div>
                     </div>
-                    <span className={`lp-status ${b.status}`}>{STATUS_LABELS[b.status]}</span>
+                    <span className="lp-arrow">›</span>
                   </Link>
                 )
               })}
