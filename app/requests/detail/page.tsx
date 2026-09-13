@@ -65,8 +65,8 @@ export default function RequestDetailPage() {
         .rd-status.pending { background:#FDF3E3; color:#B8860B; }
         .rd-status.accepted { background:#E6F0EA; color:#2D5A45; }
         .rd-status.declined { background:#F5E6E2; color:#C4705A; }
-        .rd-time-ago { float:right; font-size:12px; color:#aaa; }
-        .rd-name { font-size:24px; font-weight:800; margin-bottom:4px; }
+        .rd-time-ago { display:block; font-size:12px; color:#aaa; margin-bottom:4px; }
+.rd-name { font-size:24px; font-weight:800; }
         .rd-subject-row { display:flex; align-items:center; gap:8px; margin-bottom:24px; }
         .rd-subject { font-size:16px; color:#2D5A45; font-weight:700; }
 
