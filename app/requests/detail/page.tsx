@@ -182,12 +182,12 @@ export default function RequestDetailPage() {
 </div>
 
           <div className="rd-section">
-            <h2>Цель занятий</h2>
-            <div className="rd-tags-row">
-              <span className="rd-tag">{request.goal}</span>
-              <span className="rd-tag">{request.studentGrade}</span>
-            </div>
-          </div>
+  <h2>Цель занятий и класс</h2>
+  <div className="rd-tags-row">
+    <span className="rd-tag">{request.goal}</span>
+    <span className="rd-tag">{request.studentGrade}</span>
+  </div>
+</div>
 
           <div className="rd-section">
             <h2>Пожелания к занятиям</h2>
