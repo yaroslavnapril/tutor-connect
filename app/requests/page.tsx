@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { TutorRequest, FORMAT_LABELS } from '../data/requests'
+import { TutorRequest } from '../data/requests'
 import { CURRENT_TUTOR_ID } from '../data/currentUser'
 import { loadAllRequests, daysSince, timeAgo } from '../data/requestHelpers'
 
