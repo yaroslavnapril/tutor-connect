@@ -134,18 +134,17 @@ export default function RequestDetailPage() {
 
           <div className="rd-section">
             <h2>Бюджет</h2>
-            <div className="rd-budget-grid">
-              <div className="rd-budget-col">
-                <div className="rd-budget-label">Готовы платить</div>
-                <div className="rd-budget-value offer">{request.budgetPrice} ₽</div>
-              </div>
-              <div className="rd-budget-arrow">→</div>
-              <div className="rd-budget-col">
-                <div className="rd-budget-label">Вы получите</div>
-                <div className="rd-budget-value earn">{earnings} ₽</div>
-              </div>
-            </div>
-            <div className="rd-commission-note">за занятие {request.lessonDuration} мин · комиссия платформы {Math.round(PLATFORM_COMMISSION * 100)}%</div>
+            <div className="rd-budget-col">
+  <div className="rd-budget-label">Ученик готов платить</div>
+  <div className="rd-budget-value offer">{request.budgetPrice} ₽</div>
+</div>
+<div className="rd-budget-arrow">→</div>
+<div className="rd-budget-col">
+  <div className="rd-budget-label">Вы получите</div>
+  <div className="rd-budget-value earn">{earnings} ₽</div>
+</div>
+</div>
+<div className="rd-commission-note">комиссия платформы {Math.round(PLATFORM_COMMISSION * 100)}%</div>
           </div>
 
           <div className="rd-section">
