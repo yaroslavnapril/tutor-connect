@@ -2,12 +2,21 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { loadAllRequests } from '../data/requestHelpers';
+import { CURRENT_TUTOR_ID } from '../data/currentUser';
 
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [role, setRole] = useState<'student' | 'tutor'>('student');
   const [lang, setLang] = useState<'ru' | 'en'>('ru');
   const [mounted, setMounted] = useState(false);
+  const [pendingCount, setPendingCount] = useState(0);
+
+  const updatePendingCount = () => {
+    const all = loadAllRequests();
+    const count = all.filter(r => r.tutorId === CURRENT_TUTOR_ID && r.status === 'pending').length;
+    setPendingCount(count);
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -15,6 +24,14 @@ export default function Navigation() {
     const savedLang = localStorage.getItem('tc_lang');
     if (savedRole === 'student' || savedRole === 'tutor') setRole(savedRole);
     if (savedLang === 'ru' || savedLang === 'en') setLang(savedLang);
+    updatePendingCount();
+
+    window.addEventListener('tc-requests-change', updatePendingCount);
+    window.addEventListener('focus', updatePendingCount);
+    return () => {
+      window.removeEventListener('tc-requests-change', updatePendingCount);
+      window.removeEventListener('focus', updatePendingCount);
+    };
   }, []);
 
   const toggleMenu = () => setMenuOpen((prev) => !prev);
@@ -56,11 +73,14 @@ export default function Navigation() {
           <button
             onClick={toggleMenu}
             aria-label="Меню"
-            className="w-9 h-9 flex flex-col items-center justify-center gap-[5px] bg-white/15 rounded-[10px]"
+            className="w-9 h-9 flex flex-col items-center justify-center gap-[5px] bg-white/15 rounded-[10px] relative"
           >
             <span className={`block w-[18px] h-[2.5px] bg-white rounded-sm transition-all ${menuOpen ? 'rotate-45 translate-y-[7px]' : ''}`} />
             <span className={`block w-[18px] h-[2.5px] bg-white rounded-sm transition-all ${menuOpen ? 'opacity-0' : ''}`} />
             <span className={`block w-[18px] h-[2.5px] bg-white rounded-sm transition-all ${menuOpen ? '-rotate-45 -translate-y-[7px]' : ''}`} />
+            {pendingCount > 0 && role === 'tutor' && !menuOpen && (
+              <span className="absolute -top-1.5 -right-1.5 bg-[#c67b5c] text-white text-[10px] font-bold w-4.5 h-4.5 min-w-[18px] min-h-[18px] rounded-full flex items-center justify-center">{pendingCount}</span>
+            )}
           </button>
         </div>
       </header>
@@ -114,7 +134,8 @@ export default function Navigation() {
           <div className="p-5">
             <h4 className="text-[11px] uppercase tracking-[1.2px] text-white/35 font-semibold mb-3">Работа</h4>
             <Link href="/requests" onClick={toggleMenu} className="flex items-center gap-3.5 py-3 text-[15px] text-white/85 hover:text-[#c67b5c] transition-colors">
-              <span className="w-8 h-8 bg-white/[0.08] rounded-lg flex items-center justify-center">🔔</span>Заявки<span className="ml-auto bg-[#c67b5c] text-white text-[11px] font-bold px-2 py-0.5 rounded-full">3</span>
+              <span className="w-8 h-8 bg-white/[0.08] rounded-lg flex items-center justify-center">🔔</span>Заявки
+              {pendingCount > 0 && <span className="ml-auto bg-[#c67b5c] text-white text-[11px] font-bold px-2 py-0.5 rounded-full">{pendingCount}</span>}
             </Link>
             <Link href="/schedule" onClick={toggleMenu} className="flex items-center gap-3.5 py-3 text-[15px] text-white/85 hover:text-[#c67b5c] transition-colors">
               <span className="w-8 h-8 bg-white/[0.08] rounded-lg flex items-center justify-center">📅</span>Расписание
