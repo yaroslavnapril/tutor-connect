@@ -83,7 +83,8 @@ export default function RequestDetailPage() {
         .rd-commission-note { text-align:center; font-size:12px; color:#999; margin-top:14px; padding-top:14px; border-top:1px solid #f0f0f0; }
 
         .rd-location-row { display:flex; gap:20px; flex-wrap:wrap; }
-        .rd-location-item { display:flex; align-items:center; gap:8px; font-size:14px; color:#444; font-weight:600; }
+        .rd-location-item { display:flex; align-items:center; gap:7px; font-size:14px; color:#444; font-weight:600; }
+.rd-location-item svg { flex-shrink:0; }
 
         .rd-tags-row { display:flex; gap:8px; flex-wrap:wrap; }
         .rd-tag { padding:6px 14px; background:#F0EDE8; color:#2D5A45; border-radius:999px; font-size:13px; font-weight:600; }
