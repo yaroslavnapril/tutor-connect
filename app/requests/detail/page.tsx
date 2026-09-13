@@ -120,17 +120,19 @@ export default function RequestDetailPage() {
         <div className="rd-container">
           <Link href="/requests" className="rd-back">← Назад к заявкам</Link>
 
-          <span className={`rd-status ${request.status}`}>
-            {request.status === 'pending' && 'Ожидает решения'}
-            {request.status === 'accepted' && 'Принято'}
-            {request.status === 'declined' && 'Отклонено'}
-          </span>
-          <span className="rd-time-ago">{timeAgo(request.createdAt)}</span>
+          <div className="rd-name-row">
+  <div className="rd-name">{request.studentName}</div>
+  <span className={`rd-status ${request.status}`}>
+    {request.status === 'pending' && 'Ожидает решения'}
+    {request.status === 'accepted' && 'Принято'}
+    {request.status === 'declined' && 'Отклонено'}
+  </span>
+</div>
+<span className="rd-time-ago">{timeAgo(request.createdAt)}</span>
 
-          <div className="rd-name">{request.studentName}</div>
-          <div className="rd-subject-row">
-            <span className="rd-subject">{request.subject}</span>
-          </div>
+<div className="rd-subject-row">
+  <span className="rd-subject">{request.subject}</span>
+</div>
 
           <div className="rd-section">
             <h2>Бюджет</h2>
