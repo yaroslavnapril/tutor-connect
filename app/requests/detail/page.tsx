@@ -60,7 +60,8 @@ export default function RequestDetailPage() {
         .rd-page { background:#F5F3EF; min-height:100vh; padding-bottom:48px; }
         .rd-container { max-width:600px; margin:0 auto; padding:24px 20px; }
         .rd-back { display:inline-flex; align-items:center; gap:6px; color:#2D5A45; text-decoration:none; font-weight:600; font-size:14px; margin-bottom:20px; }
-        .rd-status { display:inline-block; padding:5px 14px; border-radius:999px; font-size:12px; font-weight:700; margin-bottom:14px; }
+        .rd-name-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.rd-status { display:inline-block; padding:5px 14px; border-radius:999px; font-size:12px; font-weight:700; }
         .rd-status.pending { background:#FDF3E3; color:#B8860B; }
         .rd-status.accepted { background:#E6F0EA; color:#2D5A45; }
         .rd-status.declined { background:#F5E6E2; color:#C4705A; }
