@@ -2,15 +2,16 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { BOOKINGS, Booking } from '../data/bookings'
+import { Booking } from '../data/bookings'
 import { CURRENT_STUDENT_NAME } from '../data/currentUser'
 import { TUTORS } from '../data/tutors'
+import { loadAllBookings } from '../data/bookingHelpers'
 
 const STATUS_LABELS: Record<Booking['status'], string> = {
   pending: 'Ожидает подтверждения',
   confirmed: 'Подтверждено',
   completed: 'Завершено',
-  cancelled: 'Отменено'
+  cancelled: 'Отклонено'
 }
 
 export default function LessonsPage() {
@@ -20,9 +21,7 @@ export default function LessonsPage() {
 
   useEffect(() => {
     setMounted(true)
-    const saved = localStorage.getItem('tc_bookings')
-    const customBookings: Booking[] = saved ? JSON.parse(saved) : []
-    setBookings([...customBookings, ...BOOKINGS])
+    setBookings(loadAllBookings())
   }, [])
 
   if (!mounted) return null
@@ -34,7 +33,7 @@ export default function LessonsPage() {
     .filter(b => b.date >= today && b.status !== 'cancelled' && b.status !== 'completed')
     .sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time))
   const past = myBookings
-    .filter(b => b.date < today || b.status === 'completed')
+    .filter(b => b.date < today || b.status === 'completed' || b.status === 'cancelled')
     .sort((a, b) => (b.date + b.time).localeCompare(a.date + a.time))
 
   const shown = tab === 'upcoming' ? upcoming : past
