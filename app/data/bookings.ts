@@ -10,6 +10,8 @@ export interface Booking {
   format: 'online' | 'offline'
   status: 'pending' | 'confirmed' | 'completed' | 'cancelled'
   createdAt: string
+  message?: string
+  statusChangedAt?: string
 }
 
 export const BOOKINGS: Booking[] = [
@@ -50,7 +52,8 @@ export const BOOKINGS: Booking[] = [
     price: 1500,
     format: 'online',
     status: 'pending',
-    createdAt: '2026-09-11'
+    createdAt: '2026-09-11',
+    message: 'Готовимся к контрольной на следующей неделе, нужно закрепить тему дробей.'
   },
   {
     id: 'b4',
@@ -63,7 +66,8 @@ export const BOOKINGS: Booking[] = [
     price: 2200,
     format: 'offline',
     status: 'pending',
-    createdAt: '2026-09-12'
+    createdAt: '2026-09-12',
+    message: 'Хочу подтянуть профильную математику перед экзаменом, начинаем с нуля почти.'
   },
   {
     id: 'b5',
@@ -89,6 +93,7 @@ export const BOOKINGS: Booking[] = [
     price: 1500,
     format: 'online',
     status: 'pending',
-    createdAt: '2026-09-12'
+    createdAt: '2026-09-12',
+    message: 'Ищу репетитора на регулярной основе, 2 раза в неделю.'
   }
 ]
