@@ -68,7 +68,6 @@ export default function RequestDetailPage() {
         .rd-name { font-size:24px; font-weight:800; margin-bottom:4px; }
         .rd-subject-row { display:flex; align-items:center; gap:8px; margin-bottom:24px; }
         .rd-subject { font-size:16px; color:#2D5A45; font-weight:700; }
-        .rd-goal-tag { font-size:12px; font-weight:700; color:#C4705A; background:#F5E6E2; padding:4px 12px; border-radius:999px; }
 
         .rd-section { background:white; border-radius:20px; padding:22px; border:1px solid #eee; margin-bottom:16px; }
         .rd-section h2 { font-size:15px; font-weight:700; margin-bottom:14px; color:#1A1A1A; }
@@ -84,7 +83,7 @@ export default function RequestDetailPage() {
 
         .rd-location-row { display:flex; gap:20px; flex-wrap:wrap; }
         .rd-location-item { display:flex; align-items:center; gap:7px; font-size:14px; color:#444; font-weight:600; }
-.rd-location-item svg { flex-shrink:0; }
+        .rd-location-item svg { flex-shrink:0; }
 
         .rd-tags-row { display:flex; gap:8px; flex-wrap:wrap; }
         .rd-tag { padding:6px 14px; background:#F0EDE8; color:#2D5A45; border-radius:999px; font-size:13px; font-weight:600; }
@@ -129,66 +128,67 @@ export default function RequestDetailPage() {
           <span className="rd-time-ago">{timeAgo(request.createdAt)}</span>
 
           <div className="rd-name">{request.studentName}</div>
-<div className="rd-subject-row">
-  <span className="rd-subject">{request.subject}</span>
-</div>
-
-          <div className="rd-section">
-            <h2>Бюджет</h2>
-            <div className="rd-budget-col">
-  <div className="rd-budget-label">Ученик готов платить</div>
-  <div className="rd-budget-value offer">{request.budgetPrice} ₽</div>
-</div>
-<div className="rd-budget-arrow">→</div>
-<div className="rd-budget-col">
-  <div className="rd-budget-label">Вы получите</div>
-  <div className="rd-budget-value earn">{earnings} ₽</div>
-</div>
-</div>
-<div className="rd-commission-note">комиссия платформы {Math.round(PLATFORM_COMMISSION * 100)}%</div>
+          <div className="rd-subject-row">
+            <span className="rd-subject">{request.subject}</span>
           </div>
 
           <div className="rd-section">
-  <h2>Локация и формат</h2>
-  <div className="rd-location-row">
-    <div className="rd-location-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="18" height="18">
-        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z" />
-        <circle cx="12" cy="10" r="3" />
-      </svg>
-      {request.city}
-    </div>
-    <div className="rd-location-item">
-      {request.format === 'online' && (
-        <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="18" height="18">
-          <rect x="2" y="4" width="20" height="13" rx="2" />
-          <path d="M8 21h8M12 17v4" />
-        </svg>
-      )}
-      {request.format === 'at_student' && (
-        <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="18" height="18">
-          <path d="M3 11l9-8 9 8" />
-          <path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10" />
-        </svg>
-      )}
-      {request.format === 'at_tutor' && (
-        <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="18" height="18">
-          <path d="M2 9l10-4 10 4-10 4z" />
-          <path d="M6 11v4.5c0 1.7 2.7 3 6 3s6-1.3 6-3V11" />
-        </svg>
-      )}
-      {request.format === 'online' ? 'Онлайн' : request.format === 'at_student' ? 'У ученика' : 'У репетитора'}
-    </div>
-  </div>
-</div>
+            <h2>Бюджет</h2>
+            <div className="rd-budget-grid">
+              <div className="rd-budget-col">
+                <div className="rd-budget-label">Ученик готов платить</div>
+                <div className="rd-budget-value offer">{request.budgetPrice} ₽</div>
+              </div>
+              <div className="rd-budget-arrow">→</div>
+              <div className="rd-budget-col">
+                <div className="rd-budget-label">Вы получите</div>
+                <div className="rd-budget-value earn">{earnings} ₽</div>
+              </div>
+            </div>
+            <div className="rd-commission-note">комиссия платформы {Math.round(PLATFORM_COMMISSION * 100)}%</div>
+          </div>
 
           <div className="rd-section">
-  <h2>Цель занятий и класс</h2>
-  <div className="rd-tags-row">
-    <span className="rd-tag">{request.goal}</span>
-    <span className="rd-tag">{request.studentGrade}</span>
-  </div>
-</div>
+            <h2>Локация и формат</h2>
+            <div className="rd-location-row">
+              <div className="rd-location-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="18" height="18">
+                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                {request.city}
+              </div>
+              <div className="rd-location-item">
+                {request.format === 'online' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="18" height="18">
+                    <rect x="2" y="4" width="20" height="13" rx="2" />
+                    <path d="M8 21h8M12 17v4" />
+                  </svg>
+                )}
+                {request.format === 'at_student' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="18" height="18">
+                    <path d="M3 11l9-8 9 8" />
+                    <path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10" />
+                  </svg>
+                )}
+                {request.format === 'at_tutor' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="18" height="18">
+                    <path d="M2 9l10-4 10 4-10 4z" />
+                    <path d="M6 11v4.5c0 1.7 2.7 3 6 3s6-1.3 6-3V11" />
+                  </svg>
+                )}
+                {request.format === 'online' ? 'Онлайн' : request.format === 'at_student' ? 'У ученика' : 'У репетитора'}
+              </div>
+            </div>
+          </div>
+
+          <div className="rd-section">
+            <h2>Цель занятий и класс</h2>
+            <div className="rd-tags-row">
+              <span className="rd-tag">{request.goal}</span>
+              <span className="rd-tag">{request.studentGrade}</span>
+            </div>
+          </div>
 
           <div className="rd-section">
             <h2>Пожелания к занятиям</h2>
@@ -249,8 +249,6 @@ export default function RequestDetailPage() {
           </div>
         </div>
       )}
-
-      {toast && <div className="rd-toast">{toast}</div>}
     </>
   )
 }
