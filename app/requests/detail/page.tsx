@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { TutorRequest, PLATFORM_COMMISSION, FORMAT_LABELS } from '../../data/requests'
+import { TutorRequest, PLATFORM_COMMISSION } from '../../data/requests'
 import { loadAllRequests, setRequestStatus, daysSince, timeAgo, FORMAT_LABELS } from '../../data/requestHelpers'
 
 const DECLINE_RECOVERY_DAYS = 3
