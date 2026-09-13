@@ -10,6 +10,7 @@ export interface Booking {
   format: 'online' | 'offline'
   status: 'confirmed' | 'completed' | 'cancelled'
   createdAt: string
+  homework?: string
 }
 
 export const BOOKINGS: Booking[] = [
@@ -24,7 +25,8 @@ export const BOOKINGS: Booking[] = [
     price: 1500,
     format: 'online',
     status: 'confirmed',
-    createdAt: '2026-09-10'
+    createdAt: '2026-09-10',
+    homework: 'Решить № 12–18 из учебника (стр. 74), повторить формулы сокращённого умножения.'
   },
   {
     id: 'b2',
@@ -50,6 +52,7 @@ export const BOOKINGS: Booking[] = [
     price: 1500,
     format: 'online',
     status: 'completed',
-    createdAt: '2026-08-28'
+    createdAt: '2026-08-28',
+    homework: 'Повторить тему «Квадратные уравнения» перед следующим занятием.'
   }
 ]
