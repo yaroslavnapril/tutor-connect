@@ -148,12 +148,38 @@ export default function RequestDetailPage() {
           </div>
 
           <div className="rd-section">
-            <h2>Локация и формат</h2>
-            <div className="rd-location-row">
-              <div className="rd-location-item">📍 {request.city}</div>
-              <div className="rd-location-item">{FORMAT_LABELS[request.format]}</div>
-            </div>
-          </div>
+  <h2>Локация и формат</h2>
+  <div className="rd-location-row">
+    <div className="rd-location-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="18" height="18">
+        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z" />
+        <circle cx="12" cy="10" r="3" />
+      </svg>
+      {request.city}
+    </div>
+    <div className="rd-location-item">
+      {request.format === 'online' && (
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="18" height="18">
+          <rect x="2" y="4" width="20" height="13" rx="2" />
+          <path d="M8 21h8M12 17v4" />
+        </svg>
+      )}
+      {request.format === 'at_student' && (
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="18" height="18">
+          <path d="M3 11l9-8 9 8" />
+          <path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10" />
+        </svg>
+      )}
+      {request.format === 'at_tutor' && (
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2D5A45" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="18" height="18">
+          <path d="M2 9l10-4 10 4-10 4z" />
+          <path d="M6 11v4.5c0 1.7 2.7 3 6 3s6-1.3 6-3V11" />
+        </svg>
+      )}
+      {request.format === 'online' ? 'Онлайн' : request.format === 'at_student' ? 'У ученика' : 'У репетитора'}
+    </div>
+  </div>
+</div>
 
           <div className="rd-section">
             <h2>Цель занятий</h2>
