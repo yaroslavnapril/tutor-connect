@@ -6,12 +6,6 @@ import { Booking } from '../../data/bookings'
 import { TUTORS } from '../../data/tutors'
 import { loadAllBookings } from '../../data/bookingHelpers'
 
-const STATUS_LABELS: Record<Booking['status'], string> = {
-  confirmed: 'Подтверждено',
-  completed: 'Завершено',
-  cancelled: 'Отменено'
-}
-
 export default function LessonDetailPage() {
   const [booking, setBooking] = useState<Booking | null>(null)
   const [notFound, setNotFound] = useState(false)
@@ -42,24 +36,27 @@ export default function LessonDetailPage() {
         .ld-page { background:#F5F3EF; min-height:100vh; padding-bottom:48px; }
         .ld-container { max-width:600px; margin:0 auto; padding:24px 20px; }
         .ld-back { display:inline-flex; align-items:center; gap:6px; color:#2D5A45; text-decoration:none; font-weight:600; font-size:14px; margin-bottom:20px; }
-        .ld-status { display:inline-block; padding:5px 14px; border-radius:999px; font-size:12px; font-weight:700; margin-bottom:14px; }
-        .ld-status.confirmed { background:#E6F0EA; color:#2D5A45; }
-        .ld-status.completed { background:#EFEFEF; color:#888; }
-        .ld-status.cancelled { background:#F5E6E2; color:#C4705A; }
 
-        .ld-tutor-card { background:white; border-radius:20px; padding:20px; border:1px solid #eee; display:flex; align-items:center; gap:14px; text-decoration:none; color:inherit; margin-bottom:16px; }
-        .ld-tutor-avatar { width:56px; height:56px; border-radius:50%; overflow:hidden; flex-shrink:0; background:#eee; }
+        .ld-hero { background:#2D5A45; border-radius:20px; padding:24px; color:white; margin-bottom:16px; text-align:center; }
+        .ld-hero-date { font-size:22px; font-weight:800; margin-bottom:4px; }
+        .ld-hero-time { font-size:15px; opacity:0.85; }
+
+        .ld-tutor-card { background:white; border-radius:20px; padding:18px 20px; border:1px solid #eee; display:flex; align-items:center; gap:14px; text-decoration:none; color:inherit; margin-bottom:16px; }
+        .ld-tutor-avatar { width:52px; height:52px; border-radius:50%; overflow:hidden; flex-shrink:0; background:#eee; }
         .ld-tutor-avatar img { width:100%; height:100%; object-fit:cover; object-position:center 22%; }
         .ld-tutor-name { font-weight:700; font-size:16px; margin-bottom:2px; }
         .ld-tutor-link { font-size:13px; color:#2D5A45; font-weight:600; }
 
-        .ld-section { background:white; border-radius:20px; padding:22px; border:1px solid #eee; margin-bottom:16px; }
-        .ld-section h2 { font-size:15px; font-weight:700; margin-bottom:14px; color:#1A1A1A; }
-        .ld-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-        .ld-item { background:#FAF8F4; border-radius:14px; padding:14px; }
-        .ld-item-label { font-size:12px; color:#999; margin-bottom:4px; }
-        .ld-item-value { font-size:15px; font-weight:700; color:#1A1A1A; }
+        .ld-section { background:white; border-radius:20px; padding:8px 20px; border:1px solid #eee; margin-bottom:16px; }
+        .ld-section h2 { font-size:15px; font-weight:700; padding:14px 0 4px; color:#1A1A1A; }
+        .ld-row { display:flex; align-items:center; gap:12px; padding:14px 0; border-top:1px solid #f2f0eb; }
+        .ld-row-icon { width:36px; height:36px; border-radius:10px; background:#F0EDE8; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .ld-row-icon svg { width:18px; height:18px; color:#2D5A45; }
+        .ld-row-label { font-size:12px; color:#999; margin-bottom:2px; }
+        .ld-row-value { font-size:15px; font-weight:700; color:#1A1A1A; }
 
+        .ld-homework-section { background:white; border-radius:20px; padding:22px; border:1px solid #eee; }
+        .ld-homework-section h2 { font-size:15px; font-weight:700; margin-bottom:14px; color:#1A1A1A; }
         .ld-homework { font-size:14px; color:#444; line-height:1.7; }
         .ld-homework-empty { font-size:14px; color:#999; font-style:italic; }
       `}} />
@@ -67,7 +64,10 @@ export default function LessonDetailPage() {
         <div className="ld-container">
           <Link href="/lessons" className="ld-back">← Назад к занятиям</Link>
 
-          <span className={`ld-status ${booking.status}`}>{STATUS_LABELS[booking.status]}</span>
+          <div className="ld-hero">
+            <div className="ld-hero-date">{formatDate(booking.date)}</div>
+            <div className="ld-hero-time">{booking.time} · {booking.duration} мин</div>
+          </div>
 
           {tutor && (
             <Link href={`/tutors/${tutor.id}`} className="ld-tutor-card">
@@ -83,35 +83,56 @@ export default function LessonDetailPage() {
 
           <div className="ld-section">
             <h2>Детали занятия</h2>
-            <div className="ld-grid">
-              <div className="ld-item">
-                <div className="ld-item-label">Предмет</div>
-                <div className="ld-item-value">{booking.subject}</div>
+
+            <div className="ld-row">
+              <div className="ld-row-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 6.5C10 5 7.5 4.5 4 4.5V18c3.5 0 6 .5 8 2 2-1.5 4.5-2 8-2V4.5c-3.5 0-6 .5-8 2z" />
+                  <path d="M12 6.5V20" />
+                </svg>
               </div>
-              <div className="ld-item">
-                <div className="ld-item-label">Формат</div>
-                <div className="ld-item-value">{booking.format === 'online' ? 'Онлайн' : 'Очно'}</div>
+              <div>
+                <div className="ld-row-label">Предмет</div>
+                <div className="ld-row-value">{booking.subject}</div>
               </div>
-              <div className="ld-item">
-                <div className="ld-item-label">Дата</div>
-                <div className="ld-item-value">{formatDate(booking.date)}</div>
+            </div>
+
+            <div className="ld-row">
+              <div className="ld-row-icon">
+                {booking.format === 'online' ? (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="4" width="20" height="13" rx="2" />
+                    <path d="M8 21h8M12 17v4" />
+                  </svg>
+                ) : (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 11l9-8 9 8" />
+                    <path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10" />
+                  </svg>
+                )}
               </div>
-              <div className="ld-item">
-                <div className="ld-item-label">Время</div>
-                <div className="ld-item-value">{booking.time}</div>
+              <div>
+                <div className="ld-row-label">Формат</div>
+                <div className="ld-row-value">{booking.format === 'online' ? 'Онлайн' : 'Очно'}</div>
               </div>
-              <div className="ld-item">
-                <div className="ld-item-label">Длительность</div>
-                <div className="ld-item-value">{booking.duration} мин</div>
+            </div>
+
+            <div className="ld-row">
+              <div className="ld-row-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="5" width="18" height="14" rx="2" />
+                  <path d="M3 9.5h18" />
+                  <path d="M7 14.5h4" />
+                </svg>
               </div>
-              <div className="ld-item">
-                <div className="ld-item-label">Стоимость</div>
-                <div className="ld-item-value">{booking.price} ₽</div>
+              <div>
+                <div className="ld-row-label">Стоимость</div>
+                <div className="ld-row-value">{booking.price} ₽</div>
               </div>
             </div>
           </div>
 
-          <div className="ld-section">
+          <div className="ld-homework-section">
             <h2>Домашнее задание</h2>
             {booking.homework ? (
               <div className="ld-homework">{booking.homework}</div>
