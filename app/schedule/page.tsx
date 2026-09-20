@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { Booking } from '../data/bookings'
 import { CURRENT_TUTOR_ID } from '../data/currentUser'
 import { loadAllBookings, addBooking } from '../data/bookingHelpers'
+import { loadAllRequests } from '../data/requestHelpers'
+import { TUTORS } from '../data/tutors'
 
 const WEEKDAYS = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
 const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
@@ -27,11 +29,14 @@ export default function SchedulePage() {
   const [formPrice, setFormPrice] = useState('')
   const [formFormat, setFormFormat] = useState<'online' | 'offline'>('online')
 
+  const tutor = TUTORS.find(t => t.id === CURRENT_TUTOR_ID)
+
   const reload = () => setBookings(loadAllBookings())
 
   useEffect(() => {
     setMounted(true)
     reload()
+    if (tutor && tutor.subjects.length > 0) setFormSubject(tutor.subjects[0])
   }, [])
 
   if (!mounted) return null
@@ -42,6 +47,12 @@ export default function SchedulePage() {
     if (!bookingsByDate[b.date]) bookingsByDate[b.date] = []
     bookingsByDate[b.date].push(b)
   })
+
+  const acceptedRequests = loadAllRequests().filter(r => r.tutorId === CURRENT_TUTOR_ID && r.status === 'accepted')
+  const studentNames = Array.from(new Set([
+    ...acceptedRequests.map(r => r.studentName),
+    ...mine.map(b => b.studentName)
+  ]))
 
   const year = viewDate.getFullYear()
   const month = viewDate.getMonth()
@@ -84,10 +95,10 @@ export default function SchedulePage() {
     })
 
     setFormStudent('')
-    setFormSubject('')
     setFormTime('')
     setFormPrice('')
     setFormFormat('online')
+    if (tutor && tutor.subjects.length > 0) setFormSubject(tutor.subjects[0])
     setShowForm(false)
     reload()
   }
@@ -122,11 +133,12 @@ export default function SchedulePage() {
         .sc-form { background:white; border-radius:16px; padding:18px; border:1px solid #eee; margin-bottom:16px; display:flex; flex-direction:column; gap:12px; }
         .sc-form-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
         .sc-form label { display:block; font-size:12px; font-weight:700; color:#666; margin-bottom:6px; }
-        .sc-form input, .sc-form select { width:100%; padding:10px 12px; border-radius:10px; border:1px solid #ddd; font-size:14px; outline:none; }
+        .sc-form input, .sc-form select { width:100%; box-sizing:border-box; padding:10px 12px; border-radius:10px; border:1px solid #ddd; font-size:16px; outline:none; font-family:inherit; background:white; -webkit-appearance:none; appearance:none; }
         .sc-form input:focus, .sc-form select:focus { border-color:#2D5A45; }
         .sc-form-actions { display:flex; gap:10px; margin-top:4px; }
         .sc-form-submit { flex:1; padding:12px; background:#2D5A45; color:white; border:none; border-radius:12px; font-size:14px; font-weight:700; cursor:pointer; }
         .sc-form-cancel { flex:1; padding:12px; background:#F0EDE8; color:#555; border:none; border-radius:12px; font-size:14px; font-weight:700; cursor:pointer; }
+        .sc-form-hint { font-size:11px; color:#999; margin-top:4px; }
 
         .sc-list { display:flex; flex-direction:column; gap:12px; }
         .sc-lesson-card { background:white; border-radius:16px; border:1px solid #eee; overflow:hidden; }
@@ -189,11 +201,27 @@ export default function SchedulePage() {
             <form className="sc-form" onSubmit={handleAddLesson}>
               <div>
                 <label>Ученик</label>
-                <input value={formStudent} onChange={e => setFormStudent(e.target.value)} placeholder="Имя ученика" required />
+                {studentNames.length > 0 ? (
+                  <select value={formStudent} onChange={e => setFormStudent(e.target.value)} required>
+                    <option value="" disabled>Выберите ученика</option>
+                    {studentNames.map(name => <option key={name} value={name}>{name}</option>)}
+                  </select>
+                ) : (
+                  <>
+                    <input value={formStudent} onChange={e => setFormStudent(e.target.value)} placeholder="Имя ученика" required />
+                    <div className="sc-form-hint">Пока нет принятых заявок — впишите имя вручную</div>
+                  </>
+                )}
               </div>
               <div>
                 <label>Предмет</label>
-                <input value={formSubject} onChange={e => setFormSubject(e.target.value)} placeholder="Например: Математика" required />
+                {tutor && tutor.subjects.length > 0 ? (
+                  <select value={formSubject} onChange={e => setFormSubject(e.target.value)} required>
+                    {tutor.subjects.map(s => <option key={s} value={s}>{s}</option>)}
+                  </select>
+                ) : (
+                  <input value={formSubject} onChange={e => setFormSubject(e.target.value)} placeholder="Например: Математика" required />
+                )}
               </div>
               <div className="sc-form-row">
                 <div>
@@ -209,7 +237,7 @@ export default function SchedulePage() {
                 <label>Формат</label>
                 <select value={formFormat} onChange={e => setFormFormat(e.target.value as 'online' | 'offline')}>
                   <option value="online">Онлайн</option>
-                  <option value="offline">Очно</option>
+                  <option value="offline">Оффлайн</option>
                 </select>
               </div>
               <div className="sc-form-actions">
@@ -229,7 +257,7 @@ export default function SchedulePage() {
                     <div className="sc-lesson-time">{b.time}</div>
                     <div className="sc-lesson-info">
                       <div className="sc-lesson-name">{b.studentName}</div>
-                      <div className="sc-lesson-subject">{b.subject} • {b.duration} мин • {b.format === 'online' ? 'Онлайн' : 'Очно'}</div>
+                      <div className="sc-lesson-subject">{b.subject} • {b.duration} мин • {b.format === 'online' ? 'Онлайн' : 'Оффлайн'}</div>
                     </div>
                     <span className="sc-lesson-arrow">›</span>
                   </Link>
