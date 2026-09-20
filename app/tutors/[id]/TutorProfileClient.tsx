@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Tutor } from '../../data/tutors'
 import StarIcon from '../../components/StarIcon'
 
@@ -9,6 +10,7 @@ const BIO_LIMIT = 220
 const REVIEWS_LIMIT = 2
 
 export default function TutorProfileClient({ tutor }: { tutor: Tutor }) {
+  const router = useRouter()
   const [photoOpen, setPhotoOpen] = useState(false)
   const [bioExpanded, setBioExpanded] = useState(false)
   const [reviewsExpanded, setReviewsExpanded] = useState(false)
