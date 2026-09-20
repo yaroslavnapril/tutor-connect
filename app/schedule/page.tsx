@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Booking } from '../data/bookings'
 import { CURRENT_TUTOR_ID } from '../data/currentUser'
-import { loadAllBookings } from '../data/bookingHelpers'
+import { loadAllBookings, addBooking } from '../data/bookingHelpers'
 
 const WEEKDAYS = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
 const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
@@ -18,10 +18,20 @@ export default function SchedulePage() {
   const [mounted, setMounted] = useState(false)
   const [viewDate, setViewDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState(toISODate(new Date()))
+  const [showForm, setShowForm] = useState(false)
+  const [toast, setToast] = useState<string | null>(null)
+
+  const [formStudent, setFormStudent] = useState('')
+  const [formSubject, setFormSubject] = useState('')
+  const [formTime, setFormTime] = useState('')
+  const [formPrice, setFormPrice] = useState('')
+  const [formFormat, setFormFormat] = useState<'online' | 'offline'>('online')
+
+  const reload = () => setBookings(loadAllBookings())
 
   useEffect(() => {
     setMounted(true)
-    setBookings(loadAllBookings())
+    reload()
   }, [])
 
   if (!mounted) return null
@@ -36,7 +46,7 @@ export default function SchedulePage() {
   const year = viewDate.getFullYear()
   const month = viewDate.getMonth()
   const firstDay = new Date(year, month, 1)
-  const startOffset = (firstDay.getDay() + 6) % 7 // понедельник = 0
+  const startOffset = (firstDay.getDay() + 6) % 7
   const daysInMonth = new Date(year, month + 1, 0).getDate()
 
   const cells: (Date | null)[] = []
@@ -49,6 +59,38 @@ export default function SchedulePage() {
   const goNextMonth = () => setViewDate(new Date(year, month + 1, 1))
 
   const selectedBookings = (bookingsByDate[selectedDate] || []).sort((a, b) => a.time.localeCompare(b.time))
+
+  const handleStart = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setToast('Ссылка на занятие станет активна за 10 минут до начала')
+    setTimeout(() => setToast(null), 3000)
+  }
+
+  const handleAddLesson = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!formStudent.trim() || !formSubject.trim() || !formTime || !formPrice) return
+
+    addBooking({
+      tutorId: CURRENT_TUTOR_ID,
+      studentName: formStudent.trim(),
+      subject: formSubject.trim(),
+      date: selectedDate,
+      time: formTime,
+      duration: 60,
+      price: Number(formPrice),
+      format: formFormat,
+      status: 'confirmed'
+    })
+
+    setFormStudent('')
+    setFormSubject('')
+    setFormTime('')
+    setFormPrice('')
+    setFormFormat('online')
+    setShowForm(false)
+    reload()
+  }
 
   return (
     <>
@@ -72,17 +114,33 @@ export default function SchedulePage() {
         .sc-day-dot { width:5px; height:5px; border-radius:50%; background:#C4705A; margin-top:2px; }
         .sc-day.selected .sc-day-dot { background:white; }
 
-        .sc-list-title { font-size:18px; font-weight:700; margin-bottom:14px; color:#1A1A1A; }
+        .sc-list-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+        .sc-list-title { font-size:18px; font-weight:700; color:#1A1A1A; }
+        .sc-add-btn { padding:9px 16px; background:#C4705A; color:white; border:none; border-radius:12px; font-size:13px; font-weight:700; cursor:pointer; }
+        .sc-add-btn:hover { background:#b35d48; }
+
+        .sc-form { background:white; border-radius:16px; padding:18px; border:1px solid #eee; margin-bottom:16px; display:flex; flex-direction:column; gap:12px; }
+        .sc-form-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+        .sc-form label { display:block; font-size:12px; font-weight:700; color:#666; margin-bottom:6px; }
+        .sc-form input, .sc-form select { width:100%; padding:10px 12px; border-radius:10px; border:1px solid #ddd; font-size:14px; outline:none; }
+        .sc-form input:focus, .sc-form select:focus { border-color:#2D5A45; }
+        .sc-form-actions { display:flex; gap:10px; margin-top:4px; }
+        .sc-form-submit { flex:1; padding:12px; background:#2D5A45; color:white; border:none; border-radius:12px; font-size:14px; font-weight:700; cursor:pointer; }
+        .sc-form-cancel { flex:1; padding:12px; background:#F0EDE8; color:#555; border:none; border-radius:12px; font-size:14px; font-weight:700; cursor:pointer; }
+
         .sc-list { display:flex; flex-direction:column; gap:12px; }
-        .sc-lesson-card { background:white; border-radius:16px; padding:16px 18px; border:1px solid #eee; display:flex; align-items:center; gap:14px; }
+        .sc-lesson-card { background:white; border-radius:16px; border:1px solid #eee; overflow:hidden; }
+        .sc-lesson-top { display:flex; align-items:center; gap:14px; padding:16px 18px; text-decoration:none; color:inherit; }
         .sc-lesson-time { font-size:15px; font-weight:800; color:#2D5A45; min-width:52px; }
         .sc-lesson-info { flex:1; min-width:0; }
         .sc-lesson-name { font-weight:700; font-size:14px; margin-bottom:2px; }
         .sc-lesson-subject { font-size:12px; color:#888; }
-        .sc-lesson-status { font-size:11px; font-weight:700; padding:4px 10px; border-radius:999px; white-space:nowrap; }
-        .sc-lesson-status.confirmed { background:#E6F0EA; color:#2D5A45; }
-        .sc-lesson-status.completed { background:#EFEFEF; color:#888; }
+        .sc-lesson-arrow { color:#ccc; font-size:16px; }
+        .sc-start-btn { display:block; width:calc(100% - 36px); margin:0 18px 16px; padding:11px; background:#2D5A45; color:white; border:none; border-radius:10px; font-size:13px; font-weight:700; cursor:pointer; text-align:center; }
+        .sc-start-btn:hover { background:#244a38; }
         .sc-empty { text-align:center; padding:32px 20px; color:#999; background:white; border-radius:16px; border:1px dashed #ddd; font-size:14px; }
+
+        .sc-toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:#1A1A1A; color:white; padding:14px 22px; border-radius:14px; font-size:14px; font-weight:600; box-shadow:0 6px 20px rgba(0,0,0,0.25); z-index:200; max-width:90%; text-align:center; }
       `}} />
       <div className="sc-page">
         <div className="sc-container">
@@ -108,7 +166,7 @@ export default function SchedulePage() {
                   <button
                     key={i}
                     className={`sc-day ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}`}
-                    onClick={() => setSelectedDate(iso)}
+                    onClick={() => { setSelectedDate(iso); setShowForm(false) }}
                   >
                     {date.getDate()}
                     {hasBookings && <span className="sc-day-dot" />}
@@ -118,9 +176,48 @@ export default function SchedulePage() {
             </div>
           </div>
 
-          <div className="sc-list-title">
-            {new Date(selectedDate).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })}
+          <div className="sc-list-header">
+            <div className="sc-list-title">
+              {new Date(selectedDate).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })}
+            </div>
+            <button className="sc-add-btn" onClick={() => setShowForm(!showForm)}>
+              {showForm ? 'Отмена' : '+ Добавить занятие'}
+            </button>
           </div>
+
+          {showForm && (
+            <form className="sc-form" onSubmit={handleAddLesson}>
+              <div>
+                <label>Ученик</label>
+                <input value={formStudent} onChange={e => setFormStudent(e.target.value)} placeholder="Имя ученика" required />
+              </div>
+              <div>
+                <label>Предмет</label>
+                <input value={formSubject} onChange={e => setFormSubject(e.target.value)} placeholder="Например: Математика" required />
+              </div>
+              <div className="sc-form-row">
+                <div>
+                  <label>Время</label>
+                  <input type="time" value={formTime} onChange={e => setFormTime(e.target.value)} required />
+                </div>
+                <div>
+                  <label>Цена, ₽</label>
+                  <input type="number" min="0" value={formPrice} onChange={e => setFormPrice(e.target.value)} placeholder="1500" required />
+                </div>
+              </div>
+              <div>
+                <label>Формат</label>
+                <select value={formFormat} onChange={e => setFormFormat(e.target.value as 'online' | 'offline')}>
+                  <option value="online">Онлайн</option>
+                  <option value="offline">Очно</option>
+                </select>
+              </div>
+              <div className="sc-form-actions">
+                <button type="button" className="sc-form-cancel" onClick={() => setShowForm(false)}>Отмена</button>
+                <button type="submit" className="sc-form-submit">Добавить</button>
+              </div>
+            </form>
+          )}
 
           {selectedBookings.length === 0 ? (
             <div className="sc-empty">На эту дату занятий нет</div>
@@ -128,18 +225,25 @@ export default function SchedulePage() {
             <div className="sc-list">
               {selectedBookings.map(b => (
                 <div key={b.id} className="sc-lesson-card">
-                  <div className="sc-lesson-time">{b.time}</div>
-                  <div className="sc-lesson-info">
-                    <div className="sc-lesson-name">{b.studentName}</div>
-                    <div className="sc-lesson-subject">{b.subject} • {b.duration} мин • {b.format === 'online' ? 'Онлайн' : 'Очно'}</div>
-                  </div>
-                  <span className={`sc-lesson-status ${b.status}`}>{b.status === 'confirmed' ? 'Подтверждено' : 'Завершено'}</span>
+                  <Link href={`/schedule/detail?id=${b.id}`} className="sc-lesson-top">
+                    <div className="sc-lesson-time">{b.time}</div>
+                    <div className="sc-lesson-info">
+                      <div className="sc-lesson-name">{b.studentName}</div>
+                      <div className="sc-lesson-subject">{b.subject} • {b.duration} мин • {b.format === 'online' ? 'Онлайн' : 'Очно'}</div>
+                    </div>
+                    <span className="sc-lesson-arrow">›</span>
+                  </Link>
+                  {b.format === 'online' && (
+                    <button className="sc-start-btn" onClick={handleStart}>Начать занятие</button>
+                  )}
                 </div>
               ))}
             </div>
           )}
         </div>
       </div>
+
+      {toast && <div className="sc-toast">{toast}</div>}
     </>
   )
 }
