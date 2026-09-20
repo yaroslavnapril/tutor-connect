@@ -9,6 +9,7 @@ import { loadAllBookings } from '../../data/bookingHelpers'
 export default function LessonDetailPage() {
   const [booking, setBooking] = useState<Booking | null>(null)
   const [notFound, setNotFound] = useState(false)
+  const [toast, setToast] = useState<string | null>(null)
 
   useEffect(() => {
     const id = new URLSearchParams(window.location.search).get('id')
@@ -29,6 +30,13 @@ export default function LessonDetailPage() {
   if (!booking) return null
 
   const tutor = TUTORS.find(t => t.id === booking.tutorId)
+  const today = new Date().toISOString().slice(0, 10)
+  const isUpcoming = booking.date >= today && booking.status !== 'cancelled' && booking.status !== 'completed'
+
+  const handleJoin = () => {
+    setToast('Ссылка на занятие станет активна за 10 минут до начала')
+    setTimeout(() => setToast(null), 3000)
+  }
 
   return (
     <>
@@ -55,10 +63,15 @@ export default function LessonDetailPage() {
         .ld-row-label { font-size:12px; color:#999; margin-bottom:2px; }
         .ld-row-value { font-size:15px; font-weight:700; color:#1A1A1A; }
 
-        .ld-homework-section { background:white; border-radius:20px; padding:22px; border:1px solid #eee; }
+        .ld-homework-section { background:white; border-radius:20px; padding:22px; border:1px solid #eee; margin-bottom:16px; }
         .ld-homework-section h2 { font-size:15px; font-weight:700; margin-bottom:14px; color:#1A1A1A; }
         .ld-homework { font-size:14px; color:#444; line-height:1.7; }
         .ld-homework-empty { font-size:14px; color:#999; font-style:italic; }
+
+        .ld-join-btn { width:100%; padding:16px; background:#2D5A45; color:white; border:none; border-radius:14px; font-size:16px; font-weight:700; cursor:pointer; }
+        .ld-join-btn:hover { background:#244a38; }
+
+        .ld-toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:#1A1A1A; color:white; padding:14px 22px; border-radius:14px; font-size:14px; font-weight:600; box-shadow:0 6px 20px rgba(0,0,0,0.25); z-index:200; max-width:90%; text-align:center; }
       `}} />
       <div className="ld-page">
         <div className="ld-container">
@@ -140,8 +153,14 @@ export default function LessonDetailPage() {
               <div className="ld-homework-empty">Домашнее задание пока не добавлено</div>
             )}
           </div>
+
+          {isUpcoming && booking.format === 'online' && (
+            <button className="ld-join-btn" onClick={handleJoin}>Войти на занятие</button>
+          )}
         </div>
       </div>
+
+      {toast && <div className="ld-toast">{toast}</div>}
     </>
   )
 }
