@@ -16,6 +16,13 @@ export default function TutorProfileClient({ tutor }: { tutor: Tutor }) {
   const [reviewsExpanded, setReviewsExpanded] = useState(false)
 
   const bioIsLong = tutor.about.length > BIO_LIMIT
+  const handleBack = () => {
+    if (typeof window !== 'undefined' && window.history.length > 1) {
+      router.back()
+    } else {
+      router.push('/find-tutor')
+    }
+  }
   const bioText = bioIsLong && !bioExpanded
     ? tutor.about.slice(0, BIO_LIMIT).trim() + '…'
     : tutor.about
@@ -92,7 +99,7 @@ export default function TutorProfileClient({ tutor }: { tutor: Tutor }) {
 
       <div className="tp-page">
         <div className="tp-back-wrap">
-          <Link href="/find-tutor" className="tp-back">← Назад к поиску</Link>
+          <button onClick={handleBack} className="tp-back" style={{ background: 'none', border: 'none', cursor: 'pointer', font: 'inherit' }}>← Назад</button>
         </div>
 
         <div className="tp-hero">
