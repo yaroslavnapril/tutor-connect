@@ -50,9 +50,7 @@ export default function RequestsPage() {
         .rq-budget-row { display:flex; align-items:baseline; gap:6px; margin-bottom:10px; }
         .rq-budget { font-size:18px; font-weight:800; color:#1A1A1A; }
         .rq-budget-unit { font-size:12px; color:#999; }
-        .rq-meta-row { display:flex; gap:14px; flex-wrap:wrap; font-size:12px; color:#666; margin-bottom:10px; }
-        .rq-slots { display:flex; gap:6px; flex-wrap:wrap; }
-        .rq-slot-chip { font-size:11px; font-weight:600; color:#2D5A45; background:#EAF1EC; padding:4px 10px; border-radius:999px; }
+        .rq-meta-row { display:flex; gap:14px; flex-wrap:wrap; font-size:12px; color:#666; }
         .rq-recovery { margin-top:10px; font-size:12px; color:#C4705A; font-weight:600; }
         .rq-recovery.expired { color:#aaa; }
         .rq-empty { text-align:center; padding:48px 20px; color:#999; background:white; border-radius:18px; border:1px dashed #ddd; }
@@ -96,12 +94,6 @@ export default function RequestsPage() {
                       <span>📍 {r.city}</span>
                       <span>{FORMAT_LABELS[r.format]}</span>
                       <span>🎓 {r.studentGrade}</span>
-                    </div>
-                    <div className="rq-slots">
-                      {r.desiredSlots.slice(0, 3).map((s, i) => (
-                        <span key={i} className="rq-slot-chip">{s.day} {s.from}–{s.to}</span>
-                      ))}
-                      {r.desiredSlots.length > 3 && <span className="rq-slot-chip">+{r.desiredSlots.length - 3}</span>}
                     </div>
                     {tab === 'declined' && (
                       <div className={`rq-recovery ${daysLeft <= 0 ? 'expired' : ''}`}>
