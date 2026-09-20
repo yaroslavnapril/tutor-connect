@@ -1,3 +1,6 @@
+html, body {
+  background-color: #2D5A45;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
