@@ -1,5 +1,9 @@
 html, body {
   background-color: #2D5A45;
+  overscroll-behavior-y: none;
+  height: 100%;
+}
+
 }
 @tailwind base;
 @tailwind components;
