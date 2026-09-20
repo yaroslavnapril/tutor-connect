@@ -1,8 +1,9 @@
 import { BOOKINGS, Booking } from './bookings'
 
 interface OverrideEntry {
-  status: Booking['status']
-  changedAt: string
+  status?: Booking['status']
+  changedAt?: string
+  homework?: string
 }
 
 function getCustomBookings(): Booking[] {
@@ -23,7 +24,7 @@ export function loadAllBookings(): Booking[] {
   return merged.map(b => {
     const override = overrides[b.id]
     if (override) {
-      return { ...b, status: override.status, statusChangedAt: override.changedAt }
+      return { ...b, ...override }
     }
     return b
   })
@@ -31,8 +32,27 @@ export function loadAllBookings(): Booking[] {
 
 export function setBookingStatus(id: string, status: Booking['status']) {
   const overrides = getOverrides()
-  overrides[id] = { status, changedAt: new Date().toISOString() }
+  overrides[id] = { ...overrides[id], status, changedAt: new Date().toISOString() }
   localStorage.setItem('tc_booking_overrides', JSON.stringify(overrides))
+}
+
+export function setBookingHomework(id: string, homework: string) {
+  const overrides = getOverrides()
+  overrides[id] = { ...overrides[id], homework }
+  localStorage.setItem('tc_booking_overrides', JSON.stringify(overrides))
+}
+
+export function addBooking(booking: Omit<Booking, 'id' | 'createdAt'>) {
+  if (typeof window === 'undefined') return
+  const saved = localStorage.getItem('tc_bookings')
+  const list: Booking[] = saved ? JSON.parse(saved) : []
+  const newBooking: Booking = {
+    ...booking,
+    id: `custom-${Date.now()}`,
+    createdAt: new Date().toISOString()
+  }
+  list.unshift(newBooking)
+  localStorage.setItem('tc_bookings', JSON.stringify(list))
 }
 
 export function daysSince(isoDate: string): number {
