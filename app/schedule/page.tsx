@@ -7,6 +7,7 @@ import { CURRENT_TUTOR_ID } from '../data/currentUser'
 import { loadAllBookings, addBooking } from '../data/bookingHelpers'
 import { loadAllRequests } from '../data/requestHelpers'
 import { TUTORS } from '../data/tutors'
+import { SUBJECTS_LIST } from '../data/subjects'
 
 const WEEKDAYS = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
 const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
@@ -30,13 +31,14 @@ export default function SchedulePage() {
   const [formFormat, setFormFormat] = useState<'online' | 'offline'>('online')
 
   const tutor = TUTORS.find(t => t.id === CURRENT_TUTOR_ID)
+  const tutorRealSubjects = tutor ? tutor.subjects.filter(s => SUBJECTS_LIST.includes(s)) : []
 
   const reload = () => setBookings(loadAllBookings())
 
   useEffect(() => {
     setMounted(true)
     reload()
-    if (tutor && tutor.subjects.length > 0) setFormSubject(tutor.subjects[0])
+    if (tutorRealSubjects.length > 0) setFormSubject(tutorRealSubjects[0])
   }, [])
 
   if (!mounted) return null
@@ -98,7 +100,7 @@ export default function SchedulePage() {
     setFormTime('')
     setFormPrice('')
     setFormFormat('online')
-    if (tutor && tutor.subjects.length > 0) setFormSubject(tutor.subjects[0])
+    if (tutorRealSubjects.length > 0) setFormSubject(tutorRealSubjects[0])
     setShowForm(false)
     reload()
   }
@@ -133,7 +135,22 @@ export default function SchedulePage() {
         .sc-form { background:white; border-radius:16px; padding:18px; border:1px solid #eee; margin-bottom:16px; display:flex; flex-direction:column; gap:12px; }
         .sc-form-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
         .sc-form label { display:block; font-size:12px; font-weight:700; color:#666; margin-bottom:6px; }
-        .sc-form input, .sc-form select { width:100%; box-sizing:border-box; padding:10px 12px; border-radius:10px; border:1px solid #ddd; font-size:16px; outline:none; font-family:inherit; background:white; -webkit-appearance:none; appearance:none; }
+        .sc-form input, .sc-form select {
+          display:block;
+          width:100%;
+          box-sizing:border-box;
+          height:44px;
+          padding:0 12px;
+          border-radius:10px;
+          border:1px solid #ddd;
+          font-size:16px;
+          line-height:44px;
+          outline:none;
+          font-family:inherit;
+          background:white;
+          -webkit-appearance:none;
+          appearance:none;
+        }
         .sc-form input:focus, .sc-form select:focus { border-color:#2D5A45; }
         .sc-form-actions { display:flex; gap:10px; margin-top:4px; }
         .sc-form-submit { flex:1; padding:12px; background:#2D5A45; color:white; border:none; border-radius:12px; font-size:14px; font-weight:700; cursor:pointer; }
@@ -215,9 +232,9 @@ export default function SchedulePage() {
               </div>
               <div>
                 <label>Предмет</label>
-                {tutor && tutor.subjects.length > 0 ? (
+                {tutorRealSubjects.length > 0 ? (
                   <select value={formSubject} onChange={e => setFormSubject(e.target.value)} required>
-                    {tutor.subjects.map(s => <option key={s} value={s}>{s}</option>)}
+                    {tutorRealSubjects.map(s => <option key={s} value={s}>{s}</option>)}
                   </select>
                 ) : (
                   <input value={formSubject} onChange={e => setFormSubject(e.target.value)} placeholder="Например: Математика" required />
