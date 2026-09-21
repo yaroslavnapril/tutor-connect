@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
 import StarIcon from '../components/StarIcon'
 
-import { TUTORS as ALL_TUTORS } from '../data/tutors'
+import { TUTORS as BASE_TUTORS } from '../data/tutors'
+import { loadDisplayTutors } from '../data/tutorOverrides'
 
 
 // Быстрые чипы — самые частые предметы
@@ -57,7 +58,15 @@ export default function FindTutorPage() {
   const [format, setFormat] = useState('all')
   const [maxPrice, setMaxPrice] = useState(10000)
   const [sort, setSort] = useState<'rating' | 'price' | 'experience'>('rating')
-  const [showFilters, setShowFilters] = useState(false)
+    const [showFilters, setShowFilters] = useState(false)
+  const [ALL_TUTORS, setAllTutors] = useState(BASE_TUTORS)
+
+  useEffect(() => {
+    setAllTutors(loadDisplayTutors())
+    const handler = () => setAllTutors(loadDisplayTutors())
+    window.addEventListener('tc-tutor-profile-change', handler)
+    return () => window.removeEventListener('tc-tutor-profile-change', handler)
+  }, [])
 
   const filtered = useMemo(() => {
     let res = ALL_TUTORS.filter(t => {
