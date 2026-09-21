@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import StarIcon from './components/StarIcon'
 
-import { TUTORS } from './data/tutors'
+import { TUTORS as BASE_TUTORS } from './data/tutors'
+import { loadDisplayTutors } from './data/tutorOverrides'
 
 const PRODUCTS = [
   { title: '50 типовых задач ЕГЭ по математике', price: 499, sales: 234, author: 'Анна С.' },
@@ -119,6 +120,14 @@ const IconBell = () => (
 export default function Home() {
   const [lang, setLang] = useState<'ru'|'en'>('ru')
   const [howTab, setHowTab] = useState<'student'|'tutor'>('student')
+
+    const [TUTORS, setTutors] = useState(BASE_TUTORS)
+  useEffect(() => {
+    setTutors(loadDisplayTutors())
+    const handler = () => setTutors(loadDisplayTutors())
+    window.addEventListener('tc-tutor-profile-change', handler)
+    return () => window.removeEventListener('tc-tutor-profile-change', handler)
+  }, [])
 
   useEffect(() => {
     const saved = localStorage.getItem('tc_lang')
