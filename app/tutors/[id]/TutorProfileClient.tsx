@@ -1,19 +1,28 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Tutor } from '../../data/tutors'
 import StarIcon from '../../components/StarIcon'
+import { applyOverride } from '../../data/tutorOverrides'
 
 const BIO_LIMIT = 220
 const REVIEWS_LIMIT = 2
 
-export default function TutorProfileClient({ tutor }: { tutor: Tutor }) {
+export default function TutorProfileClient({ tutor: initialTutor }: { tutor: Tutor }) {
   const router = useRouter()
+  const [tutor, setTutor] = useState(initialTutor)
   const [photoOpen, setPhotoOpen] = useState(false)
   const [bioExpanded, setBioExpanded] = useState(false)
   const [reviewsExpanded, setReviewsExpanded] = useState(false)
+
+  useEffect(() => {
+    const applyLatest = () => setTutor(applyOverride(initialTutor))
+    applyLatest()
+    window.addEventListener('tc-tutor-profile-change', applyLatest)
+    return () => window.removeEventListener('tc-tutor-profile-change', applyLatest)
+  }, [initialTutor])
 
   const bioIsLong = tutor.about.length > BIO_LIMIT
   const handleBack = () => {
