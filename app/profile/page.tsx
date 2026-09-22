@@ -1,187 +1,127 @@
 'use client'
 
+import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { TUTORS } from '../data/tutors'
 import { CURRENT_TUTOR_ID } from '../data/currentUser'
-import { getTutorOverride, setTutorOverride } from '../data/tutorOverrides'
-import { SUBJECTS_LIST } from '../data/subjects'
+import { applyOverride } from '../data/tutorOverrides'
+import StarIcon from '../components/StarIcon'
 
-export default function ProfilePage() {
+export default function MyProfilePage() {
   const baseTutor = TUTORS.find(t => t.id === CURRENT_TUTOR_ID)
+  const [tutor, setTutor] = useState(baseTutor)
   const [mounted, setMounted] = useState(false)
-  const [name, setName] = useState('')
-  const [city, setCity] = useState('')
-  const [experience, setExperience] = useState('')
-  const [price, setPrice] = useState('')
-  const [about, setAbout] = useState('')
-  const [subjects, setSubjects] = useState<string[]>([])
-  const [education, setEducation] = useState<string[]>([''])
-  const [achievements, setAchievements] = useState<string[]>([''])
-  const [photo, setPhoto] = useState('')
-  const [toast, setToast] = useState<string | null>(null)
+  const [photoOpen, setPhotoOpen] = useState(false)
 
   useEffect(() => {
     if (!baseTutor) return
-    const override = getTutorOverride(baseTutor.id)
-    setName(override.name || baseTutor.name)
-    setCity(override.city || baseTutor.city)
-    setExperience(String(override.experience ?? baseTutor.experience))
-    setPrice(String(override.price ?? baseTutor.price))
-    setAbout(override.about || baseTutor.about)
-    setSubjects(override.subjects || baseTutor.subjects)
-    setEducation(override.education && override.education.length > 0 ? override.education : baseTutor.education)
-    setAchievements(override.achievements && override.achievements.length > 0 ? override.achievements : baseTutor.achievements)
-    setPhoto(override.photo || baseTutor.photo)
+    const applyLatest = () => setTutor(applyOverride(baseTutor))
+    applyLatest()
     setMounted(true)
+    window.addEventListener('tc-tutor-profile-change', applyLatest)
+    return () => window.removeEventListener('tc-tutor-profile-change', applyLatest)
   }, [])
 
-  if (!mounted || !baseTutor) return null
-
-  const toggleSubject = (s: string) => {
-    setSubjects(prev => prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s])
-  }
-
-  const updateListItem = (list: string[], setList: (v: string[]) => void, idx: number, value: string) => {
-    const copy = [...list]
-    copy[idx] = value
-    setList(copy)
-  }
-  const addListItem = (list: string[], setList: (v: string[]) => void) => setList([...list, ''])
-  const removeListItem = (list: string[], setList: (v: string[]) => void, idx: number) => setList(list.filter((_, i) => i !== idx))
-
-  const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-    setPhoto(URL.createObjectURL(file))
-  }
-
-  const handleSave = (e: React.FormEvent) => {
-    e.preventDefault()
-    setTutorOverride(baseTutor.id, {
-      name: name.trim(),
-      city: city.trim(),
-      experience: Number(experience) || baseTutor.experience,
-      price: Number(price) || baseTutor.price,
-      about: about.trim(),
-      subjects: subjects.length > 0 ? subjects : baseTutor.subjects,
-      education: education.filter(e => e.trim() !== ''),
-      achievements: achievements.filter(a => a.trim() !== ''),
-      photo
-    })
-    setToast('Анкета обновлена — изменения уже видны ученикам')
-    setTimeout(() => setToast(null), 3000)
-  }
+  if (!mounted || !tutor) return null
 
   return (
     <>
       <style dangerouslySetInnerHTML={{__html: `
-        .pf-page { background:#F5F3EF; min-height:100vh; padding-bottom:48px; }
-        .pf-container { max-width:640px; margin:0 auto; padding:24px 20px; }
-        .pf-title { font-size:28px; font-weight:800; margin-bottom:6px; color:#1A1A1A; }
-        .pf-subtitle { font-size:14px; color:#888; margin-bottom:24px; }
-        .pf-form { background:white; border-radius:20px; padding:24px; border:1px solid #eee; display:flex; flex-direction:column; gap:20px; }
-        .pf-field label { display:block; font-size:13px; font-weight:700; color:#444; margin-bottom:8px; }
-        .pf-field input, .pf-field textarea { width:100%; box-sizing:border-box; padding:12px 14px; border-radius:12px; border:1px solid #ddd; font-size:16px; outline:none; font-family:inherit; }
-        .pf-field input:focus, .pf-field textarea:focus { border-color:#2D5A45; }
-        .pf-field textarea { resize:vertical; min-height:90px; }
-        .pf-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+        .mp-page { background:#F5F3EF; min-height:100vh; padding-bottom:60px; }
+        .mp-hero { position:relative; width:100%; height:160px; overflow:hidden; margin-top:0; background:linear-gradient(135deg,#2D5A45,#3d7a5c); }
+        .mp-badge { position:absolute; top:20px; left:20px; padding:7px 16px; background:rgba(255,255,255,0.2); backdrop-filter:blur(4px); color:white; font-size:13px; font-weight:700; border-radius:999px; }
+        .mp-rating { position:absolute; top:20px; right:20px; padding:7px 16px; background:rgba(255,255,255,0.95); color:#1A1A1A; font-size:14px; font-weight:700; border-radius:999px; display:inline-flex; align-items:center; gap:5px; }
+        .mp-avatar-wrap { max-width:900px; margin:0 auto; padding:0 20px; display:flex; justify-content:center; margin-top:-70px; position:relative; }
+        .mp-avatar { width:140px; height:140px; border-radius:50%; overflow:hidden; border:5px solid white; box-shadow:0 4px 16px rgba(0,0,0,0.15); background:#eee; cursor:pointer; -webkit-transform:translateZ(0); transform:translateZ(0); }
+        .mp-avatar img { width:100%; height:100%; object-fit:cover; object-position:center 22%; display:block; }
+        .mp-hero-name { text-align:center; padding:12px 20px 0; }
+        .mp-hero-name h1 { font-size:26px; font-weight:800; margin-bottom:6px; color:#1A1A1A; }
+        .mp-hero-meta { font-size:14px; color:#888; }
 
-        .pf-avatar-row { display:flex; align-items:center; gap:16px; }
-        .pf-avatar { width:80px; height:80px; border-radius:50%; overflow:hidden; background:#eee; flex-shrink:0; }
-        .pf-avatar img { width:100%; height:100%; object-fit:cover; object-position:center 22%; }
-        .pf-photo-btn { padding:10px 18px; background:#F0EDE8; color:#2D5A45; border-radius:10px; font-size:13px; font-weight:700; cursor:pointer; display:inline-block; }
+        .mp-edit-wrap { max-width:900px; margin:0 auto; padding:20px 20px 0; }
+        .mp-edit-btn { display:block; width:100%; text-align:center; padding:15px; background:#C4705A; color:white; border-radius:14px; font-size:15px; font-weight:700; text-decoration:none; }
+        .mp-edit-btn:hover { background:#b35d48; }
 
-        .pf-chips { display:flex; flex-wrap:wrap; gap:8px; }
-        .pf-chip { padding:8px 14px; border-radius:999px; border:1px solid #ddd; background:white; font-size:13px; font-weight:600; cursor:pointer; color:#555; }
-        .pf-chip.active { background:#2D5A45; color:white; border-color:#2D5A45; }
+        .mp-content { max-width:900px; margin:0 auto; padding:20px; display:flex; flex-direction:column; gap:20px; }
+        .mp-section { background:white; border-radius:20px; padding:24px; border:1px solid #eee; }
+        .mp-section h2 { font-size:16px; font-weight:700; margin-bottom:12px; color:#1A1A1A; }
+        .mp-section p { font-size:15px; color:#444; line-height:1.7; }
+        .mp-tags { display:flex; flex-wrap:wrap; gap:8px; }
+        .mp-tag { padding:6px 14px; background:#F0EDE8; color:#2D5A45; border-radius:999px; font-size:13px; font-weight:500; }
+        .mp-list { list-style:none; display:flex; flex-direction:column; gap:10px; }
+        .mp-list li { font-size:14px; color:#444; padding-left:20px; position:relative; line-height:1.5; }
+        .mp-list li::before { content:'•'; position:absolute; left:4px; color:#C4705A; font-weight:700; }
+        .mp-price-row { display:flex; align-items:baseline; gap:6px; }
+        .mp-price { font-size:26px; font-weight:800; }
+        .mp-price-unit { font-size:14px; color:#999; }
 
-        .pf-list-item { display:flex; gap:8px; margin-bottom:8px; }
-        .pf-list-item input { flex:1; }
-        .pf-list-remove { width:38px; height:38px; border-radius:10px; border:none; background:#F5E6E2; color:#C4705A; font-size:16px; cursor:pointer; flex-shrink:0; }
-        .pf-list-add { padding:8px 16px; background:#F0EDE8; color:#2D5A45; border:none; border-radius:10px; font-size:13px; font-weight:700; cursor:pointer; align-self:flex-start; }
-
-        .pf-submit { padding:16px; background:#C4705A; color:white; border:none; border-radius:14px; font-size:16px; font-weight:700; cursor:pointer; }
-        .pf-submit:hover { background:#b35d48; }
-
-        .pf-toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:#1A1A1A; color:white; padding:14px 22px; border-radius:14px; font-size:14px; font-weight:600; box-shadow:0 6px 20px rgba(0,0,0,0.25); z-index:200; max-width:90%; text-align:center; }
+        .mp-lightbox { position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:100; display:flex; align-items:center; justify-content:center; padding:24px; }
+        .mp-lightbox img { max-width:100%; max-height:85vh; border-radius:16px; object-fit:contain; }
+        .mp-lightbox-close { position:absolute; top:20px; right:20px; width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,0.15); color:white; border:none; font-size:22px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
       `}} />
-      <div className="pf-page">
-        <div className="pf-container">
-          <h1 className="pf-title">Моя анкета</h1>
-          <p className="pf-subtitle">Изменения сразу видны ученикам на вашей публичной странице</p>
 
-          <form className="pf-form" onSubmit={handleSave}>
-            <div className="pf-avatar-row">
-              <div className="pf-avatar"><img src={photo} alt="" /></div>
-              <label className="pf-photo-btn">
-                Изменить фото
-                <input type="file" accept="image/*" onChange={handlePhotoSelect} style={{ display: 'none' }} />
-              </label>
+      <div className="mp-page">
+        <div className="mp-hero">
+          <span className="mp-badge">{tutor.badge}</span>
+          <span className="mp-rating"><StarIcon size={14} /> {tutor.rating}</span>
+        </div>
+        <div className="mp-avatar-wrap">
+          <div className="mp-avatar" onClick={() => setPhotoOpen(true)}>
+            <img src={tutor.photo} alt={tutor.name} />
+          </div>
+        </div>
+        <div className="mp-hero-name">
+          <h1>{tutor.name}</h1>
+          <div className="mp-hero-meta">{tutor.city} • {tutor.experience} лет опыта • {tutor.reviews} отзывов</div>
+        </div>
+
+        <div className="mp-edit-wrap">
+          <Link href="/profile/edit" className="mp-edit-btn">Редактировать анкету</Link>
+        </div>
+
+        <div className="mp-content">
+          <div className="mp-section">
+            <h2>О преподавателе</h2>
+            <p>{tutor.about}</p>
+          </div>
+
+          <div className="mp-section">
+            <h2>Предметы</h2>
+            <div className="mp-tags">
+              {tutor.subjects.map(s => <span key={s} className="mp-tag">{s}</span>)}
             </div>
+          </div>
 
-            <div className="pf-field">
-              <label>Имя</label>
-              <input value={name} onChange={e => setName(e.target.value)} required />
+          <div className="mp-section">
+            <h2>Образование</h2>
+            <ul className="mp-list">
+              {tutor.education.map((e, i) => <li key={i}>{e}</li>)}
+            </ul>
+          </div>
+
+          <div className="mp-section">
+            <h2>Достижения</h2>
+            <ul className="mp-list">
+              {tutor.achievements.map((a, i) => <li key={i}>{a}</li>)}
+            </ul>
+          </div>
+
+          <div className="mp-section">
+            <h2>Цена</h2>
+            <div className="mp-price-row">
+              <span className="mp-price">{tutor.price}</span>
+              <span className="mp-price-unit">₽/час</span>
             </div>
-
-            <div className="pf-row">
-              <div className="pf-field">
-                <label>Город</label>
-                <input value={city} onChange={e => setCity(e.target.value)} required />
-              </div>
-              <div className="pf-field">
-                <label>Опыт, лет</label>
-                <input type="number" min="0" value={experience} onChange={e => setExperience(e.target.value)} required />
-              </div>
-            </div>
-
-            <div className="pf-field">
-              <label>Цена за занятие, ₽</label>
-              <input type="number" min="0" value={price} onChange={e => setPrice(e.target.value)} required />
-            </div>
-
-            <div className="pf-field">
-              <label>О себе</label>
-              <textarea value={about} onChange={e => setAbout(e.target.value)} required />
-            </div>
-
-            <div className="pf-field">
-              <label>Предметы</label>
-              <div className="pf-chips">
-                {SUBJECTS_LIST.map(s => (
-                  <button type="button" key={s} className={`pf-chip ${subjects.includes(s) ? 'active' : ''}`} onClick={() => toggleSubject(s)}>{s}</button>
-                ))}
-              </div>
-            </div>
-
-            <div className="pf-field">
-              <label>Образование</label>
-              {education.map((line, i) => (
-                <div key={i} className="pf-list-item">
-                  <input value={line} onChange={e => updateListItem(education, setEducation, i, e.target.value)} placeholder="Например: МГУ, факультет ВМК, 2019" />
-                  <button type="button" className="pf-list-remove" onClick={() => removeListItem(education, setEducation, i)}>✕</button>
-                </div>
-              ))}
-              <button type="button" className="pf-list-add" onClick={() => addListItem(education, setEducation)}>+ Добавить строку</button>
-            </div>
-
-            <div className="pf-field">
-              <label>Достижения</label>
-              {achievements.map((line, i) => (
-                <div key={i} className="pf-list-item">
-                  <input value={line} onChange={e => updateListItem(achievements, setAchievements, i, e.target.value)} placeholder="Например: 80+ учеников подготовлено к ЕГЭ" />
-                  <button type="button" className="pf-list-remove" onClick={() => removeListItem(achievements, setAchievements, i)}>✕</button>
-                </div>
-              ))}
-              <button type="button" className="pf-list-add" onClick={() => addListItem(achievements, setAchievements)}>+ Добавить строку</button>
-            </div>
-
-            <button type="submit" className="pf-submit">Сохранить изменения</button>
-          </form>
+          </div>
         </div>
       </div>
 
-      {toast && <div className="pf-toast">{toast}</div>}
+      {photoOpen && (
+        <div className="mp-lightbox" onClick={() => setPhotoOpen(false)}>
+          <button className="mp-lightbox-close" onClick={() => setPhotoOpen(false)}>✕</button>
+          <img src={tutor.photo} alt={tutor.name} onClick={e => e.stopPropagation()} />
+        </div>
+      )}
     </>
   )
 }
