@@ -106,9 +106,10 @@ export default function ProfilePage() {
         .pf-toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:#1A1A1A; color:white; padding:14px 22px; border-radius:14px; font-size:14px; font-weight:600; box-shadow:0 6px 20px rgba(0,0,0,0.25); z-index:200; max-width:90%; text-align:center; }
       `}} />
       <div className="pf-page">
-        <div className="pf-container">
-          <h1 className="pf-title">Моя анкета</h1>
-          <p className="pf-subtitle">Изменения сразу видны ученикам на вашей публичной странице</p>
+  <div className="pf-container">
+    <a href="/profile" className="pf-back">← Назад к анкете</a>
+    <h1 className="pf-title">Редактировать анкету</h1>
+    <p className="pf-subtitle">Изменения сразу видны ученикам на вашей публичной странице</p>
 
           <form className="pf-form" onSubmit={handleSave}>
             <div className="pf-avatar-row">
