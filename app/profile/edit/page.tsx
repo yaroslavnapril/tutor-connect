@@ -85,6 +85,7 @@ export default function ProfilePage() {
         .pf-field input:focus, .pf-field textarea:focus { border-color:#2D5A45; }
         .pf-field textarea { resize:vertical; min-height:90px; }
         .pf-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.pf-back { display:inline-flex; align-items:center; gap:6px; color:#2D5A45; text-decoration:none; font-weight:600; font-size:14px; margin-bottom:16px; }
 
         .pf-avatar-row { display:flex; align-items:center; gap:16px; }
         .pf-avatar { width:80px; height:80px; border-radius:50%; overflow:hidden; background:#eee; flex-shrink:0; }
