@@ -1,12 +1,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { TUTORS } from '../data/tutors'
-import { CURRENT_TUTOR_ID } from '../data/currentUser'
-import { getTutorOverride, setTutorOverride } from '../data/tutorOverrides'
-import { SUBJECTS_LIST } from '../data/subjects'
+import { TUTORS } from '../../data/tutors'
+import { CURRENT_TUTOR_ID } from '../../data/currentUser'
+import { getTutorOverride, setTutorOverride } from '../../data/tutorOverrides'
+import { SUBJECTS_LIST } from '../../data/subjects'
 
-export default function ProfilePage() {
+export default function ProfileEditPage() {
   const baseTutor = TUTORS.find(t => t.id === CURRENT_TUTOR_ID)
   const [mounted, setMounted] = useState(false)
   const [name, setName] = useState('')
@@ -69,7 +69,9 @@ export default function ProfilePage() {
       photo
     })
     setToast('Анкета обновлена — изменения уже видны ученикам')
-    setTimeout(() => setToast(null), 3000)
+    setTimeout(() => {
+      window.location.href = '/profile'
+    }, 1200)
   }
 
   return (
@@ -77,6 +79,7 @@ export default function ProfilePage() {
       <style dangerouslySetInnerHTML={{__html: `
         .pf-page { background:#F5F3EF; min-height:100vh; padding-bottom:48px; }
         .pf-container { max-width:640px; margin:0 auto; padding:24px 20px; }
+        .pf-back { display:inline-flex; align-items:center; gap:6px; color:#2D5A45; text-decoration:none; font-weight:600; font-size:14px; margin-bottom:16px; }
         .pf-title { font-size:28px; font-weight:800; margin-bottom:6px; color:#1A1A1A; }
         .pf-subtitle { font-size:14px; color:#888; margin-bottom:24px; }
         .pf-form { background:white; border-radius:20px; padding:24px; border:1px solid #eee; display:flex; flex-direction:column; gap:20px; }
@@ -85,7 +88,6 @@ export default function ProfilePage() {
         .pf-field input:focus, .pf-field textarea:focus { border-color:#2D5A45; }
         .pf-field textarea { resize:vertical; min-height:90px; }
         .pf-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.pf-back { display:inline-flex; align-items:center; gap:6px; color:#2D5A45; text-decoration:none; font-weight:600; font-size:14px; margin-bottom:16px; }
 
         .pf-avatar-row { display:flex; align-items:center; gap:16px; }
         .pf-avatar { width:80px; height:80px; border-radius:50%; overflow:hidden; background:#eee; flex-shrink:0; }
@@ -107,10 +109,10 @@ export default function ProfilePage() {
         .pf-toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:#1A1A1A; color:white; padding:14px 22px; border-radius:14px; font-size:14px; font-weight:600; box-shadow:0 6px 20px rgba(0,0,0,0.25); z-index:200; max-width:90%; text-align:center; }
       `}} />
       <div className="pf-page">
-  <div className="pf-container">
-    <a href="/profile" className="pf-back">← Назад к анкете</a>
-    <h1 className="pf-title">Редактировать анкету</h1>
-    <p className="pf-subtitle">Изменения сразу видны ученикам на вашей публичной странице</p>
+        <div className="pf-container">
+          <a href="/profile" className="pf-back">← Назад к анкете</a>
+          <h1 className="pf-title">Редактировать анкету</h1>
+          <p className="pf-subtitle">Изменения сразу видны ученикам на вашей публичной странице</p>
 
           <form className="pf-form" onSubmit={handleSave}>
             <div className="pf-avatar-row">
